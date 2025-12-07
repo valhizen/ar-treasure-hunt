@@ -1,0 +1,16 @@
+[remap]
+
+importer="dialogue_manager"
+importer_version=15
+type="Resource"
+uid="uid://nnfl5214aq7c"
+path="res://.godot/imported/pikpik.dialogue-10fddf29c9c241d018196d2272e59e7b.tres"
+
+[deps]
+
+source_file="res://Dialogue/pikpik.dialogue"
+dest_files=["res://.godot/imported/pikpik.dialogue-10fddf29c9c241d018196d2272e59e7b.tres"]
+
+[params]
+
+defaults=true

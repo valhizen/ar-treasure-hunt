@@ -1,4 +1,4 @@
-[gd_scene load_steps=76 format=3 uid="uid://ooeetqvu6dme"]
+[gd_scene load_steps=78 format=3 uid="uid://ooeetqvu6dme"]
 
 [ext_resource type="Script" uid="uid://cnj3w702odi41" path="res://Scripts/MainCharacter/main_character.gd" id="1_pave8"]
 [ext_resource type="Texture2D" uid="uid://ctfxq5acwk61y" path="res://Assets/MainCharacter/IDLE/idle_down.png" id="1_sxdl1"]
@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://bg5vyqsmuikj6" path="res://Assets/MainCharacter/RUN/run_left.png" id="6_ey1yp"]
 [ext_resource type="Texture2D" uid="uid://wi0wf81wcrj4" path="res://Assets/MainCharacter/RUN/run_right.png" id="7_n7dyu"]
 [ext_resource type="Texture2D" uid="uid://ceyifacngnnhy" path="res://Assets/MainCharacter/RUN/run_up.png" id="8_4y52s"]
+[ext_resource type="Texture2D" uid="uid://bp2jvidjwh2k3" path="res://Assets/Light/2d_lights_and_shadows_neutral_point_light.webp" id="10_h63ro"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_mp7jb"]
 atlas = ExtResource("1_sxdl1")
@@ -501,21 +502,45 @@ animations = [{
 "speed": 12.0
 }]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_sxdl1"]
-radius = 7.0
-height = 28.0
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_h63ro"]
+radius = 5.0
+height = 10.0
 
-[node name="MainCharacter" type="CharacterBody2D"]
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_pave8"]
+radius = 7.0
+
+[node name="MainCharacter" type="CharacterBody2D" groups=["player"]]
+y_sort_enabled = true
 script = ExtResource("1_pave8")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+visibility_layer = 3
+position = Vector2(0, -16)
+scale = Vector2(1.2, 1.2)
 sprite_frames = SubResource("SpriteFrames_nv2nb")
-animation = &"idle_down"
-frame_progress = 0.058017094
+animation = &"idle_left"
 
 [node name="Camera2D" type="Camera2D" parent="."]
+visibility_layer = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, 3)
-shape = SubResource("CapsuleShape2D_sxdl1")
-disabled = true
+visibility_layer = 3
+position = Vector2(-1, -16)
+shape = SubResource("CapsuleShape2D_h63ro")
+
+[node name="Direction" type="Marker2D" parent="."]
+position = Vector2(-2, 0)
+
+[node name="ActionableFinder" type="Area2D" parent="Direction"]
+light_mask = 0
+visibility_layer = 524288
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Direction/ActionableFinder"]
+position = Vector2(0, 13)
+rotation = -0.06283186
+shape = SubResource("CapsuleShape2D_pave8")
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+position = Vector2(0, -3)
+texture = ExtResource("10_h63ro")
+texture_scale = 0.8
