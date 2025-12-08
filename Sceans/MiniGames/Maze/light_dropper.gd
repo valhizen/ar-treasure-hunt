@@ -14,7 +14,8 @@ var elapsed_time := 0.0
 func _ready() -> void:
 	time_label.text = "00:00"
 	var default_light = main_character.get_node("PointLight2D")
-	default_light.enabled = false
+	if default_light:
+		default_light.enabled = false
 
 func _input(event):
 	if event.is_action_pressed("space"): 
@@ -32,7 +33,7 @@ func drop_dot():
 
 func _process(delta: float) -> void:
 	elapsed_time += delta
-	var minutes = int(elapsed_time) / 60
+	var minutes = int(elapsed_time / 60)
 	var seconds = int(elapsed_time) % 60
 
 	time_label.text = str(minutes) + ":" + str(seconds)

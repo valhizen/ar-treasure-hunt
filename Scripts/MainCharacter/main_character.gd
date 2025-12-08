@@ -8,7 +8,7 @@ extends CharacterBody2D
 func _ready() -> void:
 	animated_sprite_2d.play("idle_down")
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	print(animated_sprite_2d.global_position)
 	var input_direction = Input.get_vector("Left", "Right", "Up", "Down")
 	

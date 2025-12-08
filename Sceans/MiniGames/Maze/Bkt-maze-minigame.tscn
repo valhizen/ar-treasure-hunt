@@ -6,7 +6,7 @@
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_r71jy"]
 radius = 7.0
-height = 28.0
+height = 26.0
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_xvtaq"]
 texture = ExtResource("3_r71jy")
@@ -104,22 +104,23 @@ collision_mask = 16
 player_speed = 200.0
 
 [node name="MazeCollider" type="CollisionShape2D" parent="MainCharacter"]
-position = Vector2(1, -7)
+visible = false
+position = Vector2(0, 4)
 shape = SubResource("CapsuleShape2D_r71jy")
 
 [node name="LanternLabel" type="Label" parent="MainCharacter"]
-offset_left = 114.47998
-offset_top = -109.880005
-offset_right = 280.47998
-offset_bottom = -60.880005
+offset_left = -9.52002
+offset_top = -115.880005
+offset_right = 156.47998
+offset_bottom = -66.880005
 scale = Vector2(0.51, 0.51)
 pivot_offset = Vector2(148, 12)
 
 [node name="TimerLabel" type="Label" parent="MainCharacter"]
-offset_left = 187.47998
-offset_top = -92.880005
-offset_right = 227.47998
-offset_bottom = -43.880005
+offset_left = 63.47998
+offset_top = -98.880005
+offset_right = 103.47998
+offset_bottom = -49.880005
 scale = Vector2(0.5, 0.5)
 
 [node name="Environment" type="Node2D" parent="."]
@@ -151,10 +152,10 @@ offset_bottom = 268.0
 [node name="Label" type="Label" parent="UI"]
 z_index = 5
 layout_mode = 0
-offset_left = -11.0
+offset_left = 56.0
 offset_top = -2.0
-offset_right = 284.0
-offset_bottom = 47.0
+offset_right = 351.0
+offset_bottom = 73.0
 text = "Press Space in order to
 place lanterns as markers
 "
