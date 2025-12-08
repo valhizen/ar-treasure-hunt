@@ -1,0 +1,65 @@
+~ start
+Guide: [[Welcome|Hello|Hi there]], treasure hunter!
+
+Guide: ARTreasureHunt turns your city into an AR adventure where sponsor locations become treasure spots.
+
+Guide: What interests you?
+- How does it work?
+Guide: Players get clues leading to real locations. When they arrive and scan with AR, a 3D treasure appears!
+
+Guide: **Example:** Coffee shop becomes "Dragon's Den" - scan reveals animated dragon with special offer inside.
+
+Guide: Sponsors get foot traffic, players get rewards. Everyone wins!
+    -> See sponsor benefits
+    Guide: **For Sponsors:** Foot traffic boost, young audience (18-35), and real analytics on visits and conversions.
+    
+    Guide: **Recent Results:** 68% of players who scan actually enter the store.
+        -> Sounds good! => pricing
+        -> How much does it cost? => pricing
+    
+    -> Show me pricing => pricing
+
+- What do sponsors get?
+Guide: Sponsors become part of the game! Your location gets:
+- Custom AR treasure/mascot
+- Player foot traffic
+- Analytics dashboard
+- Flexible campaigns
+
+Guide: Players visit because it's fun, not just advertising.
+    -> How much? => pricing
+    -> Back => start
+
+- Pricing options => pricing
+
+- Exit => END
+
+~ pricing
+Guide: Simple pricing tiers:
+
+Guide: **Basic** - $500/month: Location on map + simple AR marker
+
+Guide: **Premium** - $1,500/month: Custom 3D artifact + analytics + offers
+
+Guide: **Campaign** - $5,000+: Full branded treasure hunt
+
+Guide: Want to learn more or start a campaign?
+- Tell me more about Premium
+Guide: Premium includes: Custom 3D model, particle effects, sound, analytics dashboard, and you can update offers anytime.
+
+Guide: Average results: 4 visits per player, 22 min dwell time.
+    -> I'm interested => END
+    -> Back => pricing
+
+- How do campaigns work?
+Guide: Campaigns are themed hunts: "Find 5 Ancient Keys" across partner locations for a grand prize.
+
+Guide: Perfect for tourism boards, festivals, or multi-location brands.
+    -> Interested! => END
+    -> Back => pricing
+
+- I'm interested => END
+
+- Not right now => END
+
+=> END

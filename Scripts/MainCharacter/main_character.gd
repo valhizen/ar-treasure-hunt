@@ -2,6 +2,7 @@ extends CharacterBody2D
 
 @export var player_speed : float = 150.0
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
+@onready var actionable_finder: Area2D = $Direction/ActionableFinder
 
 
 # Called when the node enters the scene tree for the first time.
@@ -57,4 +58,11 @@ func look_at_mouse():
 			animated_sprite_2d.play("idle_down")
 		else:
 			animated_sprite_2d.play("idle_up")
+			
+func _unhandled_input(event: InputEvent) -> void:
+	if Input.is_action_just_pressed("ui_accept"):
+		var actionables = actionable_finder.get_overlapping_areas()
+		if actionables.size() > 0:
+			actionables[0].action()
+			return
 	
