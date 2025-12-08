@@ -1,0 +1,51 @@
+[gd_scene load_steps=3 format=3 uid="uid://bkdihg2yf6h2u"]
+
+[ext_resource type="Script" uid="uid://b76atgc00u1k4" path="res://Scripts/MapSystem/map.gd" id="1_jqrxr"]
+[ext_resource type="Script" uid="uid://dd07cemn5dhp8" path="res://Scripts/MapSystem/sub_viewport.gd" id="1_yljdj"]
+
+[node name="Map" type="CanvasLayer"]
+script = ExtResource("1_jqrxr")
+
+[node name="MinimapContainer" type="SubViewportContainer" parent="."]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -88.0
+offset_top = 8.0
+offset_right = 424.0
+offset_bottom = 520.0
+grow_horizontal = 0
+scale = Vector2(0.68000007, 0.67999995)
+
+[node name="SubViewport" type="SubViewport" parent="MinimapContainer"]
+handle_input_locally = false
+canvas_cull_mask = 4293918723
+size = Vector2i(128, 128)
+render_target_update_mode = 4
+script = ExtResource("1_yljdj")
+
+[node name="Camera2D" type="Camera2D" parent="MinimapContainer/SubViewport"]
+z_index = 9
+zoom = Vector2(0.2, 0.2)
+
+[node name="Line2D" type="Line2D" parent="MinimapContainer"]
+position = Vector2(0.09261551, 0.92599916)
+scale = Vector2(0.99692494, 0.98519987)
+points = PackedVector2Array(-0.09289551, -1.9549322, -0.09289551, 127.96794, 127.29883, 127.96794, 127.29883, -1.9549322)
+closed = true
+width = 2.0
+
+[node name="BigMapContainer" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 512.0
+offset_bottom = 512.0
+
+[node name="TextureRect" type="TextureRect" parent="BigMapContainer"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="CanvasModulate" type="CanvasModulate" parent="."]
+position = Vector2(0.00012207031, 0)
+scale = Vector2(0.99999994, 1)

@@ -1,0 +1,31 @@
+[gd_scene load_steps=7 format=3 uid="uid://412jo4mo5547"]
+
+[ext_resource type="Texture2D" uid="uid://dh6a4ophe5c2m" path="res://Assets/NPC/Generic Male NPCs.png" id="1_vmela"]
+[ext_resource type="PackedScene" uid="uid://c7ebt5t60rqpn" path="res://Sceans/Dialogue/actionable.tscn" id="2_b432f"]
+[ext_resource type="Resource" uid="uid://bfdqiww1ruwcf" path="res://Dialogue/sponser.dialogue" id="3_uvwjy"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_b432f"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uvwjy"]
+atlas = ExtResource("1_vmela")
+region = Rect2(498, 500, 44, 96)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_uvwjy"]
+radius = 14.0
+height = 68.0
+
+[node name="NPCUnc" type="CharacterBody2D"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_b432f")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.4, 0.4)
+texture = SubResource("AtlasTexture_uvwjy")
+
+[node name="Actionable" parent="." instance=ExtResource("2_b432f")]
+dialogue_resource = ExtResource("3_uvwjy")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Actionable"]
+position = Vector2(0, 1)
+shape = SubResource("CapsuleShape2D_uvwjy")
