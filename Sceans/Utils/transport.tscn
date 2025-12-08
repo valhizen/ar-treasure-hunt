@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://i587sledho0f"]
+
+[ext_resource type="Script" uid="uid://bw55ew080jysx" path="res://Scripts/Transportation/transport.gd" id="1_8hvld"]
+
+[node name="Transport" type="Area2D"]
+script = ExtResource("1_8hvld")
+spawn_scean = null
+spawn_position = null

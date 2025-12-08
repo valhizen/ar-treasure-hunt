@@ -1,0 +1,16 @@
+[remap]
+
+importer="dialogue_manager"
+importer_version=15
+type="Resource"
+uid="uid://bfdqiww1ruwcf"
+path="res://.godot/imported/sponser.dialogue-bd5bc3d833769638e7056e7dfa6a0781.tres"
+
+[deps]
+
+source_file="res://Dialogue/sponser.dialogue"
+dest_files=["res://.godot/imported/sponser.dialogue-bd5bc3d833769638e7056e7dfa6a0781.tres"]
+
+[params]
+
+defaults=true
