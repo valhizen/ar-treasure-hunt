@@ -3,6 +3,7 @@ extends Control
 @export var bg_image: Texture2D
 @export var grid_size: int = 3
 @export var tile_gap: int = 2
+@export var render_scale: float = 1.0 / 3.0
 
 var tiles = []
 var empty_index: int = 0
@@ -13,6 +14,9 @@ var board_offset: Vector2
 const TILE_SCENE = preload("res://Sceans/MiniGames/MuseumPuzzle/scenes/tile.tscn")
 
 func _ready():
+	var zoom_level = Vector2(render_scale, render_scale)
+	get_viewport().canvas_transform = Transform2D.IDENTITY.scaled(zoom_level)
+	
 	if bg_image:
 		start_game()
 
@@ -23,7 +27,9 @@ func start_game():
 	
 	var total_width = img_width + (grid_size - 1) * tile_gap
 	var total_height = img_height + (grid_size - 1) * tile_gap
-	board_offset = (get_viewport_rect().size - Vector2(total_width, total_height)) / 2
+	
+	var screen_size = get_viewport_rect().size / render_scale
+	board_offset = (screen_size - Vector2(total_width, total_height)) / 2
 	
 	generate_tiles()
 	shuffle_board()

@@ -5,13 +5,10 @@
 
 [node name="Game" type="Control"]
 layout_mode = 3
-anchor_right = 1.082
-anchor_bottom = 1.097
-offset_right = 748.04004
-offset_bottom = 379.88
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
 script = ExtResource("1_uwrxv")
 bg_image = ExtResource("2_yqjtg")
