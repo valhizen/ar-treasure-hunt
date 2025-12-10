@@ -3,6 +3,7 @@ extends CharacterBody2D
 @export var player_speed : float = 150.0
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 @onready var actionable_finder: Area2D = $Direction/ActionableFinder
+@onready var main_character: CharacterBody2D = $"."
 
 
 # Called when the node enters the scene tree for the first time.
@@ -65,4 +66,6 @@ func _unhandled_input(event: InputEvent) -> void:
 		if actionables.size() > 0:
 			actionables[0].action()
 			return
+			
+
 	

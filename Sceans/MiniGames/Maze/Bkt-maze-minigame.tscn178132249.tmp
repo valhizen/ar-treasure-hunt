@@ -1,9 +1,8 @@
-[gd_scene load_steps=11 format=4 uid="uid://bmlvdb0ojft42"]
+[gd_scene load_steps=10 format=4 uid="uid://bmlvdb0ojft42"]
 
 [ext_resource type="PackedScene" uid="uid://ooeetqvu6dme" path="res://Sceans/MainCharacter/main_character.tscn" id="2_r71jy"]
 [ext_resource type="Texture2D" uid="uid://slmp0k8f7hmb" path="res://Sceans/MiniGames/Maze/Dungeon_Tileset.png" id="3_r71jy"]
 [ext_resource type="Script" uid="uid://dccv83bfp1a00" path="res://Sceans/MiniGames/Maze/light_dropper.gd" id="3_xvtaq"]
-[ext_resource type="Texture2D" uid="uid://bp2jvidjwh2k3" path="res://Sceans/MiniGames/Maze/2d_lights_and_shadows_neutral_point_light.webp" id="4_5yj5x"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_xvtaq"]
 texture = ExtResource("3_r71jy")
@@ -132,18 +131,23 @@ text = "Press Space in order to
 place lanterns as markers
 "
 
-[node name="MainCharacter" parent="." instance=ExtResource("2_r71jy")]
+[node name="DarkHue" type="CanvasModulate" parent="."]
+color = Color(0.0923971, 0.09239706, 0.0923971, 1)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="MainCharacter" parent="CanvasLayer" instance=ExtResource("2_r71jy")]
 z_index = 2
-position = Vector2(-559, 318)
+position = Vector2(-458, 327)
 collision_mask = 16
 player_speed = 200.0
 
-[node name="MazeCollider" type="CollisionShape2D" parent="MainCharacter"]
+[node name="MazeCollider" type="CollisionShape2D" parent="CanvasLayer/MainCharacter"]
 visible = false
 position = Vector2(0, 4)
 shape = SubResource("CapsuleShape2D_r71jy")
 
-[node name="LanternLabel" type="Label" parent="MainCharacter"]
+[node name="LanternLabel" type="Label" parent="CanvasLayer/MainCharacter"]
 offset_left = -9.52002
 offset_top = -115.880005
 offset_right = 156.47998
@@ -152,16 +156,10 @@ scale = Vector2(0.51, 0.51)
 pivot_offset = Vector2(148, 12)
 metadata/_edit_use_anchors_ = true
 
-[node name="TimerLabel" type="Label" parent="MainCharacter"]
+[node name="TimerLabel" type="Label" parent="CanvasLayer/MainCharacter"]
 offset_left = 63.47998
 offset_top = -98.880005
 offset_right = 103.47998
 offset_bottom = -49.880005
 scale = Vector2(0.5, 0.5)
 metadata/_edit_use_anchors_ = true
-
-[node name="PointLight2D2" type="PointLight2D" parent="MainCharacter"]
-texture = ExtResource("4_5yj5x")
-
-[node name="DarkHue" type="CanvasModulate" parent="."]
-color = Color(0.0018410794, 0.0018410623, 0.0018410727, 1)
