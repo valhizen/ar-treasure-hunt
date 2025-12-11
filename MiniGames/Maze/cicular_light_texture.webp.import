@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b1v3uqlbsau76"
-path="res://.godot/imported/puzzle_image.png-2601652b71adfdb6c7c71d021f3c30ed.ctex"
+uid="uid://bp2jvidjwh2k3"
+path="res://.godot/imported/cicular_light_texture.webp-377bbaa7e78e8d3fd3d1793e3fac0a73.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Sceans/MiniGames/MuseumPuzzle/assets/puzzle_image.png"
-dest_files=["res://.godot/imported/puzzle_image.png-2601652b71adfdb6c7c71d021f3c30ed.ctex"]
+source_file="res://MiniGames/Maze/cicular_light_texture.webp"
+dest_files=["res://.godot/imported/cicular_light_texture.webp-377bbaa7e78e8d3fd3d1793e3fac0a73.ctex"]
 
 [params]
 

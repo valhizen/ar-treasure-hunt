@@ -6,12 +6,12 @@ extends Control
 @export var render_scale: float = 1.0 / 3.0
 
 var tiles = []
-var empty_index: int = 0
+var empty_index: int = 0	
 var tile_size: Vector2
 var is_animating: bool = false
 var board_offset: Vector2
 
-const TILE_SCENE = preload("res://Sceans/MiniGames/MuseumPuzzle/scenes/tile.tscn")
+const TILE_SCENE = preload("uid://ccjewxgukji3a")
 
 func _ready():
 	var zoom_level = Vector2(render_scale, render_scale)
@@ -23,7 +23,7 @@ func _ready():
 func start_game():
 	var img_width = bg_image.get_width()
 	var img_height = bg_image.get_height()
-	tile_size = Vector2(img_width / grid_size, img_height / grid_size)
+	tile_size = Vector2(floor(float(img_width) / grid_size), floor(float(img_height) / grid_size))
 	
 	var total_width = img_width + (grid_size - 1) * tile_gap
 	var total_height = img_height + (grid_size - 1) * tile_gap
@@ -73,9 +73,9 @@ func _on_tile_pressed(tile_node):
 
 func is_adjacent(idx1: int, idx2: int) -> bool:
 	var x1 = idx1 % grid_size
-	var y1 = idx1 / grid_size
+	var y1 = int(float(idx1) / grid_size)
 	var x2 = idx2 % grid_size
-	var y2 = idx2 / grid_size
+	var y2 = int(float(idx2) / grid_size)
 	
 	return abs(x1 - x2) + abs(y1 - y2) == 1
 
@@ -89,7 +89,7 @@ func swap_tiles(from_index: int, to_index: int, animate: bool = true):
 	empty_index = from_index
 	
 	var tx = to_index % grid_size
-	var ty = to_index / grid_size
+	var ty = int(float(to_index) / grid_size)
 	var target_pos = get_grid_position(tx, ty)
 	
 	tile.update_visual_position(target_pos, animate)
@@ -106,7 +106,7 @@ func shuffle_board():
 	while moves < max_moves:
 		var neighbors = []
 		var x = empty_index % grid_size
-		var y = empty_index / grid_size
+		var y = int(float(empty_index) / grid_size)
 		
 		if x > 0: neighbors.append(empty_index - 1)
 		if x < grid_size - 1: neighbors.append(empty_index + 1)
