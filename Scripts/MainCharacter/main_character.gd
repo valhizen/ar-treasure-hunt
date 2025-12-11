@@ -4,13 +4,12 @@ extends CharacterBody2D
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 @onready var actionable_finder: Area2D = $Direction/ActionableFinder
 @onready var main_character: CharacterBody2D = $"."
-@onready var camera_2d: Camera2D = $Camera2D
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	animated_sprite_2d.play("idle_down")
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	var input_direction = Input.get_vector("Left", "Right", "Up", "Down")
 	
 	velocity = input_direction * player_speed
@@ -60,7 +59,7 @@ func look_at_mouse():
 		else:
 			animated_sprite_2d.play("idle_up")
 			
-func _unhandled_input(event: InputEvent) -> void:
+func _unhandled_input(_event: InputEvent) -> void:
 	if Input.is_action_just_pressed("ui_accept"):
 		var actionables = actionable_finder.get_overlapping_areas()
 		if actionables.size() > 0:

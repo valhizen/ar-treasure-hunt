@@ -9,7 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://bg5vyqsmuikj6" path="res://Assets/MainCharacter/RUN/run_left.png" id="6_ey1yp"]
 [ext_resource type="Texture2D" uid="uid://wi0wf81wcrj4" path="res://Assets/MainCharacter/RUN/run_right.png" id="7_n7dyu"]
 [ext_resource type="Texture2D" uid="uid://ceyifacngnnhy" path="res://Assets/MainCharacter/RUN/run_up.png" id="8_4y52s"]
-[ext_resource type="Texture2D" uid="uid://bp2jvidjwh2k3" path="res://MiniGames/Maze/cicular_light_texture.webp" id="10_h63ro"]
+[ext_resource type="Texture2D" uid="uid://bp2jvidjwh2k3" path="res://MiniGames/Maze/assets/light_texture.webp" id="10_h63ro"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_mp7jb"]
 atlas = ExtResource("1_sxdl1")
