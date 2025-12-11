@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://cswc4d5ma7qa6"]
+
+[ext_resource type="Script" uid="uid://cg88ef6v35tbq" path="res://Common/PlatformerCharacter/platformer_character.gd" id="1_skd6i"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_20dck"]
+
+[node name="PlatformerCharacter" type="RigidBody2D"]
+lock_rotation = true
+script = ExtResource("1_skd6i")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_20dck")
+
+[node name="Camera2D" type="Camera2D" parent="."]
