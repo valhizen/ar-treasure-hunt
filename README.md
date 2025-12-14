@@ -21,3 +21,9 @@
 - Work on your fork and submit pull requests to "dev".
 - Changes will be merged into "master" after validation.
 - The repository is updated periodically.
+
+
+#### MiniGames
+- keep all the components of the minigame in itself in MiniGames/
+- prefix the main scene of the minigame with a "_" (eg: "_maze_mini_game.tscn" )
+- see MiniGames/Maze for example

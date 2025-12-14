@@ -23,8 +23,7 @@ func _ready() -> void:
 	animated_sprite_2d.play("idle_down")
 	
 func _input(event):
-	if event.is_action_pressed("space"): 
-		print("spcae pressed")
+	if event.is_action_pressed("place_lantern"): 
 		if placed_lantern < lantern_count:
 			place_lantern()
 	
