@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=4 uid="uid://csnb0lphjaltq"]
+[gd_scene load_steps=8 format=4 uid="uid://csnb0lphjaltq"]
 
 [ext_resource type="PackedScene" uid="uid://cswc4d5ma7qa6" path="res://Common/PlatformerCharacter/platformer_character.tscn" id="1_dg3rc"]
 [ext_resource type="Texture2D" uid="uid://cb1vpod41x4du" path="res://Assets/CyberPunk Asset Pack/asset page 1.png" id="2_nmblp"]
 [ext_resource type="Script" uid="uid://b63fj4mdsdfec" path="res://Sceans/MiniGames/Lake/water_area.gd" id="3_jumx5"]
+[ext_resource type="PackedScene" uid="uid://8b5pju8f3t4k" path="res://Sceans/MiniGames/Lake/corrupter.tscn" id="4_rv3kn"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_jumx5"]
 texture = ExtResource("2_nmblp")
@@ -253,3 +254,6 @@ script = ExtResource("3_jumx5")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WaterArea"]
 position = Vector2(708.5, 334)
 shape = SubResource("RectangleShape2D_nmblp")
+
+[node name="Corrupter" parent="." instance=ExtResource("4_rv3kn")]
+position = Vector2(-1351, 1161)

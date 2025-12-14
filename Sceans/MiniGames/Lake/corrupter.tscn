@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://8b5pju8f3t4k"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dnhw2"]
+
+[node name="Corrupter" type="StaticBody2D"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_dnhw2")
+debug_color = Color(0.8934384, 0.3180219, 0.12609017, 0.41960785)
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
