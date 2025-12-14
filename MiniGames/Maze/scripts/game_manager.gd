@@ -22,6 +22,7 @@ func add_coin():
 	emit_signal("coins_changed", coins)
 	update_display()
 
+
 func set_health(value):
 	player_health = clamp(value, 0, 100)
 	emit_signal("health_changed", player_health)

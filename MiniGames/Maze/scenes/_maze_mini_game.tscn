@@ -617,12 +617,13 @@ tile_map_data = PackedByteArray("AADp/+n/AAACAAAAAADq/+n/AAADAAAAAADr/+n/AAACAAA
 tile_set = SubResource("TileSet_xvtaq")
 
 [node name="CanvasModulate" type="CanvasModulate" parent="Environment"]
-color = Color(0.29107848, 0.29107842, 0.29107845, 1)
+color = Color(0.056291588, 0.056291603, 0.056291595, 1)
 
 [node name="Player" type="CharacterBody2D" parent="." groups=["player"]]
 position = Vector2(-708, 328)
 collision_mask = 48
 script = ExtResource("3_2ig8x")
+player_speed = 200.0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Player"]
 visibility_layer = 3
@@ -648,11 +649,12 @@ scale = Vector2(0.5, 0.5)
 metadata/_edit_use_anchors_ = true
 
 [node name="PointLight2D" type="PointLight2D" parent="Player"]
-position = Vector2(3, -3)
+position = Vector2(0.99998665, 2.0000134)
+scale = Vector2(0.78783554, 0.6951873)
 color = Color(0.9950966, 0.9900653, 0.99840385, 1)
-energy = 1.37
+energy = 0.65
 texture = ExtResource("12_bf73e")
-texture_scale = 1.95
+texture_scale = 1.8
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 visibility_layer = 3
