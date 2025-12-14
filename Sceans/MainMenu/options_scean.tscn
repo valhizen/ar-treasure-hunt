@@ -1,0 +1,209 @@
+[gd_scene load_steps=17 format=3 uid="uid://hrirnxbberb"]
+
+[ext_resource type="Script" uid="uid://drdcpxb3btmfb" path="res://Scripts/MainMenu/options_scean.gd" id="1_5at23"]
+[ext_resource type="Texture2D" uid="uid://62tii66lv1u" path="res://Assets/MainMenu/save.png" id="1_rfbg1"]
+[ext_resource type="Script" uid="uid://cowu7qjwd4fh3" path="res://Scripts/MainMenu/container.gd" id="1_yrpof"]
+[ext_resource type="Texture2D" uid="uid://b42w10aauqxnp" path="res://Assets/MainMenu/load.png" id="2_e7ycy"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_e7ycy"]
+atlas = ExtResource("1_rfbg1")
+region = Rect2(1, 3, 476, 185)
+
+[sub_resource type="Animation" id="Animation_56pxw"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:texture:region")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Rect2(1, 3, 476, 185)]
+}
+
+[sub_resource type="Animation" id="Animation_5at23"]
+resource_name = "click"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:texture:region")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [Rect2(481, 198, 476, 185), Rect2(999, 223, 391, 150), Rect2(1, 393, 476, 185)]
+}
+
+[sub_resource type="Animation" id="Animation_p4327"]
+resource_name = "hover"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:texture:region")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [Rect2(481, 3, 476, 185), Rect2(961, 3, 476, 185), Rect2(1, 198, 476, 185), Rect2(481, 198, 476, 185)]
+}
+
+[sub_resource type="Animation" id="Animation_yrpof"]
+resource_name = "normal"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:texture:region")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Rect2(1, 3, 476, 185)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_3bnwi"]
+_data = {
+&"RESET": SubResource("Animation_56pxw"),
+&"click": SubResource("Animation_5at23"),
+&"hover": SubResource("Animation_p4327"),
+&"normal": SubResource("Animation_yrpof")
+}
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yrpof"]
+atlas = ExtResource("2_e7ycy")
+region = Rect2(1, 3, 476, 185)
+
+[sub_resource type="Animation" id="Animation_klcg8"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TextureRect:texture:region")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Rect2(1, 3, 476, 185)]
+}
+
+[sub_resource type="Animation" id="Animation_6x480"]
+resource_name = "click"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TextureRect:texture:region")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [Rect2(481, 198, 476, 185), Rect2(999, 223, 391, 150), Rect2(1, 393, 476, 185)]
+}
+
+[sub_resource type="Animation" id="Animation_r45uc"]
+resource_name = "hover"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TextureRect:texture:region")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [Rect2(481, 3, 476, 185), Rect2(961, 3, 476, 185), Rect2(1, 198, 476, 185), Rect2(481, 198, 476, 185)]
+}
+
+[sub_resource type="Animation" id="Animation_3bnwi"]
+resource_name = "normal"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TextureRect:texture:region")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Rect2(1, 3, 476, 185)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_46i07"]
+_data = {
+&"RESET": SubResource("Animation_klcg8"),
+&"click": SubResource("Animation_6x480"),
+&"hover": SubResource("Animation_r45uc"),
+&"normal": SubResource("Animation_3bnwi")
+}
+
+[node name="OptionsScean" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_5at23")
+
+[node name="Container" type="Container" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_yrpof")
+
+[node name="Save" type="Button" parent="Container"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="Container/Save"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 15.0
+offset_right = 407.0
+offset_bottom = 165.0
+texture = SubResource("AtlasTexture_e7ycy")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Container/Save"]
+root_node = NodePath("../TextureRect")
+libraries = {
+&"": SubResource("AnimationLibrary_3bnwi")
+}
+
+[node name="Load" type="Button" parent="Container"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="Container/Load"]
+layout_mode = 0
+offset_left = 18.0
+offset_top = 216.0
+offset_right = 494.0
+offset_bottom = 401.0
+texture = SubResource("AtlasTexture_yrpof")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Container/Load"]
+libraries = {
+&"": SubResource("AnimationLibrary_46i07")
+}
+
+[node name="BackButton" type="Button" parent="."]
+layout_mode = 0
+offset_right = 8.0
+offset_bottom = 8.0
+
+[node name="SaveInfoLabel" type="Label" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0

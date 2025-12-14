@@ -434,7 +434,7 @@ autoplay = false
 
 [node name="MainMenu" type="Sprite2D" parent="."]
 z_index = -1
-position = Vector2(336.5, 180.37502)
+position = Vector2(337, 180)
 scale = Vector2(0.8835077, 0.8735294)
 texture = ExtResource("12_tad4g")
 

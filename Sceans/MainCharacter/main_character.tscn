@@ -9,7 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://bg5vyqsmuikj6" path="res://Assets/MainCharacter/RUN/run_left.png" id="6_ey1yp"]
 [ext_resource type="Texture2D" uid="uid://wi0wf81wcrj4" path="res://Assets/MainCharacter/RUN/run_right.png" id="7_n7dyu"]
 [ext_resource type="Texture2D" uid="uid://ceyifacngnnhy" path="res://Assets/MainCharacter/RUN/run_up.png" id="8_4y52s"]
-[ext_resource type="Texture2D" uid="uid://bp2jvidjwh2k3" path="res://Assets/Light/2d_lights_and_shadows_neutral_point_light.webp" id="10_h63ro"]
+[ext_resource type="Texture2D" uid="uid://bp2jvidjwh2k3" path="res://MiniGames/Maze/assets/light_texture.webp" id="10_h63ro"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_mp7jb"]
 atlas = ExtResource("1_sxdl1")
@@ -522,8 +522,8 @@ sprite_frames = SubResource("SpriteFrames_nv2nb")
 animation = &"idle_left"
 
 [node name="Camera2D" type="Camera2D" parent="."]
-visible = false
 visibility_layer = 3
+zoom = Vector2(3, 3)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visibility_layer = 3
@@ -531,7 +531,6 @@ position = Vector2(-1, -16)
 shape = SubResource("CapsuleShape2D_h63ro")
 
 [node name="Direction" type="Marker2D" parent="."]
-visible = false
 position = Vector2(-2, 0)
 
 [node name="ActionableFinder" type="Area2D" parent="Direction"]
