@@ -1,0 +1,63 @@
+[gd_scene load_steps=2 format=3 uid="uid://dkqgfwyml6oxp"]
+
+[ext_resource type="Script" uid="uid://cowu7qjwd4fh3" path="res://Scripts/MainMenu/container.gd" id="1_j6i7p"]
+
+[node name="EscScean" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="GamePaused" type="Label" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+text = "Game Paused"
+
+[node name="Container" type="Container" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_j6i7p")
+
+[node name="Resume" type="Button" parent="Container"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="Container/Resume"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Container/Resume"]
+
+[node name="Options" type="Button" parent="Container"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="Container/Options"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Container/Options"]
+
+[node name="MainMenu" type="Button" parent="Container"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="Container/MainMenu"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Container/MainMenu"]
+
+[node name="QUit" type="Button" parent="Container"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="Container/QUit"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Container/QUit"]

@@ -523,6 +523,7 @@ animation = &"idle_left"
 
 [node name="Camera2D" type="Camera2D" parent="."]
 visibility_layer = 3
+zoom = Vector2(3, 3)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visibility_layer = 3
@@ -544,4 +545,3 @@ shape = SubResource("CapsuleShape2D_pave8")
 [node name="PointLight2D" type="PointLight2D" parent="."]
 position = Vector2(0, -3)
 texture = ExtResource("10_h63ro")
-texture_scale = 50.0

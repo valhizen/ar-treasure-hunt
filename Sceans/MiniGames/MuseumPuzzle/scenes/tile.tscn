@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://ccjewxgukji3a"]
 
-[ext_resource type="Script" uid="uid://c4edp7w4hvs5i" path="res://museum_puzzle/scripts/tile.gd" id="1_3dk36"]
+[ext_resource type="Script" uid="uid://c4edp7w4hvs5i" path="res://Sceans/MiniGames/MuseumPuzzle/scripts/tile.gd" id="1_3dk36"]
 
 [node name="Tile" type="TextureRect"]
 offset_right = 40.0

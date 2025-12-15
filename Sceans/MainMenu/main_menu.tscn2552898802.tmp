@@ -429,7 +429,7 @@ libraries = {
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Container/Quit"]
 stream = ExtResource("5_b2353")
 
-[node name="Load" type="Button" parent="Container"]
+[node name="Button" type="Button" parent="Container"]
 layout_mode = 2
 
 [node name="AudioStreamPlayer" parent="." instance=ExtResource("9_hkq7o")]

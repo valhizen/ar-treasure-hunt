@@ -18,7 +18,6 @@ func _on_pressed() -> void:
 
 	await animation_player.animation_finished
 
-
 func _on_focus_entered() -> void:
 	animation_player.play("hover")
 
