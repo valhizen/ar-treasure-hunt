@@ -1,0 +1,26 @@
+[gd_scene load_steps=4 format=3 uid="uid://cn086ibnxn1sf"]
+
+[ext_resource type="Texture2D" uid="uid://bel1yte1la1vo" path="res://assets/sprites/platforms.png" id="1_8r6n6"]
+[ext_resource type="Script" uid="uid://bvfu65sk4yeyg" path="res://scripts/block.gd" id="1_cgrg5"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cgrg5"]
+size = Vector2(29, 7)
+
+[node name="Block" type="RigidBody2D"]
+script = ExtResource("1_cgrg5")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_8r6n6")
+region_enabled = true
+region_rect = Rect2(15.538441, 0.2017746, 32.99887, 8.621328)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_cgrg5")
+
+[node name="RayCastRight" type="RayCast2D" parent="."]
+position = Vector2(13, 0)
+target_position = Vector2(9, 0)
+
+[node name="RayCastLeft" type="RayCast2D" parent="."]
+position = Vector2(-14, 0)
+target_position = Vector2(-8, 0)
