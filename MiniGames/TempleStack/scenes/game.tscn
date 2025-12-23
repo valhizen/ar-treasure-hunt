@@ -1,8 +1,18 @@
-[gd_scene load_steps=7 format=4 uid="uid://dp553xxa6j51t"]
+[gd_scene load_steps=17 format=4 uid="uid://dp553xxa6j51t"]
 
 [ext_resource type="Script" uid="uid://ddeltkhgw73wv" path="res://MiniGames/TempleStack/scripts/game.gd" id="1_lnu2h"]
 [ext_resource type="Texture2D" uid="uid://cpk5df163ypr1" path="res://MiniGames/TempleStack/assets/sprites/world_tileset.png" id="1_uwrxv"]
-[ext_resource type="PackedScene" uid="uid://cn086ibnxn1sf" path="res://MiniGames/TempleStack/scenes/block.tscn" id="3_lnu2h"]
+[ext_resource type="PackedScene" uid="uid://po6gc5txc7wq" path="res://MiniGames/TempleStack/scenes/0.tscn" id="2_sniv8"]
+[ext_resource type="PackedScene" uid="uid://dnrkill8rj68t" path="res://MiniGames/TempleStack/scenes/1.tscn" id="3_woq32"]
+[ext_resource type="PackedScene" uid="uid://cblak54cokxx3" path="res://MiniGames/TempleStack/scenes/2.tscn" id="4_pefqj"]
+[ext_resource type="PackedScene" uid="uid://bil3phlf66er7" path="res://MiniGames/TempleStack/scenes/3.tscn" id="5_eo4j2"]
+[ext_resource type="PackedScene" uid="uid://dqhjyd3abbbpa" path="res://MiniGames/TempleStack/scenes/4.tscn" id="6_820h6"]
+[ext_resource type="PackedScene" uid="uid://doikyfofn6yf7" path="res://MiniGames/TempleStack/scenes/5.tscn" id="7_dsx2i"]
+[ext_resource type="PackedScene" uid="uid://boilphjwu7lfs" path="res://MiniGames/TempleStack/scenes/6.tscn" id="8_68g0s"]
+[ext_resource type="PackedScene" uid="uid://y7s0so4bs4jg" path="res://MiniGames/TempleStack/scenes/7.tscn" id="9_hrljk"]
+[ext_resource type="PackedScene" uid="uid://buhuc81sts7o" path="res://MiniGames/TempleStack/scenes/8.tscn" id="10_74d86"]
+[ext_resource type="PackedScene" uid="uid://c6vb6jaxs16dy" path="res://MiniGames/TempleStack/scenes/9.tscn" id="11_mv1vs"]
+[ext_resource type="PackedScene" uid="uid://bfkywwvlcfgpu" path="res://MiniGames/TempleStack/scenes/10.tscn" id="12_buici"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_yqjtg"]
 texture = ExtResource("1_uwrxv")
@@ -146,35 +156,35 @@ physics_layer_0/collision_layer = 1
 sources/0 = SubResource("TileSetAtlasSource_yqjtg")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lnu2h"]
-size = Vector2(235, 7.000001)
+size = Vector2(561.5, 13.062499)
 
 [node name="game" type="Node2D"]
 script = ExtResource("1_lnu2h")
-block = ExtResource("3_lnu2h")
+blocks = Array[PackedScene]([ExtResource("2_sniv8"), ExtResource("3_woq32"), ExtResource("4_pefqj"), ExtResource("5_eo4j2"), ExtResource("6_820h6"), ExtResource("7_dsx2i"), ExtResource("8_68g0s"), ExtResource("9_hrljk"), ExtResource("10_74d86"), ExtResource("11_mv1vs"), ExtResource("12_buici")])
 
 [node name="Platform" type="TileMapLayer" parent="."]
 tile_map_data = PackedByteArray("AAADAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAFAAAAAAAAAAAAAAAGAAAAAAAAAAAAAAAHAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAJAAAAAAAAAAAAAAAKAAAAAAAAAAAAAAALAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAANAAAAAAAAAAAAAAAOAAAAAAAAAAAAAAAPAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAARAAAAAAAAAAAAAAASAAAAAAAAAAAAAAATAAAAAAAAAAAAAAAUAAAAAAAAAAAAAAAVAAAAAAAAAAAAAAAWAAAAAAAAAAAAAAAXAAAAAAAAAAAAAAAYAAAAAAAAAAAAAAAZAAAAAAAAAAAAAAAaAAAAAAAAAAAAAAAbAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAADAAEAAAACAAEAAAADAAIAAAACAAEAAAAEAAMAAAACAAEAAAAEAAIAAAACAAEAAAAFAAIAAAACAAEAAAAGAAIAAAACAAEAAAAHAAMAAAAAAAEAAAAPAAMAAAACAAEAAAAQAAMAAAACAAEAAAARAAMAAAAAAAEAAAASAAMAAAABAAEAAAATAAMAAAACAAEAAAAUAAMAAAACAAEAAAAVAAMAAAAAAAEAAAAWAAMAAAADAAEAAAAXAAMAAAAAAAEAAAAYAAIAAAAAAAEAAAAZAAIAAAADAAEAAAAaAAIAAAAAAAEAAAAbAAEAAAAAAAEAAAAbAAIAAAAAAAEAAAAKAAIAAAADAAEAAAAJAAIAAAABAAEAAAAIAAIAAAABAAEAAAAHAAIAAAABAAEAAAAGAAMAAAABAAEAAAAFAAMAAAABAAEAAAALAAMAAAAAAAEAAAAMAAIAAAAAAAEAAAASAAIAAAAAAAEAAAAEAAEAAAAAAAEAAAAFAAEAAAAAAAEAAAAGAAEAAAAAAAEAAAAHAAEAAAAAAAEAAAAIAAEAAAAAAAEAAAAJAAEAAAAAAAEAAAAKAAEAAAAAAAEAAAALAAEAAAAAAAEAAAAMAAEAAAADAAEAAAANAAEAAAADAAEAAAAOAAEAAAAAAAEAAAAPAAEAAAAAAAEAAAAQAAEAAAAAAAEAAAARAAEAAAAAAAEAAAASAAEAAAAAAAEAAAATAAEAAAAAAAEAAAARAAIAAAAAAAEAAAAQAAIAAAAAAAEAAAAPAAIAAAAAAAEAAAAOAAIAAAAAAAEAAAANAAIAAAAAAAEAAAAKAAMAAAAAAAEAAAAJAAMAAAAAAAEAAAAIAAMAAAAAAAEAAAALAAIAAAADAAEAAAANAAMAAAAAAAEAAAAYAAMAAAAAAAEAAAAXAAIAAAAAAAEAAAAXAAEAAAAAAAEAAAAbAAMAAAAAAAEAAAAWAAIAAAADAAEAAAAVAAEAAAAAAAEAAAAWAAEAAAAAAAEAAAAUAAEAAAAAAAEAAAATAAIAAAAAAAEAAAAUAAIAAAADAAEAAAAZAAMAAAAAAAEAAAAaAAMAAAAAAAEAAAAZAAEAAAAAAAEAAAAYAAEAAAAAAAEAAAAVAAIAAAADAAEAAAAMAAMAAAAAAAEAAAAOAAMAAAAAAAEAAAAaAAEAAAAAAAEAAAADAAMAAAAAAAEAAAAcAAEAAAABAAEAAAAcAAMAAAABAAEAAAAcAAIAAAACAAEAAAA=")
 tile_set = SubResource("TileSet_lnu2h")
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(252, -90)
-zoom = Vector2(5, 5)
+position = Vector2(255, -150)
+zoom = Vector2(3, 3)
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
-position = Vector2(-35, 4)
+position = Vector2(-113, -1)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
-position = Vector2(51, -119)
+position = Vector2(16.875, -284.25)
 rotation = 1.5707964
 shape = SubResource("RectangleShape2D_lnu2h")
 one_way_collision = true
 one_way_collision_margin = 128.0
 
 [node name="StaticBody2D2" type="StaticBody2D" parent="."]
-position = Vector2(17, 0)
+position = Vector2(575, -275)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D2"]
-position = Vector2(489, -115)
+position = Vector2(2, 0)
 rotation = -1.5707964
 shape = SubResource("RectangleShape2D_lnu2h")
 one_way_collision = true
