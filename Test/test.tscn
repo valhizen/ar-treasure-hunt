@@ -1,0 +1,30 @@
+[gd_scene load_steps=5 format=3 uid="uid://dsvcv57d1vpd3"]
+
+[ext_resource type="PackedScene" uid="uid://cw2ah7gsviik7" path="res://Test/nyatapola.tscn" id="1_yfa23"]
+[ext_resource type="Script" uid="uid://cf3u7rkqai31n" path="res://Scripts/Core/Maps/minigame_trigger.gd" id="2_jda1s"]
+[ext_resource type="PackedScene" uid="uid://ooeetqvu6dme" path="res://Sceans/MainCharacter/main_character.tscn" id="2_lxp54"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_1ihti"]
+radius = 16.463888
+
+[node name="Test" type="Node2D"]
+position = Vector2(0, 9)
+
+[node name="Nyatapola" parent="." instance=ExtResource("1_yfa23")]
+y_sort_enabled = true
+position = Vector2(-2, -13)
+
+[node name="MinigameTrigger" type="Area2D" parent="Nyatapola"]
+script = ExtResource("2_jda1s")
+minigame_id = "maze_game"
+display_name = "Maze Game"
+minigame_scene_path = "uid://bmlvdb0ojft42"
+metadata/_custom_type_script = "uid://cf3u7rkqai31n"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Nyatapola/MinigameTrigger"]
+position = Vector2(-263, -87)
+scale = Vector2(2.3200002, 2.3999987)
+shape = SubResource("CircleShape2D_1ihti")
+
+[node name="MainCharacter" parent="." instance=ExtResource("2_lxp54")]
+position = Vector2(-254, 50)

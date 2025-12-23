@@ -1,21 +1,21 @@
 [gd_scene load_steps=39 format=3 uid="uid://d14pb87g68ov5"]
 
-[ext_resource type="Script" uid="uid://d34sdlapgrur4" path="res://Scripts/MainMenu/main_menu.gd" id="1_kges7"]
-[ext_resource type="Script" uid="uid://cowu7qjwd4fh3" path="res://Scripts/MainMenu/container.gd" id="2_8ldfi"]
-[ext_resource type="Texture2D" uid="uid://dfsg3sqhm8wxv" path="res://Assets/MainMenu/continue.png" id="2_hc4iu"]
-[ext_resource type="Script" uid="uid://c764p0ia1oufc" path="res://Scripts/MainMenu/quit.gd" id="2_te7am"]
-[ext_resource type="Script" uid="uid://ccj1ss71hkap1" path="res://Scripts/MainMenu/continue.gd" id="2_xqa33"]
-[ext_resource type="Texture2D" uid="uid://bcqqhj44igapq" path="res://Assets/MainMenu/quit.png" id="3_lr4r8"]
-[ext_resource type="Texture2D" uid="uid://jei8mkfmj1jj" path="res://Assets/MainMenu/options.png" id="3_nbdpr"]
-[ext_resource type="Script" uid="uid://w37ibhv5sv8y" path="res://Scripts/MainMenu/options.gd" id="4_8ldfi"]
-[ext_resource type="AudioStream" uid="uid://cwys7im6mch68" path="res://Assets/MainMenu/Sound/computer-mouse-click-352734.mp3" id="5_b2353"]
-[ext_resource type="Texture2D" uid="uid://dkb74avkolc16" path="res://Assets/MainMenu/new_game.png" id="6_0tqiq"]
-[ext_resource type="Script" uid="uid://csg7mb2jxfhm8" path="res://Scripts/MainMenu/new_game.gd" id="6_feycm"]
-[ext_resource type="PackedScene" uid="uid://cfeukxk76yvn" path="res://Sceans/MainMenu/audio_stream_player.tscn" id="9_hkq7o"]
-[ext_resource type="Texture2D" uid="uid://sf843pj2shwu" path="res://Assets/MainMenu/MainMenu.png" id="12_tad4g"]
+[ext_resource type="Script" uid="uid://d34sdlapgrur4" path="res://Scripts/MainMenu/main_menu.gd" id="1_usr5a"]
+[ext_resource type="Script" uid="uid://cowu7qjwd4fh3" path="res://Scripts/MainMenu/container.gd" id="2_16l0f"]
+[ext_resource type="Script" uid="uid://ccj1ss71hkap1" path="res://Scripts/MainMenu/continue.gd" id="3_x0y5d"]
+[ext_resource type="Texture2D" uid="uid://dfsg3sqhm8wxv" path="res://Assets/MainMenu/continue.png" id="4_oyn0a"]
+[ext_resource type="AudioStream" uid="uid://cwys7im6mch68" path="res://Assets/MainMenu/Sound/computer-mouse-click-352734.mp3" id="5_bv6vg"]
+[ext_resource type="Script" uid="uid://csg7mb2jxfhm8" path="res://Scripts/MainMenu/new_game.gd" id="6_sbkdd"]
+[ext_resource type="Texture2D" uid="uid://dkb74avkolc16" path="res://Assets/MainMenu/new_game.png" id="7_ylnfj"]
+[ext_resource type="Script" uid="uid://w37ibhv5sv8y" path="res://Scripts/MainMenu/options.gd" id="8_nr1ty"]
+[ext_resource type="Texture2D" uid="uid://jei8mkfmj1jj" path="res://Assets/MainMenu/options.png" id="9_jhmx0"]
+[ext_resource type="Script" uid="uid://c764p0ia1oufc" path="res://Scripts/MainMenu/quit.gd" id="10_8l5kv"]
+[ext_resource type="Texture2D" uid="uid://bcqqhj44igapq" path="res://Assets/MainMenu/quit.png" id="11_au8l6"]
+[ext_resource type="PackedScene" uid="uid://cfeukxk76yvn" path="res://Sceans/MainMenu/audio_stream_player.tscn" id="12_umjdd"]
+[ext_resource type="Texture2D" uid="uid://sf843pj2shwu" path="res://Assets/MainMenu/MainMenu.png" id="13_cna3f"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_lr4r8"]
-atlas = ExtResource("2_hc4iu")
+atlas = ExtResource("4_oyn0a")
 region = Rect2(1, 3, 476, 185)
 
 [sub_resource type="Animation" id="Animation_b2353"]
@@ -89,7 +89,7 @@ _data = {
 }
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_twrek"]
-atlas = ExtResource("6_0tqiq")
+atlas = ExtResource("7_ylnfj")
 region = Rect2(1, 3, 476, 185)
 
 [sub_resource type="Animation" id="Animation_suvpf"]
@@ -179,7 +179,7 @@ _data = {
 }
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_535dn"]
-atlas = ExtResource("3_nbdpr")
+atlas = ExtResource("9_jhmx0")
 region = Rect2(1, 3, 476, 185)
 
 [sub_resource type="Animation" id="Animation_h0f67"]
@@ -253,7 +253,7 @@ _data = {
 }
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_nbdpr"]
-atlas = ExtResource("3_lr4r8")
+atlas = ExtResource("11_au8l6")
 region = Rect2(1, 3, 476, 185)
 
 [sub_resource type="Animation" id="Animation_hkq7o"]
@@ -334,20 +334,22 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_kges7")
+script = ExtResource("1_usr5a")
+options_scene_path = "uid://hrirnxbberb"
+first_map_path = "uid://ddoyiflegxm8d"
 
 [node name="Container" type="Container" parent="."]
 layout_mode = 0
 offset_top = 222.0
 offset_bottom = 222.0
 scale = Vector2(0.2, 0.2)
-script = ExtResource("2_8ldfi")
+script = ExtResource("2_16l0f")
 
 [node name="Continue" type="Button" parent="Container"]
 layout_mode = 2
 focus_neighbor_top = NodePath("../Quit")
 focus_neighbor_bottom = NodePath("../NewGame")
-script = ExtResource("2_xqa33")
+script = ExtResource("3_x0y5d")
 
 [node name="TextureRect" type="TextureRect" parent="Container/Continue"]
 layout_mode = 0
@@ -362,13 +364,13 @@ libraries = {
 }
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Container/Continue"]
-stream = ExtResource("5_b2353")
+stream = ExtResource("5_bv6vg")
 
 [node name="NewGame" type="Button" parent="Container"]
 layout_mode = 2
 focus_neighbor_top = NodePath("../Continue")
 focus_neighbor_bottom = NodePath("../Options")
-script = ExtResource("6_feycm")
+script = ExtResource("6_sbkdd")
 
 [node name="TextureRect" type="TextureRect" parent="Container/NewGame"]
 layout_mode = 0
@@ -383,13 +385,13 @@ libraries = {
 }
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Container/NewGame"]
-stream = ExtResource("5_b2353")
+stream = ExtResource("5_bv6vg")
 
 [node name="Options" type="Button" parent="Container"]
 layout_mode = 2
 focus_neighbor_top = NodePath("../NewGame")
 focus_neighbor_bottom = NodePath("../Quit")
-script = ExtResource("4_8ldfi")
+script = ExtResource("8_nr1ty")
 
 [node name="TextureRect" type="TextureRect" parent="Container/Options"]
 layout_mode = 0
@@ -404,7 +406,7 @@ libraries = {
 }
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Container/Options"]
-stream = ExtResource("5_b2353")
+stream = ExtResource("5_bv6vg")
 
 [node name="Quit" type="Button" parent="Container"]
 layout_mode = 2
@@ -412,7 +414,7 @@ focus_neighbor_top = NodePath("../Options")
 focus_neighbor_bottom = NodePath("../Continue")
 theme_override_constants/h_separation = 0
 theme_override_font_sizes/font_size = 1
-script = ExtResource("2_te7am")
+script = ExtResource("10_8l5kv")
 
 [node name="TextureRect" type="TextureRect" parent="Container/Quit"]
 layout_mode = 0
@@ -427,16 +429,16 @@ libraries = {
 }
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Container/Quit"]
-stream = ExtResource("5_b2353")
+stream = ExtResource("5_bv6vg")
 
-[node name="AudioStreamPlayer" parent="." instance=ExtResource("9_hkq7o")]
+[node name="AudioStreamPlayer" parent="." instance=ExtResource("12_umjdd")]
 autoplay = false
 
 [node name="MainMenu" type="Sprite2D" parent="."]
 z_index = -1
 position = Vector2(337, 180)
 scale = Vector2(0.8835077, 0.8735294)
-texture = ExtResource("12_tad4g")
+texture = ExtResource("13_cna3f")
 
 [connection signal="focus_entered" from="Container/Continue" to="Container/Continue" method="_on_focus_entered"]
 [connection signal="focus_exited" from="Container/Continue" to="Container/Continue" method="_on_focus_exited"]

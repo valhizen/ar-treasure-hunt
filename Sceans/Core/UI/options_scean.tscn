@@ -1,12 +1,12 @@
 [gd_scene load_steps=17 format=3 uid="uid://hrirnxbberb"]
 
-[ext_resource type="Script" uid="uid://drdcpxb3btmfb" path="res://Scripts/MainMenu/options_scean.gd" id="1_5at23"]
-[ext_resource type="Texture2D" uid="uid://62tii66lv1u" path="res://Assets/MainMenu/save.png" id="1_rfbg1"]
-[ext_resource type="Script" uid="uid://cowu7qjwd4fh3" path="res://Scripts/MainMenu/container.gd" id="1_yrpof"]
-[ext_resource type="Texture2D" uid="uid://b42w10aauqxnp" path="res://Assets/MainMenu/load.png" id="2_e7ycy"]
+[ext_resource type="Script" uid="uid://drdcpxb3btmfb" path="res://Scripts/MainMenu/options_scean.gd" id="1_ci30e"]
+[ext_resource type="Script" uid="uid://cowu7qjwd4fh3" path="res://Scripts/MainMenu/container.gd" id="2_6o6s7"]
+[ext_resource type="Texture2D" uid="uid://62tii66lv1u" path="res://Assets/MainMenu/save.png" id="3_f0r41"]
+[ext_resource type="Texture2D" uid="uid://b42w10aauqxnp" path="res://Assets/MainMenu/load.png" id="4_5idsu"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_e7ycy"]
-atlas = ExtResource("1_rfbg1")
+atlas = ExtResource("3_f0r41")
 region = Rect2(1, 3, 476, 185)
 
 [sub_resource type="Animation" id="Animation_56pxw"]
@@ -80,7 +80,7 @@ _data = {
 }
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_yrpof"]
-atlas = ExtResource("2_e7ycy")
+atlas = ExtResource("4_5idsu")
 region = Rect2(1, 3, 476, 185)
 
 [sub_resource type="Animation" id="Animation_klcg8"]
@@ -157,13 +157,13 @@ _data = {
 [node name="OptionsScean" type="Control"]
 layout_mode = 3
 anchors_preset = 0
-script = ExtResource("1_5at23")
+script = ExtResource("1_ci30e")
 
 [node name="Container" type="Container" parent="."]
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
-script = ExtResource("1_yrpof")
+script = ExtResource("2_6o6s7")
 
 [node name="Save" type="Button" parent="Container"]
 layout_mode = 2

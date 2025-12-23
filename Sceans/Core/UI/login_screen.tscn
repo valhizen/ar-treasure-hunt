@@ -1,0 +1,133 @@
+[gd_scene load_steps=2 format=3 uid="uid://dlyxp41j1hwjv"]
+
+[ext_resource type="Script" uid="uid://cvl55l5mq8i2y" path="res://Scripts/Core/UI/login_screen.gd" id="1_kjldh"]
+
+[node name="LoginScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_kjldh")
+
+[node name="LoginPanel" type="Control" parent="."]
+visible = false
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Container" type="VBoxContainer" parent="LoginPanel"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Title" type="Label" parent="LoginPanel/Container"]
+layout_mode = 2
+text = "Nirman
+"
+
+[node name="Email" type="LineEdit" parent="LoginPanel/Container"]
+layout_mode = 2
+text = "Email"
+
+[node name="Password" type="LineEdit" parent="LoginPanel/Container"]
+layout_mode = 2
+text = "Password"
+
+[node name="LoginButton" type="Button" parent="LoginPanel/Container"]
+layout_mode = 2
+text = "Login
+"
+
+[node name="RegisterLink" type="Button" parent="LoginPanel/Container"]
+layout_mode = 2
+text = "Register
+"
+
+[node name="GuestButton" type="Button" parent="LoginPanel/Container"]
+layout_mode = 2
+text = "Play As Guest"
+
+[node name="RegisterPanel" type="Control" parent="."]
+visible = false
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Container" type="VBoxContainer" parent="RegisterPanel"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+scale = Vector2(2.1599998, 1)
+
+[node name="Email" type="LineEdit" parent="RegisterPanel/Container"]
+layout_mode = 2
+placeholder_text = "Email"
+
+[node name="Password" type="LineEdit" parent="RegisterPanel/Container"]
+layout_mode = 2
+placeholder_text = "Password"
+
+[node name="ConfirmPassword" type="LineEdit" parent="RegisterPanel/Container"]
+layout_mode = 2
+placeholder_text = "Confirm Password"
+
+[node name="DisplayName" type="LineEdit" parent="RegisterPanel/Container"]
+layout_mode = 2
+placeholder_text = "Your Name"
+
+[node name="LoginLink" type="Button" parent="RegisterPanel/Container"]
+layout_mode = 2
+text = "Back to login"
+
+[node name="RegisterButton" type="Button" parent="RegisterPanel/Container"]
+layout_mode = 2
+text = "Register                                               "
+
+[node name="Label" type="Label" parent="RegisterPanel"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="EventCodePanel" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Container" type="VBoxContainer" parent="EventCodePanel"]
+layout_mode = 0
+offset_right = 40.0
+
+[node name="Title" type="Label" parent="EventCodePanel/Container"]
+layout_mode = 2
+text = "Nirman
+"
+
+[node name="CodeInput" type="LineEdit" parent="EventCodePanel/Container"]
+layout_mode = 2
+placeholder_text = "Input COde GIven By organizer "
+
+[node name="VerifyButton" type="Button" parent="EventCodePanel/Container"]
+layout_mode = 2
+text = "Verify                                                                                          "
+
+[node name="SkipButton" type="Button" parent="EventCodePanel/Container"]
+layout_mode = 2
+text = "Skip
+"
+
+[node name="StatusLabel" type="Label" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="LoadingSpinner" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Background" type="TextureRect" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0

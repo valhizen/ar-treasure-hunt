@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=3 uid="uid://cw2ah7gsviik7"]
+
+[ext_resource type="Texture2D" uid="uid://3px22yrgasn" path="res://Assets/Outside/nyatpola.png" id="1_memea"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_bwwh8"]
+texture = ExtResource("1_memea")
+0:0/size_in_atlas = Vector2i(18, 21)
+0:0/0 = 0
+0:0/0/texture_origin = Vector2i(0, 140)
+
+[sub_resource type="TileSet" id="TileSet_50equ"]
+sources/0 = SubResource("TileSetAtlasSource_bwwh8")
+
+[node name="Nyatapola" type="Node2D"]
+position = Vector2(-14, -11)
+
+[node name="YSortedTileMap" type="Node2D" parent="."]
+
+[node name="TileMapLayer" type="TileMapLayer" parent="YSortedTileMap"]
+position = Vector2(-263, 32)
+tile_map_data = PackedByteArray(0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0)
+tile_set = SubResource("TileSet_50equ")

@@ -1,4 +1,4 @@
-[gd_scene load_steps=88 format=4 uid="uid://bmlvdb0ojft42"]
+[gd_scene load_steps=87 format=4 uid="uid://bmlvdb0ojft42"]
 
 [ext_resource type="Script" uid="uid://1b7v01v0yksc" path="res://MiniGames/Maze/scripts/game_manager.gd" id="1_lc1bb"]
 [ext_resource type="Texture2D" uid="uid://slmp0k8f7hmb" path="res://MiniGames/Maze/assets/Dungeon_Tileset.png" id="2_j32kb"]
@@ -14,7 +14,6 @@
 [ext_resource type="Texture2D" uid="uid://bp2jvidjwh2k3" path="res://MiniGames/Maze/assets/light_texture.webp" id="12_bf73e"]
 [ext_resource type="PackedScene" uid="uid://ck0uea45uedwh" path="res://MiniGames/Maze/scenes/enemy.tscn" id="13_ol6hd"]
 [ext_resource type="PackedScene" uid="uid://dfskvp4iwnlc2" path="res://MiniGames/Maze/scenes/coin.tscn" id="14_mb6qx"]
-[ext_resource type="Script" uid="uid://ctv0bypist264" path="res://Scripts/Core/MiniGames/minigame_adapter.gd" id="15_j32kb"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_xvtaq"]
 texture = ExtResource("2_j32kb")
@@ -721,7 +720,3 @@ position = Vector2(349, -360)
 
 [node name="Coin12" parent="Coins" instance=ExtResource("14_mb6qx")]
 position = Vector2(947, -444)
-
-[node name="Node" type="Node" parent="."]
-script = ExtResource("15_j32kb")
-minigame_id = "maze_game"
