@@ -6,13 +6,9 @@ extends CharacterBody2D
 signal landed(final_position: Vector2)
 signal spawn()
 
-enum DIR{
-	LEFT = -1,
-	RIGHT = 1
-}
 
 var moving_sideways: bool = true
-var direction: float = DIR.LEFT 
+var direction: float = -1
 var has_landed: bool = false
 
 @onready var ray_cast_right: RayCast2D = $RayCastRight

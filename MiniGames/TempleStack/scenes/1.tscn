@@ -1,0 +1,29 @@
+[gd_scene load_steps=4 format=3 uid="uid://dnrkill8rj68t"]
+
+[ext_resource type="Script" uid="uid://bvfu65sk4yeyg" path="res://MiniGames/TempleStack/scripts/block.gd" id="1_61fy0"]
+[ext_resource type="Texture2D" uid="uid://3px22yrgasn" path="res://Assets/Outside/nyatpola.png" id="2_ioy0q"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cgrg5"]
+size = Vector2(230.5, 28.5)
+
+[node name="Block" type="CharacterBody2D"]
+script = ExtResource("1_61fy0")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_ioy0q")
+region_enabled = true
+region_rect = Rect2(36.36377, 266.3639, 230.90912, 29.090912)
+
+[node name="RayCastRight" type="RayCast2D" parent="."]
+position = Vector2(115, 0)
+target_position = Vector2(9, 0)
+collide_with_areas = true
+
+[node name="RayCastLeft" type="RayCast2D" parent="."]
+position = Vector2(-115, 0)
+target_position = Vector2(-8, 0)
+collide_with_areas = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-0.75, -0.25)
+shape = SubResource("RectangleShape2D_cgrg5")
