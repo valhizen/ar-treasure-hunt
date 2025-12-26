@@ -1,7 +1,6 @@
-[gd_scene load_steps=41 format=3 uid="uid://d14pb87g68ov5"]
+[gd_scene load_steps=40 format=3 uid="uid://d14pb87g68ov5"]
 
 [ext_resource type="Script" uid="uid://d34sdlapgrur4" path="res://Scripts/MainMenu/main_menu.gd" id="1_usr5a"]
-[ext_resource type="Script" uid="uid://cowu7qjwd4fh3" path="res://Scripts/MainMenu/container.gd" id="2_16l0f"]
 [ext_resource type="Theme" uid="uid://bwcotvcku6wyu" path="res://Themes/button_theme.tres" id="3_16l0f"]
 [ext_resource type="Script" uid="uid://ccj1ss71hkap1" path="res://Scripts/MainMenu/continue.gd" id="3_x0y5d"]
 [ext_resource type="Texture2D" uid="uid://dfsg3sqhm8wxv" path="res://Assets/MainMenu/continue.png" id="4_oyn0a"]
@@ -464,20 +463,13 @@ libraries = {
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="PanelContainer/VBoxContainer/Quit"]
 stream = ExtResource("5_bv6vg")
 
-[node name="Container" type="Container" parent="."]
-layout_mode = 0
-offset_top = 222.0
-offset_bottom = 222.0
-scale = Vector2(0.2, 0.2)
-script = ExtResource("2_16l0f")
-
 [node name="AudioStreamPlayer" parent="." instance=ExtResource("12_umjdd")]
 autoplay = false
 
 [node name="MainMenu" type="Sprite2D" parent="."]
 z_index = -1
-position = Vector2(337, 180)
-scale = Vector2(0.8835077, 0.8735294)
+position = Vector2(986.25, 543.1875)
+scale = Vector2(2.5831153, 2.582647)
 texture = ExtResource("13_cna3f")
 
 [connection signal="focus_entered" from="PanelContainer/VBoxContainer/Continue" to="PanelContainer/VBoxContainer/Continue" method="_on_focus_entered"]
