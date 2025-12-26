@@ -27,3 +27,9 @@
 - keep all the components of the minigame in itself in MiniGames/
 - prefix the main scene of the minigame with a "_" (eg: "_maze_mini_game.tscn" )
 - see MiniGames/Maze for example
+
+#### TODOS
+- music and sfx in maze game
+- music , sfx and particles in wood carving game
+- better assets
+- better UI in wood carving game
