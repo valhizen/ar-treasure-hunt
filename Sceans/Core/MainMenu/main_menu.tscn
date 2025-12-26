@@ -1,7 +1,8 @@
-[gd_scene load_steps=39 format=3 uid="uid://d14pb87g68ov5"]
+[gd_scene load_steps=41 format=3 uid="uid://d14pb87g68ov5"]
 
 [ext_resource type="Script" uid="uid://d34sdlapgrur4" path="res://Scripts/MainMenu/main_menu.gd" id="1_usr5a"]
 [ext_resource type="Script" uid="uid://cowu7qjwd4fh3" path="res://Scripts/MainMenu/container.gd" id="2_16l0f"]
+[ext_resource type="Theme" uid="uid://bwcotvcku6wyu" path="res://Themes/button_theme.tres" id="3_16l0f"]
 [ext_resource type="Script" uid="uid://ccj1ss71hkap1" path="res://Scripts/MainMenu/continue.gd" id="3_x0y5d"]
 [ext_resource type="Texture2D" uid="uid://dfsg3sqhm8wxv" path="res://Assets/MainMenu/continue.png" id="4_oyn0a"]
 [ext_resource type="AudioStream" uid="uid://cwys7im6mch68" path="res://Assets/MainMenu/Sound/computer-mouse-click-352734.mp3" id="5_bv6vg"]
@@ -13,6 +14,8 @@
 [ext_resource type="Texture2D" uid="uid://bcqqhj44igapq" path="res://Assets/MainMenu/quit.png" id="11_au8l6"]
 [ext_resource type="PackedScene" uid="uid://cfeukxk76yvn" path="res://Sceans/MainMenu/audio_stream_player.tscn" id="12_umjdd"]
 [ext_resource type="Texture2D" uid="uid://sf843pj2shwu" path="res://Assets/MainMenu/MainMenu.png" id="13_cna3f"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_16l0f"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_lr4r8"]
 atlas = ExtResource("4_oyn0a")
@@ -338,98 +341,135 @@ script = ExtResource("1_usr5a")
 options_scene_path = "uid://hrirnxbberb"
 first_map_path = "uid://ddoyiflegxm8d"
 
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.125
+anchor_top = 0.5
+anchor_right = 0.375
+anchor_bottom = 0.813
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_16l0f")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
+layout_mode = 2
+
+[node name="Continue" type="Button" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+focus_neighbor_top = NodePath("../Quit")
+focus_neighbor_bottom = NodePath("../NewGame")
+theme = ExtResource("3_16l0f")
+script = ExtResource("3_x0y5d")
+
+[node name="TextureRect" type="TextureRect" parent="PanelContainer/VBoxContainer/Continue"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("AtlasTexture_lr4r8")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="PanelContainer/VBoxContainer/Continue"]
+libraries = {
+&"": SubResource("AnimationLibrary_feycm")
+}
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="PanelContainer/VBoxContainer/Continue"]
+stream = ExtResource("5_bv6vg")
+
+[node name="NewGame" type="Button" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+focus_neighbor_top = NodePath("../Continue")
+focus_neighbor_bottom = NodePath("../Options")
+theme = ExtResource("3_16l0f")
+script = ExtResource("6_sbkdd")
+
+[node name="TextureRect" type="TextureRect" parent="PanelContainer/VBoxContainer/NewGame"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("AtlasTexture_twrek")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="PanelContainer/VBoxContainer/NewGame"]
+libraries = {
+&"": SubResource("AnimationLibrary_xclov")
+}
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="PanelContainer/VBoxContainer/NewGame"]
+stream = ExtResource("5_bv6vg")
+
+[node name="Options" type="Button" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+focus_neighbor_top = NodePath("../NewGame")
+focus_neighbor_bottom = NodePath("../Quit")
+theme = ExtResource("3_16l0f")
+script = ExtResource("8_nr1ty")
+
+[node name="TextureRect" type="TextureRect" parent="PanelContainer/VBoxContainer/Options"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("AtlasTexture_535dn")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="PanelContainer/VBoxContainer/Options"]
+libraries = {
+&"": SubResource("AnimationLibrary_fds0b")
+}
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="PanelContainer/VBoxContainer/Options"]
+stream = ExtResource("5_bv6vg")
+
+[node name="Quit" type="Button" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+focus_neighbor_top = NodePath("../Options")
+focus_neighbor_bottom = NodePath("../Continue")
+theme = ExtResource("3_16l0f")
+theme_override_constants/h_separation = 0
+theme_override_font_sizes/font_size = 1
+script = ExtResource("10_8l5kv")
+
+[node name="TextureRect" type="TextureRect" parent="PanelContainer/VBoxContainer/Quit"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("AtlasTexture_nbdpr")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="PanelContainer/VBoxContainer/Quit"]
+libraries = {
+&"": SubResource("AnimationLibrary_b2353")
+}
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="PanelContainer/VBoxContainer/Quit"]
+stream = ExtResource("5_bv6vg")
+
 [node name="Container" type="Container" parent="."]
 layout_mode = 0
 offset_top = 222.0
 offset_bottom = 222.0
 scale = Vector2(0.2, 0.2)
 script = ExtResource("2_16l0f")
-
-[node name="Continue" type="Button" parent="Container"]
-layout_mode = 2
-focus_neighbor_top = NodePath("../Quit")
-focus_neighbor_bottom = NodePath("../NewGame")
-script = ExtResource("3_x0y5d")
-
-[node name="TextureRect" type="TextureRect" parent="Container/Continue"]
-layout_mode = 0
-offset_top = -159.99998
-offset_right = 476.0
-offset_bottom = 25.000015
-texture = SubResource("AtlasTexture_lr4r8")
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Container/Continue"]
-libraries = {
-&"": SubResource("AnimationLibrary_feycm")
-}
-
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Container/Continue"]
-stream = ExtResource("5_bv6vg")
-
-[node name="NewGame" type="Button" parent="Container"]
-layout_mode = 2
-focus_neighbor_top = NodePath("../Continue")
-focus_neighbor_bottom = NodePath("../Options")
-script = ExtResource("6_sbkdd")
-
-[node name="TextureRect" type="TextureRect" parent="Container/NewGame"]
-layout_mode = 0
-offset_top = 24.999987
-offset_right = 476.0
-offset_bottom = 209.99998
-texture = SubResource("AtlasTexture_twrek")
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Container/NewGame"]
-libraries = {
-&"": SubResource("AnimationLibrary_xclov")
-}
-
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Container/NewGame"]
-stream = ExtResource("5_bv6vg")
-
-[node name="Options" type="Button" parent="Container"]
-layout_mode = 2
-focus_neighbor_top = NodePath("../NewGame")
-focus_neighbor_bottom = NodePath("../Quit")
-script = ExtResource("8_nr1ty")
-
-[node name="TextureRect" type="TextureRect" parent="Container/Options"]
-layout_mode = 0
-offset_top = 215.99994
-offset_right = 476.0
-offset_bottom = 400.99994
-texture = SubResource("AtlasTexture_535dn")
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Container/Options"]
-libraries = {
-&"": SubResource("AnimationLibrary_fds0b")
-}
-
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Container/Options"]
-stream = ExtResource("5_bv6vg")
-
-[node name="Quit" type="Button" parent="Container"]
-layout_mode = 2
-focus_neighbor_top = NodePath("../Options")
-focus_neighbor_bottom = NodePath("../Continue")
-theme_override_constants/h_separation = 0
-theme_override_font_sizes/font_size = 1
-script = ExtResource("10_8l5kv")
-
-[node name="TextureRect" type="TextureRect" parent="Container/Quit"]
-layout_mode = 0
-offset_top = 400.00003
-offset_right = 476.0
-offset_bottom = 585.0
-texture = SubResource("AtlasTexture_nbdpr")
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Container/Quit"]
-libraries = {
-&"": SubResource("AnimationLibrary_b2353")
-}
-
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Container/Quit"]
-stream = ExtResource("5_bv6vg")
 
 [node name="AudioStreamPlayer" parent="." instance=ExtResource("12_umjdd")]
 autoplay = false
@@ -440,21 +480,21 @@ position = Vector2(337, 180)
 scale = Vector2(0.8835077, 0.8735294)
 texture = ExtResource("13_cna3f")
 
-[connection signal="focus_entered" from="Container/Continue" to="Container/Continue" method="_on_focus_entered"]
-[connection signal="focus_exited" from="Container/Continue" to="Container/Continue" method="_on_focus_exited"]
-[connection signal="mouse_entered" from="Container/Continue" to="Container/Continue" method="_on_mouse_entered"]
-[connection signal="mouse_exited" from="Container/Continue" to="Container/Continue" method="_on_mouse_exited"]
-[connection signal="pressed" from="Container/Continue" to="Container/Continue" method="_on_pressed"]
-[connection signal="focus_entered" from="Container/NewGame" to="Container/NewGame" method="_on_focus_entered"]
-[connection signal="focus_exited" from="Container/NewGame" to="Container/NewGame" method="_on_focus_exited"]
-[connection signal="pressed" from="Container/NewGame" to="Container/NewGame" method="_on_pressed"]
-[connection signal="focus_entered" from="Container/Options" to="Container/Options" method="_on_focus_entered"]
-[connection signal="focus_exited" from="Container/Options" to="Container/Options" method="_on_focus_exited"]
-[connection signal="mouse_entered" from="Container/Options" to="Container/Options" method="_on_mouse_entered"]
-[connection signal="mouse_exited" from="Container/Options" to="Container/Options" method="_on_mouse_exited"]
-[connection signal="pressed" from="Container/Options" to="Container/Options" method="_on_pressed"]
-[connection signal="focus_entered" from="Container/Quit" to="Container/Quit" method="_on_focus_entered"]
-[connection signal="focus_exited" from="Container/Quit" to="Container/Quit" method="_on_focus_exited"]
-[connection signal="mouse_entered" from="Container/Quit" to="Container/Quit" method="_on_mouse_entered"]
-[connection signal="mouse_exited" from="Container/Quit" to="Container/Quit" method="_on_mouse_exited"]
-[connection signal="pressed" from="Container/Quit" to="Container/Quit" method="_on_pressed"]
+[connection signal="focus_entered" from="PanelContainer/VBoxContainer/Continue" to="PanelContainer/VBoxContainer/Continue" method="_on_focus_entered"]
+[connection signal="focus_exited" from="PanelContainer/VBoxContainer/Continue" to="PanelContainer/VBoxContainer/Continue" method="_on_focus_exited"]
+[connection signal="mouse_entered" from="PanelContainer/VBoxContainer/Continue" to="PanelContainer/VBoxContainer/Continue" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="PanelContainer/VBoxContainer/Continue" to="PanelContainer/VBoxContainer/Continue" method="_on_mouse_exited"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/Continue" to="PanelContainer/VBoxContainer/Continue" method="_on_pressed"]
+[connection signal="focus_entered" from="PanelContainer/VBoxContainer/NewGame" to="PanelContainer/VBoxContainer/NewGame" method="_on_focus_entered"]
+[connection signal="focus_exited" from="PanelContainer/VBoxContainer/NewGame" to="PanelContainer/VBoxContainer/NewGame" method="_on_focus_exited"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/NewGame" to="PanelContainer/VBoxContainer/NewGame" method="_on_pressed"]
+[connection signal="focus_entered" from="PanelContainer/VBoxContainer/Options" to="PanelContainer/VBoxContainer/Options" method="_on_focus_entered"]
+[connection signal="focus_exited" from="PanelContainer/VBoxContainer/Options" to="PanelContainer/VBoxContainer/Options" method="_on_focus_exited"]
+[connection signal="mouse_entered" from="PanelContainer/VBoxContainer/Options" to="PanelContainer/VBoxContainer/Options" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="PanelContainer/VBoxContainer/Options" to="PanelContainer/VBoxContainer/Options" method="_on_mouse_exited"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/Options" to="PanelContainer/VBoxContainer/Options" method="_on_pressed"]
+[connection signal="focus_entered" from="PanelContainer/VBoxContainer/Quit" to="PanelContainer/VBoxContainer/Quit" method="_on_focus_entered"]
+[connection signal="focus_exited" from="PanelContainer/VBoxContainer/Quit" to="PanelContainer/VBoxContainer/Quit" method="_on_focus_exited"]
+[connection signal="mouse_entered" from="PanelContainer/VBoxContainer/Quit" to="PanelContainer/VBoxContainer/Quit" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="PanelContainer/VBoxContainer/Quit" to="PanelContainer/VBoxContainer/Quit" method="_on_mouse_exited"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/Quit" to="PanelContainer/VBoxContainer/Quit" method="_on_pressed"]
