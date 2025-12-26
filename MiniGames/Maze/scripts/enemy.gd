@@ -98,9 +98,11 @@ func check_line_of_sight() -> bool:
 	return result.is_empty()
 
 func attack_player():
+	var current_scene := get_tree().current_scene
+	if  current_scene.name == "Game":
+		player.print()
 	# Deal damage to player
-	player.take_damage(damage)
-	
-	# Start attack cooldown
-	can_attack = false
-	attack_timer = 0.0
+	else:
+		player.take_damage(damage)
+		can_attack = false
+		attack_timer = 0.0

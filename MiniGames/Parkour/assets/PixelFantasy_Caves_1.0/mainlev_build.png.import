@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dnqnry58k74j6"
-path="res://.godot/imported/coin.png-78f658283118e39526ed2340cd113526.ctex"
+uid="uid://sctehrtoqps0"
+path="res://.godot/imported/mainlev_build.png-40da5388d20b0e9308c7fcb1f448b97e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://MiniGames/TempleStack/assets/sprites/coin.png"
-dest_files=["res://.godot/imported/coin.png-78f658283118e39526ed2340cd113526.ctex"]
+source_file="res://MiniGames/Parkour/assets/PixelFantasy_Caves_1.0/mainlev_build.png"
+dest_files=["res://.godot/imported/mainlev_build.png-40da5388d20b0e9308c7fcb1f448b97e.ctex"]
 
 [params]
 
