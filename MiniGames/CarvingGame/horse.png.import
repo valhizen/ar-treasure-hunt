@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dnqnry58k74j6"
-path="res://.godot/imported/coin.png-78f658283118e39526ed2340cd113526.ctex"
+uid="uid://c62psxr38bwch"
+path="res://.godot/imported/horse.png-c5e5070b7410591dde02e400b8b66e54.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://MiniGames/TempleStack/assets/sprites/coin.png"
-dest_files=["res://.godot/imported/coin.png-78f658283118e39526ed2340cd113526.ctex"]
+source_file="res://MiniGames/CarvingGame/horse.png"
+dest_files=["res://.godot/imported/horse.png-c5e5070b7410591dde02e400b8b66e54.ctex"]
 
 [params]
 
