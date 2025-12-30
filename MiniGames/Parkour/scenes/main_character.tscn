@@ -1,6 +1,7 @@
-[gd_scene load_steps=77 format=3 uid="uid://buj0uc8f2ih02"]
+[gd_scene load_steps=86 format=3 uid="uid://buj0uc8f2ih02"]
 
 [ext_resource type="Script" uid="uid://coe1tttyipfc6" path="res://MiniGames/Parkour/scripts/main_character.gd" id="1_8xyo3"]
+[ext_resource type="Texture2D" uid="uid://bwdwxj1gpeb0q" path="res://MiniGames/Parkour/assets/idle_down.png" id="2_8xyo3"]
 [ext_resource type="Texture2D" uid="uid://ctfxq5acwk61y" path="res://Assets/MainCharacter/IDLE/idle_down.png" id="2_em3kg"]
 [ext_resource type="Texture2D" uid="uid://5arsi42q3kvt" path="res://Assets/MainCharacter/IDLE/idle_left.png" id="3_bkcpu"]
 [ext_resource type="Texture2D" uid="uid://es0gqal1cjw" path="res://Assets/MainCharacter/IDLE/idle_right.png" id="4_t0u57"]
@@ -9,6 +10,38 @@
 [ext_resource type="Texture2D" uid="uid://bg5vyqsmuikj6" path="res://Assets/MainCharacter/RUN/run_left.png" id="7_g64na"]
 [ext_resource type="Texture2D" uid="uid://wi0wf81wcrj4" path="res://Assets/MainCharacter/RUN/run_right.png" id="8_3048w"]
 [ext_resource type="Texture2D" uid="uid://ceyifacngnnhy" path="res://Assets/MainCharacter/RUN/run_up.png" id="9_2d7ps"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8xyo3"]
+atlas = ExtResource("2_8xyo3")
+region = Rect2(0, 0, 96, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_em3kg"]
+atlas = ExtResource("2_8xyo3")
+region = Rect2(96, 0, 96, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bkcpu"]
+atlas = ExtResource("2_8xyo3")
+region = Rect2(192, 0, 96, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t0u57"]
+atlas = ExtResource("2_8xyo3")
+region = Rect2(288, 0, 96, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_puogt"]
+atlas = ExtResource("2_8xyo3")
+region = Rect2(384, 0, 96, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_538y0"]
+atlas = ExtResource("2_8xyo3")
+region = Rect2(480, 0, 96, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g64na"]
+atlas = ExtResource("2_8xyo3")
+region = Rect2(576, 0, 96, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3048w"]
+atlas = ExtResource("2_8xyo3")
+region = Rect2(672, 0, 96, 80)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_mp7jb"]
 atlas = ExtResource("2_em3kg")
@@ -270,6 +303,35 @@ region = Rect2(672, 0, 96, 80)
 animations = [{
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_8xyo3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_em3kg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bkcpu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_t0u57")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_puogt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_538y0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g64na")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3048w")
+}],
+"loop": true,
+"name": &"hanging",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_mp7jb")
 }, {
 "duration": 1.0,
@@ -503,7 +565,7 @@ animations = [{
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_h63ro"]
 radius = 7.0
-height = 42.0
+height = 32.0
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_pave8"]
 radius = 7.0
@@ -512,17 +574,25 @@ radius = 7.0
 y_sort_enabled = true
 script = ExtResource("1_8xyo3")
 
+[node name="Respawn" type="Label" parent="."]
+offset_left = -53.0
+offset_top = -73.0
+offset_right = -13.0
+offset_bottom = -50.0
+horizontal_alignment = 1
+
 [node name="Camera2D" type="Camera2D" parent="."]
-zoom = Vector2(3, 3)
+position = Vector2(1, -39)
+zoom = Vector2(4, 4)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 visibility_layer = 3
 y_sort_enabled = true
-position = Vector2(0, -16)
-scale = Vector2(1.2, 1.2)
+position = Vector2(0, -14.000002)
+scale = Vector2(1.021875, 1.0218749)
 sprite_frames = SubResource("SpriteFrames_nv2nb")
-animation = &"idle_down"
-frame_progress = 0.22430584
+animation = &"hanging"
+frame_progress = 0.45966575
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visibility_layer = 3

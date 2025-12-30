@@ -100,7 +100,7 @@ func check_line_of_sight() -> bool:
 func attack_player():
 	var current_scene := get_tree().current_scene
 	if  current_scene.name == "Game":
-		player.print()
+		player.striked()
 	# Deal damage to player
 	else:
 		player.take_damage(damage)
