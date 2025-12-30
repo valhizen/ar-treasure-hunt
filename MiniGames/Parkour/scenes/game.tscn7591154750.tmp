@@ -1469,30 +1469,25 @@ text = "Coins: 0
 "
 
 [node name="message" type="Label" parent="."]
-offset_left = 1549.0
+offset_left = 1629.0
 offset_top = -34.0
-offset_right = 1590.0
+offset_right = 1670.0
 offset_bottom = -11.0
-theme_override_fonts/font = ExtResource("5_xtx4a")
 
 [node name="message2" type="Label" parent="."]
-offset_left = 1187.0
-offset_top = -321.0
-offset_right = 1384.0
-offset_bottom = -246.0
-scale = Vector2(0.6115955, 0.6115955)
-theme_override_fonts/font = ExtResource("5_xtx4a")
+offset_left = 1194.0
+offset_top = -356.0
+offset_right = 1391.0
+offset_bottom = -281.0
 text = "You dont wanna 
 go down
 "
 
 [node name="Controls" type="Label" parent="."]
-offset_left = 45.0
-offset_top = -134.0
-offset_right = 256.0
-offset_bottom = -59.0
-scale = Vector2(0.83417875, 0.83417875)
-theme_override_fonts/font = ExtResource("5_xtx4a")
+offset_left = 64.0
+offset_top = -138.0
+offset_right = 275.0
+offset_bottom = -63.0
 text = "D: Move Right  
 A: Move Left
 Space: Jump"
@@ -1502,7 +1497,5 @@ offset_left = 308.0
 offset_top = -153.0
 offset_right = 519.0
 offset_bottom = -78.0
-scale = Vector2(0.6391293, 0.6391293)
-theme_override_fonts/font = ExtResource("5_xtx4a")
 text = "D + Space: Wall Jump Right
 A + Space: Wall Jump Left"
