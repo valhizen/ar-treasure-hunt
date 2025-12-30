@@ -1,11 +1,14 @@
-[gd_scene load_steps=11 format=4 uid="uid://csnb0lphjaltq"]
+[gd_scene load_steps=14 format=4 uid="uid://csnb0lphjaltq"]
 
 [ext_resource type="Script" uid="uid://cre05wmm014ly" path="res://MiniGames/Lake/bkt_lake_minigame.gd" id="1_flvqo"]
 [ext_resource type="Texture2D" uid="uid://cb1vpod41x4du" path="res://Assets/CyberPunk Asset Pack/asset page 1.png" id="2_nmblp"]
 [ext_resource type="Script" uid="uid://b63fj4mdsdfec" path="res://MiniGames/Lake/water_area.gd" id="3_jumx5"]
-[ext_resource type="PackedScene" uid="uid://ooeetqvu6dme" path="res://Sceans/MainCharacter/main_character.tscn" id="4_g7eh2"]
+[ext_resource type="PackedScene" uid="uid://dujcuejnyuluo" path="res://MiniGames/Lake/evil_fish.tscn" id="4_aj8t1"]
 [ext_resource type="PackedScene" uid="uid://8b5pju8f3t4k" path="res://MiniGames/Lake/corrupter.tscn" id="4_rv3kn"]
-[ext_resource type="Script" uid="uid://d0bs3rdenjubr" path="res://MiniGames/Lake/hitbox.gd" id="6_mi4rp"]
+[ext_resource type="Script" uid="uid://dmfplmy7dhset" path="res://MiniGames/Lake/player.gd" id="6_mi4rp"]
+[ext_resource type="PackedScene" uid="uid://2wkekeli0aq2" path="res://MiniGames/Lake/bullet.tscn" id="7_aj8t1"]
+[ext_resource type="Script" uid="uid://bf44gd6g7i25a" path="res://MiniGames/Lake/health_bar.gd" id="8_dybc6"]
+[ext_resource type="Script" uid="uid://cj760sqbicbf6" path="res://MiniGames/Lake/death_screen.gd" id="9_k0r6a"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_jumx5"]
 texture = ExtResource("2_nmblp")
@@ -238,8 +241,8 @@ sources/0 = SubResource("TileSetAtlasSource_jumx5")
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_nmblp"]
 size = Vector2(1225, 532)
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_flvqo"]
-radius = 53.0
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mi4rp"]
+size = Vector2(40, 40)
 
 [node name="Bkt-lake-minigame" type="Node2D"]
 script = ExtResource("1_flvqo")
@@ -248,12 +251,13 @@ script = ExtResource("1_flvqo")
 tile_map_data = PackedByteArray("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")
 tile_set = SubResource("TileSet_rv3kn")
 
-[node name="WaterArea" type="Area2D" parent="."]
-position = Vector2(-1699, 571)
+[node name="WaterArea" type="Area2D" parent="." groups=["water"]]
+position = Vector2(-986, 900)
 script = ExtResource("3_jumx5")
+fish_scene = ExtResource("4_aj8t1")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WaterArea"]
-position = Vector2(708.5, 334)
+position = Vector2(-3, 5)
 shape = SubResource("RectangleShape2D_nmblp")
 
 [node name="Corrupters" type="Node2D" parent="."]
@@ -267,13 +271,25 @@ position = Vector2(360, 0)
 [node name="Corrupter3" parent="Corrupters" instance=ExtResource("4_rv3kn")]
 position = Vector2(793, -1)
 
-[node name="MainCharacter" parent="." instance=ExtResource("4_g7eh2")]
-position = Vector2(-1729, 565)
-land_gravity = 500.0
-
-[node name="Hitbox" type="Area2D" parent="MainCharacter"]
+[node name="Player" type="CharacterBody2D" parent="." groups=["player"]]
+position = Vector2(-1676, 570)
 script = ExtResource("6_mi4rp")
+bullet_scene = ExtResource("7_aj8t1")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="MainCharacter/Hitbox"]
-position = Vector2(-1, -15)
-shape = SubResource("CircleShape2D_flvqo")
+[node name="ColorRect" type="ColorRect" parent="Player"]
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
+shape = SubResource("RectangleShape2D_mi4rp")
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+zoom = Vector2(2, 2)
+
+[node name="HealthBar" type="CanvasLayer" parent="."]
+script = ExtResource("8_dybc6")
+
+[node name="DeathScreen" type="CanvasLayer" parent="." groups=["death_screen"]]
+script = ExtResource("9_k0r6a")

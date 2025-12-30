@@ -1,7 +1,6 @@
 extends CharacterBody2D
 
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
-@onready var actionable_finder: Area2D = $Direction/ActionableFinder
 @onready var main_character: CharacterBody2D = $"."
 
 # Player controls
@@ -12,7 +11,6 @@ var player_speed = player_land_speed
 # Platformer states
 @export var just_entered_water: bool = false
 @export var just_exited_water: bool = false
-@export var platformer: bool = false
 @export var in_water: bool = false
 
 # Platformer Movement Controls
@@ -36,8 +34,16 @@ var player_speed = player_land_speed
 @export var jump_buffer_time := 0.15
 @export var coyote_time := 0.12
 @export var jump_cut_multiplier := 0.45
+@export var bullet_scene: PackedScene
+@export var shoot_cooldown: float = 0.3
+@export var bullet_spawn_offset: float = 20.0
 
+# Heatlh
 @export var player_health: float = 100.0
+@export var max_health: float = 100.0
+
+var can_shoot: bool = true
+var last_aim_direction: Vector2 = Vector2.RIGHT
 
 var airtime: float = 0
 var gravity: float = land_gravity
@@ -49,7 +55,6 @@ var coyote_timer := 0.0
 
 func _ready() -> void:
 	add_to_group("player")
-	animated_sprite_2d.play("idle_down")
 	var current_scene := get_tree().current_scene
 	
 	if has_node("Hitbox") and current_scene.name == "Bkt-lake-minigame":
@@ -58,31 +63,33 @@ func _ready() -> void:
 		hitbox.connect("hit_corrupter", Callable(self, "_on_hit_corrupter"))
 
 func _physics_process(delta: float) -> void:
-	if platformer:
-		_platformer_physics(delta)
-	else:
-		_top_down_physics(delta)
-
-func _input(event: InputEvent) -> void:
-	if platformer:
-		_platformer_input(event)
-	else:
-		_top_down_input(event)
-
-#--------------------
-#  Platformer Logics
-#--------------------
+	_platformer_physics(delta)
 
 func take_damage(amount: float) -> void:
 	player_health -= amount
-	print("Player took damage! Health: ", player_health)
-	# Add visual feedback, death check, etc.
+	player_health = max(0, player_health)
+	
+	# Optional: Add visual feedback
+	print("Player health: ", player_health)
+	
 	if player_health <= 0:
 		_player_die()
 
 func _player_die() -> void:
-	# Handle player death
-	pass
+	print("Player died!")
+	
+	# Disable player controls
+	set_physics_process(false)
+	set_process_input(false)
+	
+	# Show death screen
+	var death_screen = get_tree().get_first_node_in_group("death_screen")
+	if death_screen and death_screen.has_method("show_death_screen"):
+		death_screen.show_death_screen()
+	else:
+		# Fallback if death screen not found
+		await get_tree().create_timer(2.0).timeout
+		get_tree().reload_current_scene()
 
 func _platformer_physics(delta: float) -> void:
 	# --- Water enter/exit ---
@@ -170,9 +177,6 @@ func _platformer_physics(delta: float) -> void:
 
 	move_and_slide()
 
-func _platformer_input(event: InputEvent) -> void:
-	pass
-
 func _player_switch_settings():
 	if in_water:
 		gravity = water_gravity
@@ -186,67 +190,32 @@ func _player_switch_settings():
 		jump_force = player_land_jump
 
 func _player_attack() -> void:
-	hitbox.monitoring = true
-	await get_tree().create_timer(0.2).timeout
-	hitbox.monitoring = false
+	_shoot_bullet()
+	#hitbox.monitoring = true
+	#await get_tree().create_timer(0.2).timeout
+	#hitbox.monitoring = false
 
 func _on_hit_corrupter(corrupter):
 	corrupter.take_damage(10)
 
-#--------------------
-#   Top Down Logics
-#--------------------
-
-func _top_down_physics(_delta: float) -> void:
-	var input_direction = Input.get_vector("Left", "Right", "Up", "Down")
-	velocity = input_direction * player_speed
-	update_animation(input_direction)
-	move_and_slide()
-
-func _top_down_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.is_pressed():
-		look_at_mouse()
-
-func update_animation(direction : Vector2):
-	if direction.length() > 0:
-		if abs(direction.x) > abs(direction.y):
-			if direction.x > 0:
-				animated_sprite_2d.play("run_right")
-			else:
-				animated_sprite_2d.play("run_left")
-		else:
-			if direction.y > 0:
-				animated_sprite_2d.play("run_down")
-			else:
-				animated_sprite_2d.play("run_up")
-	else:
-		var current_animation = animated_sprite_2d.animation
-		if "run" in current_animation:
-			var idle_dir = current_animation.replace("run", "idle")
-			animated_sprite_2d.play(idle_dir)
-		elif not "idle" in current_animation:
-			animated_sprite_2d.play("idle_down")
-
-func look_at_mouse():
-	var mouse_pos = get_global_mouse_position()
-	var direction = (mouse_pos - global_position).normalized()
-	
-	# Determine which direction to face
-	if abs(direction.x) > abs(direction.y):
-		if direction.x > 0:
-			animated_sprite_2d.play("idle_right")
-		else:
-			animated_sprite_2d.play("idle_left")
-	else:
-		if direction.y > 0:
-			animated_sprite_2d.play("idle_down")
-		else:
-			animated_sprite_2d.play("idle_up")
-
-func _unhandled_input(_event: InputEvent) -> void:
-	if Input.is_action_just_pressed("ui_accept"):
+func _shoot_bullet() -> void:
+	if not can_shoot or not bullet_scene:
 		return
-		var actionables = actionable_finder.get_overlapping_areas()
-		if actionables.size() > 0:
-			actionables[0].action()
-			return
+	
+	can_shoot = false
+	
+	# Get aim direction (mouse position)
+	var aim_direction = (get_global_mouse_position() - global_position).normalized()
+	last_aim_direction = aim_direction
+	
+	# Spawn bullet
+	var bullet = bullet_scene.instantiate()
+	get_parent().add_child(bullet)
+	
+	# Position bullet slightly in front of player
+	bullet.global_position = global_position + aim_direction * bullet_spawn_offset
+	bullet.set_direction(aim_direction)
+	
+	# Cooldown
+	await get_tree().create_timer(shoot_cooldown).timeout
+	can_shoot = true
