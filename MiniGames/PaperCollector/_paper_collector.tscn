@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://32a4p3lj8bc" path="res://MiniGames/PaperCollector/paper_collector.gd" id="1_frced"]
 [ext_resource type="PackedScene" uid="uid://blpklwk6xnfxn" path="res://MiniGames/PaperCollector/paper.tscn" id="2_i2y8n"]
 [ext_resource type="Script" uid="uid://bmmnea2r1v5nf" path="res://MiniGames/PaperCollector/player.gd" id="3_mhe84"]
-[ext_resource type="Texture2D" uid="uid://bxhy4w0dg2yix" path="res://MiniGames/PaperCollector/bg-dbg.png" id="4_a20m1"]
+[ext_resource type="Texture2D" uid="uid://bxhy4w0dg2yix" path="res://MiniGames/PaperCollector/assets/bg-dbg.png" id="4_a20m1"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lquwl"]
 size = Vector2(80, 80)

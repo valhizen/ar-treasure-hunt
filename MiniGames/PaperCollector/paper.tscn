@@ -1,6 +1,14 @@
-[gd_scene load_steps=3 format=3 uid="uid://blpklwk6xnfxn"]
+[gd_scene load_steps=11 format=3 uid="uid://blpklwk6xnfxn"]
 
-[ext_resource type="Script" uid="uid://bmngtoeloicqo" path="res://paper.gd" id="1_pugg3"]
+[ext_resource type="Script" uid="uid://bmngtoeloicqo" path="res://MiniGames/PaperCollector/paper.gd" id="1_pugg3"]
+[ext_resource type="Texture2D" uid="uid://bqysccs6xspcy" path="res://MiniGames/PaperCollector/assets/p1.png" id="2_a1j23"]
+[ext_resource type="Texture2D" uid="uid://dlt8n84l56qdi" path="res://MiniGames/PaperCollector/assets/p2.png" id="3_l1fm3"]
+[ext_resource type="Texture2D" uid="uid://dc2qcsijag34k" path="res://MiniGames/PaperCollector/assets/p3.png" id="4_j3yih"]
+[ext_resource type="Texture2D" uid="uid://xp0x7txvt1it" path="res://MiniGames/PaperCollector/assets/p4.png" id="5_6o485"]
+[ext_resource type="Texture2D" uid="uid://bs30j2ini7565" path="res://MiniGames/PaperCollector/assets/p5.png" id="6_c4wmi"]
+[ext_resource type="Texture2D" uid="uid://bim33rceiir03" path="res://MiniGames/PaperCollector/assets/p6.png" id="7_x8wae"]
+[ext_resource type="Texture2D" uid="uid://6j8568xccagh" path="res://MiniGames/PaperCollector/assets/p7.png" id="8_n3v2n"]
+[ext_resource type="Texture2D" uid="uid://c4sp74xu4gc2o" path="res://MiniGames/PaperCollector/assets/p8.png" id="9_spmm4"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dpwhn"]
 size = Vector2(40, 60)
@@ -12,15 +20,12 @@ hover_amplitude_max = 30.0
 hover_frequency_max = 5.0
 sway_amplitude_max = 40.0
 sway_frequency_max = 3.0
+paper_textures = Array[Texture2D]([ExtResource("2_a1j23"), ExtResource("3_l1fm3"), ExtResource("4_j3yih"), ExtResource("5_6o485"), ExtResource("6_c4wmi"), ExtResource("7_x8wae"), ExtResource("8_n3v2n"), ExtResource("9_spmm4")])
 
-[node name="ColorRect" type="ColorRect" parent="."]
-offset_left = -20.0
-offset_top = -30.0
-offset_right = 20.0
-offset_bottom = 30.0
-color = Color(0.9411765, 1, 0.07450981, 1)
-
-[node name="Sprite2D" type="Sprite2D" parent="ColorRect"]
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(-1.9073486e-06, 0.4999962)
+scale = Vector2(0.3125, 0.4453125)
+texture = ExtResource("2_a1j23")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_dpwhn")
