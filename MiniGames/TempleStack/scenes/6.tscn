@@ -1,18 +1,20 @@
 [gd_scene load_steps=4 format=3 uid="uid://boilphjwu7lfs"]
 
 [ext_resource type="Script" uid="uid://bvfu65sk4yeyg" path="res://MiniGames/TempleStack/scripts/block.gd" id="1_svl26"]
-[ext_resource type="Texture2D" uid="uid://3px22yrgasn" path="res://Assets/Outside/nyatpola.png" id="2_kfnhq"]
+[ext_resource type="Texture2D" uid="uid://ce7gfr5ixohnb" path="res://MiniGames/TempleStack/assets/nyatapola.png" id="2_svl26"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_cgrg5"]
-size = Vector2(229, 25)
+size = Vector2(229, 43)
 
 [node name="Block" type="CharacterBody2D"]
 script = ExtResource("1_svl26")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("2_kfnhq")
+position = Vector2(2, -7.500003)
+scale = Vector2(0.1482966, 0.18454935)
+texture = ExtResource("2_svl26")
 region_enabled = true
-region_rect = Rect2(34.570313, 123.43296, 230.1756, 24.588493)
+region_rect = Rect2(16.542603, 1044.0735, 1497.8871, 233.95569)
 
 [node name="RayCastRight" type="RayCast2D" parent="."]
 position = Vector2(117, 1)
@@ -25,5 +27,5 @@ target_position = Vector2(-8, 0)
 collide_with_areas = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(-0.5, 0.5)
+position = Vector2(-0.5, -7.5)
 shape = SubResource("RectangleShape2D_cgrg5")
