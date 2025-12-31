@@ -1,0 +1,52 @@
+[gd_scene load_steps=6 format=3 uid="uid://dcxngoihh64aq"]
+
+[ext_resource type="Script" uid="uid://32a4p3lj8bc" path="res://MiniGames/PaperCollector/paper_collector.gd" id="1_frced"]
+[ext_resource type="PackedScene" uid="uid://blpklwk6xnfxn" path="res://MiniGames/PaperCollector/paper.tscn" id="2_i2y8n"]
+[ext_resource type="Script" uid="uid://bmmnea2r1v5nf" path="res://MiniGames/PaperCollector/player.gd" id="3_mhe84"]
+[ext_resource type="Texture2D" uid="uid://bxhy4w0dg2yix" path="res://MiniGames/PaperCollector/bg-dbg.png" id="4_a20m1"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lquwl"]
+size = Vector2(80, 80)
+
+[node name="PaperCollector" type="Node2D"]
+script = ExtResource("1_frced")
+paper_scene = ExtResource("2_i2y8n")
+spawn_time_decline_factor = 0.93
+
+[node name="Player" type="CharacterBody2D" parent="."]
+position = Vector2(1022, 984)
+script = ExtResource("3_mhe84")
+speed = 600.0
+
+[node name="ColorRect" type="ColorRect" parent="Player"]
+offset_left = -40.0
+offset_top = -40.0
+offset_right = 40.0
+offset_bottom = 40.0
+color = Color(0.5055027, 0.97330505, 0.9288961, 1)
+metadata/_edit_use_anchors_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
+shape = SubResource("RectangleShape2D_lquwl")
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="ScoreLabel" type="Label" parent="UI"]
+offset_left = 25.0
+offset_top = 12.0
+offset_right = 92.0
+offset_bottom = 35.0
+text = "Papers:0"
+
+[node name="CompletedStats" type="Label" parent="UI"]
+offset_left = 116.0
+offset_top = 43.0
+offset_right = 1877.0
+offset_bottom = 872.0
+
+[node name="BgDbg" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 1, 0.4)
+z_index = -1
+position = Vector2(1020.00006, 529.00006)
+scale = Vector2(1.0453125, 1.0129629)
+texture = ExtResource("4_a20m1")
