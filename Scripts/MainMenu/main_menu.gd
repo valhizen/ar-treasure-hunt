@@ -8,10 +8,10 @@ extends Control
 #endregion
 
 #region Node References
-@onready var continue_button: Button = $Container/Continue
-@onready var new_game_button: Button = $Container/NewGame
-@onready var options_button: Button = $Container/Options
-@onready var quit_button: Button = $Container/Quit
+@onready var continue_button: Button = $PanelContainer/VBoxContainer/Continue
+@onready var new_game_button: Button = $PanelContainer/VBoxContainer/NewGame
+@onready var options_button: Button = $PanelContainer/VBoxContainer/Options
+@onready var quit_button: Button = $PanelContainer/VBoxContainer/Quit
 @onready var audio_player: AudioStreamPlayer = $AudioStreamPlayer
 #endregion
 

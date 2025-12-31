@@ -12,54 +12,87 @@ grow_vertical = 2
 script = ExtResource("1_kjldh")
 
 [node name="LoginPanel" type="Control" parent="."]
-visible = false
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="Container" type="VBoxContainer" parent="LoginPanel"]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -56.0
+offset_top = -112.0
+offset_right = 56.0
+offset_bottom = 112.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="Title" type="Label" parent="LoginPanel/Container"]
 layout_mode = 2
 text = "Nirman
 "
+horizontal_alignment = 1
 
 [node name="Email" type="LineEdit" parent="LoginPanel/Container"]
 layout_mode = 2
+theme_override_constants/minimum_character_width = 30
 text = "Email"
 
 [node name="Password" type="LineEdit" parent="LoginPanel/Container"]
 layout_mode = 2
+theme_override_constants/minimum_character_width = 30
 text = "Password"
 
-[node name="LoginButton" type="Button" parent="LoginPanel/Container"]
+[node name="HBoxContainer" type="HBoxContainer" parent="LoginPanel/Container"]
 layout_mode = 2
+theme_override_constants/separation = 17
+alignment = 1
+
+[node name="LoginButton" type="Button" parent="LoginPanel/Container/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
 text = "Login
 "
 
-[node name="RegisterLink" type="Button" parent="LoginPanel/Container"]
+[node name="RegisterLink" type="Button" parent="LoginPanel/Container/HBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 4
 text = "Register
 "
 
-[node name="GuestButton" type="Button" parent="LoginPanel/Container"]
+[node name="GuestButton" type="Button" parent="LoginPanel/Container/HBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 4
 text = "Play As Guest"
 
 [node name="RegisterPanel" type="Control" parent="."]
 visible = false
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="Container" type="VBoxContainer" parent="RegisterPanel"]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
-scale = Vector2(2.1599998, 1)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -133.5
+offset_top = -103.0
+offset_right = 133.5
+offset_bottom = 103.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="Email" type="LineEdit" parent="RegisterPanel/Container"]
 layout_mode = 2
@@ -83,7 +116,7 @@ text = "Back to login"
 
 [node name="RegisterButton" type="Button" parent="RegisterPanel/Container"]
 layout_mode = 2
-text = "Register                                               "
+text = "Register "
 
 [node name="Label" type="Label" parent="RegisterPanel"]
 layout_mode = 0
@@ -91,43 +124,76 @@ offset_right = 40.0
 offset_bottom = 23.0
 
 [node name="EventCodePanel" type="Control" parent="."]
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="Container" type="VBoxContainer" parent="EventCodePanel"]
-layout_mode = 0
-offset_right = 40.0
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -213.5
+offset_top = -77.0
+offset_right = 213.5
+offset_bottom = 77.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="Title" type="Label" parent="EventCodePanel/Container"]
 layout_mode = 2
+size_flags_horizontal = 4
 text = "Nirman
 "
 
 [node name="CodeInput" type="LineEdit" parent="EventCodePanel/Container"]
 layout_mode = 2
-placeholder_text = "Input COde GIven By organizer "
+placeholder_text = "Input Code GIven By organizer "
 
 [node name="VerifyButton" type="Button" parent="EventCodePanel/Container"]
 layout_mode = 2
-text = "Verify                                                                                          "
+text = "Verify"
 
 [node name="SkipButton" type="Button" parent="EventCodePanel/Container"]
 layout_mode = 2
 text = "Skip
 "
 
-[node name="StatusLabel" type="Label" parent="."]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 23.0
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -0.5
+offset_top = -13.5
+offset_right = 0.5
+offset_bottom = 13.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 50
 
-[node name="LoadingSpinner" type="Control" parent="."]
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="LoadingSpinner" type="Control" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="StatusLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
 
 [node name="Background" type="TextureRect" parent="."]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 4.0
+offset_top = 6.0
+offset_right = 4.0
+offset_bottom = 6.0
+grow_horizontal = 2
+grow_vertical = 2
