@@ -25,13 +25,30 @@ var player_speed = player_land_speed
 @export var player_land_jump: float = 300
 @export var player_water_jump: float = 150
 
+# --- Platformer feel tuning ---
+@export var land_accel := 1200.0
+@export var land_friction := 1800.0
+
+@export var water_accel := 400.0
+@export var water_drag := 6.0
+@export var water_buoyancy := 30.0
+
+@export var jump_buffer_time := 0.15
+@export var coyote_time := 0.12
+@export var jump_cut_multiplier := 0.45
+
+@export var player_health: float = 100.0
+
 var airtime: float = 0
 var gravity: float = land_gravity
 var max_velocity: float = max_velocity_air
 var jump_force: float = player_land_jump
 var hitbox: Area2D = null
+var jump_buffer := 0.0
+var coyote_timer := 0.0
 
 func _ready() -> void:
+	add_to_group("player")
 	animated_sprite_2d.play("idle_down")
 	var current_scene := get_tree().current_scene
 	
@@ -52,14 +69,26 @@ func _input(event: InputEvent) -> void:
 	else:
 		_top_down_input(event)
 
-
 #--------------------
 #  Platformer Logics
 #--------------------
 
+func take_damage(amount: float) -> void:
+	player_health -= amount
+	print("Player took damage! Health: ", player_health)
+	# Add visual feedback, death check, etc.
+	if player_health <= 0:
+		_player_die()
+
+func _player_die() -> void:
+	# Handle player death
+	pass
+
 func _platformer_physics(delta: float) -> void:
+	# --- Water enter/exit ---
 	if just_entered_water:
-		velocity.y = 0.1 * velocity.y
+		velocity.x *= 0.6
+		velocity.y = min(velocity.y, 40)
 		in_water = true
 		just_entered_water = false
 
@@ -69,34 +98,76 @@ func _platformer_physics(delta: float) -> void:
 
 	_player_switch_settings()
 
-	if not is_on_floor():
-		if in_water and (Input.is_action_pressed("Left") or Input.is_action_pressed("Right")):
-			velocity.y = 0
-		else:
-			velocity.y += gravity * delta
-			if absf(velocity.y) >= max_velocity:
-				velocity.y = max_velocity
-			airtime += airtime_rate * delta
-	else:
-		airtime = 0
-	
-	# Movement
-	if Input.is_action_pressed("Left"):
-		velocity.x = -player_speed
-	elif Input.is_action_pressed("Right"):
-		velocity.x = player_speed
-	else:
-		velocity.x = 0
-	
-	if Input.is_action_pressed("Jump"):
-		if in_water or airtime < airtime_threshold:
-			velocity.y = -jump_force
-	elif Input.is_action_pressed("Down") and in_water:
-		velocity.y = jump_force
+	# --- Timers ---
+	jump_buffer -= delta
+	coyote_timer -= delta
 
+	if is_on_floor():
+		coyote_timer = coyote_time
+
+	# --- Input ---
+	var move_input := Input.get_axis("Left", "Right")
+
+	# --- Horizontal movement ---
+	if in_water:
+		velocity.x = move_toward(
+			velocity.x,
+			move_input * player_speed,
+			water_accel * delta
+		)
+	else:
+		if move_input != 0:
+			velocity.x = move_toward(
+				velocity.x,
+				move_input * player_speed,
+				land_accel * delta
+			)
+		else:
+			velocity.x = move_toward(
+				velocity.x,
+				0,
+				land_friction * delta
+			)
+
+	# --- Gravity / Buoyancy ---
+	if in_water:
+		# Apply buoyancy
+		velocity.y -= water_buoyancy * delta
+		
+		# Apply drag separately to X and Y for better control
+		velocity.y *= exp(-water_drag * delta)
+		velocity.x *= exp(-water_drag * 0.3 * delta)  # Less drag on horizontal
+		
+		# Clamp velocity in water
+		velocity.x = clamp(velocity.x, -player_speed * 1.2, player_speed * 1.2)
+		velocity.y = clamp(velocity.y, -max_velocity, max_velocity)
+	else:
+		if not is_on_floor():
+			velocity.y += gravity * delta
+			velocity.y = clamp(velocity.y, -max_velocity, max_velocity)
+
+	# --- Jump buffering ---
+	if Input.is_action_just_pressed("Jump"):
+		jump_buffer = jump_buffer_time
+
+	# --- Jump execution ---
+	if jump_buffer > 0 and (coyote_timer > 0 or in_water):
+		velocity.y = -jump_force
+		jump_buffer = 0
+		coyote_timer = 0
+
+	# --- Variable jump height ---
+	if Input.is_action_just_released("Jump") and velocity.y < 0 and not in_water:
+		velocity.y *= jump_cut_multiplier
+
+	# --- Swim down ---
+	if in_water and Input.is_action_pressed("Down"):
+		velocity.y = move_toward(velocity.y, jump_force, water_accel * delta)
+
+	# --- Attack ---
 	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
 		_player_attack()
-	
+
 	move_and_slide()
 
 func _platformer_input(event: InputEvent) -> void:

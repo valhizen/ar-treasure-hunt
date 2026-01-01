@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://po6gc5txc7wq"]
 
 [ext_resource type="Script" uid="uid://bvfu65sk4yeyg" path="res://MiniGames/TempleStack/scripts/block.gd" id="1_tp6kx"]
-[ext_resource type="Texture2D" uid="uid://3px22yrgasn" path="res://Assets/Outside/nyatpola.png" id="2_iwdkc"]
+[ext_resource type="Texture2D" uid="uid://ce7gfr5ixohnb" path="res://MiniGames/TempleStack/assets/nyatapola.png" id="2_tp6kx"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_cgrg5"]
 size = Vector2(232, 25)
@@ -10,9 +10,11 @@ size = Vector2(232, 25)
 script = ExtResource("1_tp6kx")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("2_iwdkc")
+position = Vector2(-1.1444092e-05, -0.49999997)
+scale = Vector2(0.15384614, 0.21367522)
+texture = ExtResource("2_tp6kx")
 region_enabled = true
-region_rect = Rect2(33.96257, 295.08737, 231.60365, 23.595001)
+region_rect = Rect2(2.7710571, 1917.8944, 1503.5933, 114.12463)
 
 [node name="RayCastRight" type="RayCast2D" parent="."]
 position = Vector2(116, 1)
