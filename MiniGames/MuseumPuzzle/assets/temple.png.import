@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b1v3uqlbsau76"
-path="res://.godot/imported/puzzle_image.png-06bf4049e6cef98ab95bfb42845c6251.ctex"
+uid="uid://b4qs6relhwbe3"
+path="res://.godot/imported/temple.png-d6cf936de3d0c726ad4e537bcb5a62d0.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://MiniGames/MuseumPuzzle/puzzle_image.png"
-dest_files=["res://.godot/imported/puzzle_image.png-06bf4049e6cef98ab95bfb42845c6251.ctex"]
+source_file="res://MiniGames/MuseumPuzzle/assets/temple.png"
+dest_files=["res://.godot/imported/temple.png-d6cf936de3d0c726ad4e537bcb5a62d0.ctex"]
 
 [params]
 
