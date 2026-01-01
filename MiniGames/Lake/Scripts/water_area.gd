@@ -2,13 +2,14 @@ extends Area2D
 
 @export var fish_scene: PackedScene
 @export var spawn_count: int = 10
-@export var min_spawn_distance: float = 100.0
-@export var spawn_interval: float = 3.0
-@export var max_fish: int = 30
+@export var min_spawn_distance: float = 100
+@export var spawn_interval: float = 3
+@export var max_fish: int = 40
 
 var player: Node2D = null
 var active_fish: Array = []
 var spawn_timer: float = 0.0
+var first_time: bool = true
 
 func _ready() -> void:
 	player = get_tree().get_first_node_in_group("player")
@@ -33,8 +34,10 @@ func _on_body_entered(body: Node2D) -> void:
 		body.just_entered_water = true
 		
 		# Player entered water, spawn initial fish
-		for i in spawn_count:
-			_spawn_fish()
+		if first_time: 
+			for i in spawn_count:
+				_spawn_fish()
+				first_time = false
 
 func _on_body_exited(body: Node2D) -> void:
 	if body.is_in_group("player"):

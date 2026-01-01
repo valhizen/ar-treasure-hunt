@@ -1,14 +1,18 @@
-[gd_scene load_steps=14 format=4 uid="uid://csnb0lphjaltq"]
+[gd_scene load_steps=32 format=4 uid="uid://csnb0lphjaltq"]
 
-[ext_resource type="Script" uid="uid://cre05wmm014ly" path="res://MiniGames/Lake/bkt_lake_minigame.gd" id="1_flvqo"]
+[ext_resource type="Script" uid="uid://rxpxqpy8q0hy" path="res://MiniGames/Lake/Scripts/bkt_lake_minigame.gd" id="1_flvqo"]
 [ext_resource type="Texture2D" uid="uid://cb1vpod41x4du" path="res://Assets/CyberPunk Asset Pack/asset page 1.png" id="2_nmblp"]
-[ext_resource type="Script" uid="uid://b63fj4mdsdfec" path="res://MiniGames/Lake/water_area.gd" id="3_jumx5"]
-[ext_resource type="PackedScene" uid="uid://dujcuejnyuluo" path="res://MiniGames/Lake/evil_fish.tscn" id="4_aj8t1"]
-[ext_resource type="PackedScene" uid="uid://8b5pju8f3t4k" path="res://MiniGames/Lake/corrupter.tscn" id="4_rv3kn"]
-[ext_resource type="Script" uid="uid://dmfplmy7dhset" path="res://MiniGames/Lake/player.gd" id="6_mi4rp"]
-[ext_resource type="PackedScene" uid="uid://2wkekeli0aq2" path="res://MiniGames/Lake/bullet.tscn" id="7_aj8t1"]
-[ext_resource type="Script" uid="uid://bf44gd6g7i25a" path="res://MiniGames/Lake/health_bar.gd" id="8_dybc6"]
-[ext_resource type="Script" uid="uid://cj760sqbicbf6" path="res://MiniGames/Lake/death_screen.gd" id="9_k0r6a"]
+[ext_resource type="Script" uid="uid://d0bhwsjejg1qw" path="res://MiniGames/Lake/Scripts/water_area.gd" id="3_jumx5"]
+[ext_resource type="PackedScene" uid="uid://dujcuejnyuluo" path="res://MiniGames/Lake/Scene/evil_fish.tscn" id="4_aj8t1"]
+[ext_resource type="PackedScene" uid="uid://8b5pju8f3t4k" path="res://MiniGames/Lake/Scene/corrupter.tscn" id="4_rv3kn"]
+[ext_resource type="Script" uid="uid://clkld1ultic4y" path="res://MiniGames/Lake/Scripts/player.gd" id="6_mi4rp"]
+[ext_resource type="PackedScene" uid="uid://2wkekeli0aq2" path="res://MiniGames/Lake/Scene/bullet.tscn" id="7_aj8t1"]
+[ext_resource type="Script" uid="uid://n0vu67sm26oy" path="res://MiniGames/Lake/Scripts/health_bar.gd" id="8_dybc6"]
+[ext_resource type="Texture2D" uid="uid://d3g0wx0123mub" path="res://MiniGames/Lake/Assets/player-idle.png" id="8_fl6wi"]
+[ext_resource type="Texture2D" uid="uid://bppw3wbeebdhd" path="res://MiniGames/Lake/Assets/player-swiming.png" id="9_ad0wf"]
+[ext_resource type="Script" uid="uid://c27o336bbdvfn" path="res://MiniGames/Lake/Scripts/death_screen.gd" id="9_k0r6a"]
+[ext_resource type="Script" uid="uid://cyy8kpjhdokkx" path="res://MiniGames/Lake/Scripts/game_manager.gd" id="10_ifbtl"]
+[ext_resource type="Script" uid="uid://vycb8tbp2q08" path="res://MiniGames/Lake/Scripts/win_screen.gd" id="11_3y6mu"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_jumx5"]
 texture = ExtResource("2_nmblp")
@@ -244,6 +248,110 @@ size = Vector2(1225, 532)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mi4rp"]
 size = Vector2(40, 40)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_rxdt4"]
+atlas = ExtResource("8_fl6wi")
+region = Rect2(0, 0, 80, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_onl2k"]
+atlas = ExtResource("8_fl6wi")
+region = Rect2(80, 0, 80, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0lxjw"]
+atlas = ExtResource("8_fl6wi")
+region = Rect2(160, 0, 80, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gwcu0"]
+atlas = ExtResource("8_fl6wi")
+region = Rect2(240, 0, 80, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qdhqg"]
+atlas = ExtResource("8_fl6wi")
+region = Rect2(320, 0, 80, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hw5bq"]
+atlas = ExtResource("8_fl6wi")
+region = Rect2(400, 0, 80, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fceug"]
+atlas = ExtResource("9_ad0wf")
+region = Rect2(0, 0, 80, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_aapy4"]
+atlas = ExtResource("9_ad0wf")
+region = Rect2(80, 0, 80, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0rrki"]
+atlas = ExtResource("9_ad0wf")
+region = Rect2(160, 0, 80, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kkdqk"]
+atlas = ExtResource("9_ad0wf")
+region = Rect2(240, 0, 80, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sesgk"]
+atlas = ExtResource("9_ad0wf")
+region = Rect2(320, 0, 80, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h5vfv"]
+atlas = ExtResource("9_ad0wf")
+region = Rect2(400, 0, 80, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y4rhb"]
+atlas = ExtResource("9_ad0wf")
+region = Rect2(480, 0, 80, 80)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_jihxh"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rxdt4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_onl2k")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0lxjw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gwcu0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qdhqg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hw5bq")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fceug")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_aapy4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0rrki")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kkdqk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sesgk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h5vfv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y4rhb")
+}],
+"loop": true,
+"name": &"swimming",
+"speed": 5.0
+}]
+
 [node name="Bkt-lake-minigame" type="Node2D"]
 script = ExtResource("1_flvqo")
 
@@ -260,27 +368,29 @@ fish_scene = ExtResource("4_aj8t1")
 position = Vector2(-3, 5)
 shape = SubResource("RectangleShape2D_nmblp")
 
+[node name="ColorRect" type="ColorRect" parent="WaterArea"]
+offset_left = -616.0
+offset_top = -262.0
+offset_right = 607.0
+offset_bottom = 272.0
+color = Color(0.5137255, 1, 1, 0.32941177)
+
 [node name="Corrupters" type="Node2D" parent="."]
 position = Vector2(-1351, 1161)
 
-[node name="Corrupter" parent="Corrupters" groups=["corrupters"] instance=ExtResource("4_rv3kn")]
+[node name="Corrupter" parent="Corrupters" instance=ExtResource("4_rv3kn")]
+position = Vector2(-37, -34)
 
 [node name="Corrupter2" parent="Corrupters" instance=ExtResource("4_rv3kn")]
-position = Vector2(360, 0)
+position = Vector2(397, -35)
 
 [node name="Corrupter3" parent="Corrupters" instance=ExtResource("4_rv3kn")]
-position = Vector2(793, -1)
+position = Vector2(802, -34)
 
 [node name="Player" type="CharacterBody2D" parent="." groups=["player"]]
-position = Vector2(-1676, 570)
+position = Vector2(-1526, 571)
 script = ExtResource("6_mi4rp")
 bullet_scene = ExtResource("7_aj8t1")
-
-[node name="ColorRect" type="ColorRect" parent="Player"]
-offset_left = -20.0
-offset_top = -20.0
-offset_right = 20.0
-offset_bottom = 20.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
 shape = SubResource("RectangleShape2D_mi4rp")
@@ -288,8 +398,18 @@ shape = SubResource("RectangleShape2D_mi4rp")
 [node name="Camera2D" type="Camera2D" parent="Player"]
 zoom = Vector2(2, 2)
 
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Player"]
+sprite_frames = SubResource("SpriteFrames_jihxh")
+animation = &"swimming"
+
 [node name="HealthBar" type="CanvasLayer" parent="."]
 script = ExtResource("8_dybc6")
 
 [node name="DeathScreen" type="CanvasLayer" parent="." groups=["death_screen"]]
 script = ExtResource("9_k0r6a")
+
+[node name="GameManager" type="Node2D" parent="." groups=["game_manager"]]
+script = ExtResource("10_ifbtl")
+
+[node name="WinScreen" type="CanvasLayer" parent="." groups=["win_screen"]]
+script = ExtResource("11_3y6mu")

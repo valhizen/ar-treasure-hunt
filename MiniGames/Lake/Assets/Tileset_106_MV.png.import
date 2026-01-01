@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b5sfaxorskyih"
-path="res://.godot/imported/fishing_icons_32x32_15.png-9b8e40befb6a92cdb045808e512fdd6b.ctex"
+uid="uid://d20y21gk2onbl"
+path="res://.godot/imported/Tileset_106_MV.png-69677053d8d8c8f074654a62831e5761.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://MiniGames/Lake/fishing_icons_32x32_15.png"
-dest_files=["res://.godot/imported/fishing_icons_32x32_15.png-9b8e40befb6a92cdb045808e512fdd6b.ctex"]
+source_file="res://MiniGames/Lake/Assets/Tileset_106_MV.png"
+dest_files=["res://.godot/imported/Tileset_106_MV.png-69677053d8d8c8f074654a62831e5761.ctex"]
 
 [params]
 
