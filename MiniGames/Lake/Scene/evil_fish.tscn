@@ -1,0 +1,82 @@
+[gd_scene load_steps=13 format=3 uid="uid://dujcuejnyuluo"]
+
+[ext_resource type="Script" uid="uid://rxu1oeelrau1" path="res://MiniGames/Lake/Scripts/evil_fish.gd" id="1_eq645"]
+[ext_resource type="Texture2D" uid="uid://durp8rkmkxuq2" path="res://MiniGames/Lake/Assets/evil_fish.png" id="2_fs31p"]
+[ext_resource type="Texture2D" uid="uid://q3iogeu6lk3d" path="res://MiniGames/Lake/Assets/evil_fish_dmg.png" id="2_y54t3"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fs31p"]
+size = Vector2(34, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3v0o3"]
+atlas = ExtResource("2_y54t3")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ekvbw"]
+atlas = ExtResource("2_y54t3")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_72odo"]
+atlas = ExtResource("2_y54t3")
+region = Rect2(256, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y54t3"]
+atlas = ExtResource("2_fs31p")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fysfp"]
+atlas = ExtResource("2_fs31p")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cn2j2"]
+atlas = ExtResource("2_fs31p")
+region = Rect2(256, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wwyjh"]
+atlas = ExtResource("2_fs31p")
+region = Rect2(384, 0, 128, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_y54t3"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3v0o3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ekvbw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_72odo")
+}],
+"loop": true,
+"name": &"damage",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y54t3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fysfp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cn2j2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wwyjh")
+}],
+"loop": true,
+"name": &"swim",
+"speed": 5.0
+}]
+
+[node name="EvilFish" type="CharacterBody2D"]
+script = ExtResource("1_eq645")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -1)
+shape = SubResource("RectangleShape2D_fs31p")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(0.3, 0.3)
+sprite_frames = SubResource("SpriteFrames_y54t3")
+animation = &"swim"

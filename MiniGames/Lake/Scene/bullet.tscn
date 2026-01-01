@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://2wkekeli0aq2"]
 
-[ext_resource type="Script" uid="uid://bi2ylg70hilxq" path="res://MiniGames/Lake/bullet.gd" id="1_1xu37"]
+[ext_resource type="Script" uid="uid://dqutgsnyyiq05" path="res://MiniGames/Lake/Scripts/bullet.gd" id="1_1xu37"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rvyov"]
 size = Vector2(4, 4)
