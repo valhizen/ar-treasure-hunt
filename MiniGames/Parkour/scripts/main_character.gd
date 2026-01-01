@@ -25,6 +25,7 @@ var player_speed = player_land_speed
 @export var airtime_rate: float = 10
 @export var airtime_threshold: float = 0.5
 @export var player_land_jump: float = 300
+@export var coins_collected: int = 0
 
 var airtime: float = 0
 var gravity: float = land_gravity
@@ -32,7 +33,7 @@ var max_velocity: float = max_velocity_air
 var jump_force: float = player_land_jump
 var hitbox: Area2D = null
 var checkpoint_position:Vector2
-var coins_collected: int = 0
+
 
 func _ready() -> void:
 	animated_sprite.play("idle_down")
@@ -146,7 +147,6 @@ func add_coin():
 	coins_collected += 1
 	var text = "Coins: " + str(coins_collected)
 	coins.text = text
-	print(coins_collected)
  
 func die():
 	get_tree().paused = true
