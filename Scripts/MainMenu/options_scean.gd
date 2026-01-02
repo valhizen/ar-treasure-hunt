@@ -8,10 +8,10 @@ extends Control
 #endregion
 
 #region Node References
-@onready var save_button: Button = $Container/Save
-@onready var load_button: Button = $Container/Load
-@onready var back_button: Button = $BackButton
-@onready var save_info_label: Label = $SaveInfoLabel
+@onready var save_button: Button = $PanelContainer/Container/Save
+@onready var load_button: Button = $PanelContainer/Container/Load
+@onready var back_button: Button = $PanelContainer/Container/BackButton
+@onready var save_info_label: Label = $PanelContainer/Container/SaveInfoLabel
 #endregion
 
 #region State
