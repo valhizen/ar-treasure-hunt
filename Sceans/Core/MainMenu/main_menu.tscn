@@ -1,4 +1,4 @@
-[gd_scene load_steps=44 format=3 uid="uid://d14pb87g68ov5"]
+[gd_scene load_steps=45 format=3 uid="uid://d14pb87g68ov5"]
 
 [ext_resource type="Script" uid="uid://d34sdlapgrur4" path="res://Scripts/MainMenu/main_menu.gd" id="1_usr5a"]
 [ext_resource type="Shader" uid="uid://b8l2y0njl4n4h" path="res://Shaders/main_menu.gdshader" id="2_16l0f"]
@@ -9,6 +9,7 @@
 [ext_resource type="Script" uid="uid://ccj1ss71hkap1" path="res://Scripts/MainMenu/continue.gd" id="3_x0y5d"]
 [ext_resource type="Texture2D" uid="uid://dfsg3sqhm8wxv" path="res://Assets/MainMenu/continue.png" id="4_oyn0a"]
 [ext_resource type="AudioStream" uid="uid://cwys7im6mch68" path="res://Assets/MainMenu/Sound/computer-mouse-click-352734.mp3" id="5_bv6vg"]
+[ext_resource type="Texture2D" uid="uid://du45pdf0ggxcm" path="res://Assets/MainMenu/title.png" id="6_bv6vg"]
 [ext_resource type="Script" uid="uid://csg7mb2jxfhm8" path="res://Scripts/MainMenu/new_game.gd" id="6_sbkdd"]
 [ext_resource type="Texture2D" uid="uid://dkb74avkolc16" path="res://Assets/MainMenu/new_game.png" id="7_ylnfj"]
 [ext_resource type="Script" uid="uid://w37ibhv5sv8y" path="res://Scripts/MainMenu/options.gd" id="8_nr1ty"]
@@ -363,6 +364,19 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("3_oyn0a")
 script = ExtResource("2_usr5a")
+
+[node name="Title" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.125
+anchor_top = 0.25
+anchor_right = 0.25
+anchor_bottom = 0.5
+grow_horizontal = 0
+grow_vertical = 0
+texture = ExtResource("6_bv6vg")
+expand_mode = 5
+stretch_mode = 3
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 layout_mode = 1
