@@ -1,10 +1,15 @@
-[gd_scene load_steps=40 format=3 uid="uid://d14pb87g68ov5"]
+[gd_scene load_steps=45 format=3 uid="uid://d14pb87g68ov5"]
 
 [ext_resource type="Script" uid="uid://d34sdlapgrur4" path="res://Scripts/MainMenu/main_menu.gd" id="1_usr5a"]
+[ext_resource type="Shader" uid="uid://b8l2y0njl4n4h" path="res://Shaders/main_menu.gdshader" id="2_16l0f"]
+[ext_resource type="Script" uid="uid://crhyu3f6q0ryr" path="res://Scripts/MainMenu/texture_rect.gd" id="2_usr5a"]
 [ext_resource type="Theme" uid="uid://bwcotvcku6wyu" path="res://Themes/button_theme.tres" id="3_16l0f"]
+[ext_resource type="Texture2D" uid="uid://bhqbf8dtbe0r6" path="res://Assets/MainMenu/destroyed-background.png" id="3_bv6vg"]
+[ext_resource type="Texture2D" uid="uid://j1tbn1njshug" path="res://Assets/MainMenu/normal-background.png" id="3_oyn0a"]
 [ext_resource type="Script" uid="uid://ccj1ss71hkap1" path="res://Scripts/MainMenu/continue.gd" id="3_x0y5d"]
 [ext_resource type="Texture2D" uid="uid://dfsg3sqhm8wxv" path="res://Assets/MainMenu/continue.png" id="4_oyn0a"]
 [ext_resource type="AudioStream" uid="uid://cwys7im6mch68" path="res://Assets/MainMenu/Sound/computer-mouse-click-352734.mp3" id="5_bv6vg"]
+[ext_resource type="Texture2D" uid="uid://du45pdf0ggxcm" path="res://Assets/MainMenu/title.png" id="6_bv6vg"]
 [ext_resource type="Script" uid="uid://csg7mb2jxfhm8" path="res://Scripts/MainMenu/new_game.gd" id="6_sbkdd"]
 [ext_resource type="Texture2D" uid="uid://dkb74avkolc16" path="res://Assets/MainMenu/new_game.png" id="7_ylnfj"]
 [ext_resource type="Script" uid="uid://w37ibhv5sv8y" path="res://Scripts/MainMenu/options.gd" id="8_nr1ty"]
@@ -12,7 +17,16 @@
 [ext_resource type="Script" uid="uid://c764p0ia1oufc" path="res://Scripts/MainMenu/quit.gd" id="10_8l5kv"]
 [ext_resource type="Texture2D" uid="uid://bcqqhj44igapq" path="res://Assets/MainMenu/quit.png" id="11_au8l6"]
 [ext_resource type="PackedScene" uid="uid://cfeukxk76yvn" path="res://Sceans/MainMenu/audio_stream_player.tscn" id="12_umjdd"]
-[ext_resource type="Texture2D" uid="uid://sf843pj2shwu" path="res://Assets/MainMenu/MainMenu.png" id="13_cna3f"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_x0y5d"]
+shader = ExtResource("2_16l0f")
+shader_parameter/normal = ExtResource("3_oyn0a")
+shader_parameter/destroyed = ExtResource("3_bv6vg")
+shader_parameter/progress = 0.0
+shader_parameter/shake_power = 0.03
+shader_parameter/shake_speed = 5.0
+shader_parameter/shake_block_size = 30.5
+shader_parameter/shake_color_rate = 0.01
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_16l0f"]
 
@@ -340,12 +354,36 @@ script = ExtResource("1_usr5a")
 options_scene_path = "uid://hrirnxbberb"
 first_map_path = "uid://ddoyiflegxm8d"
 
+[node name="TextureRect" type="TextureRect" parent="."]
+material = SubResource("ShaderMaterial_x0y5d")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_oyn0a")
+script = ExtResource("2_usr5a")
+
+[node name="Title" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.125
+anchor_top = 0.25
+anchor_right = 0.25
+anchor_bottom = 0.5
+grow_horizontal = 0
+grow_vertical = 0
+texture = ExtResource("6_bv6vg")
+expand_mode = 5
+stretch_mode = 3
+
 [node name="PanelContainer" type="PanelContainer" parent="."]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.125
 anchor_top = 0.5
-anchor_right = 0.375
+anchor_right = 0.25
 anchor_bottom = 0.813
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_16l0f")
@@ -464,13 +502,6 @@ libraries = {
 stream = ExtResource("5_bv6vg")
 
 [node name="AudioStreamPlayer" parent="." instance=ExtResource("12_umjdd")]
-autoplay = false
-
-[node name="MainMenu" type="Sprite2D" parent="."]
-z_index = -1
-position = Vector2(986.25, 543.1875)
-scale = Vector2(2.5831153, 2.582647)
-texture = ExtResource("13_cna3f")
 
 [connection signal="focus_entered" from="PanelContainer/VBoxContainer/Continue" to="PanelContainer/VBoxContainer/Continue" method="_on_focus_entered"]
 [connection signal="focus_exited" from="PanelContainer/VBoxContainer/Continue" to="PanelContainer/VBoxContainer/Continue" method="_on_focus_exited"]
