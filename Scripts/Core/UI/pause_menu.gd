@@ -279,8 +279,7 @@ func _update_save_slot_buttons() -> void:
 func _on_save_slot_selected(slot: int) -> void:
 	"""Save to selected slot"""
 	if SaveManager:
-		var s    // If you prefer a smooth fade, use: float mix_threshold = progress;
-uccess = SaveManager.save_game(slot, "Slot %d" % slot)
+		var success = SaveManager.save_game(slot, "Slot %d" % slot)
 		_show_message("Saved to Slot %d!" % slot if success else "Save Failed!")
 	
 	_hide_save_slots()

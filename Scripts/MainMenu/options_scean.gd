@@ -3,15 +3,15 @@ extends Control
 ## Attach to root OptionsScean node
 
 #region Scene References
-@export_file("*.tscn") var main_menu_path: String = "res://Sceans/Core/MainMenu/main_menu.tscn"
-@export_file("*.tscn") var save_menu_path: String = "res://Sceans/Core/UI/save_menu.tscn"
+@export_file("*.tscn") var main_menu_path: String = "res://Sceans/MainMenu/main_menu.tscn"
+@export_file("*.tscn") var save_menu_path: String = "res://Sceans/MainMenu/SaveMenu.tscn"
 #endregion
 
 #region Node References
-@onready var save_button: Button = $PanelContainer/Container/Save
-@onready var load_button: Button = $PanelContainer/Container/Load
-@onready var back_button: Button = $PanelContainer/Container/BackButton
-@onready var save_info_label: Label = $PanelContainer/Container/SaveInfoLabel
+@onready var save_button: Button = $Container/Save
+@onready var load_button: Button = $Container/Load
+@onready var back_button: Button = $BackButton
+@onready var save_info_label: Label = $SaveInfoLabel
 #endregion
 
 #region State
