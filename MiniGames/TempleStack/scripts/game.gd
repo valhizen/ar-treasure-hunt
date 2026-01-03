@@ -2,10 +2,11 @@ extends Node2D
 
 @export var blocks: Array[PackedScene]
 signal drop
+@onready var score_label: Label = $ScoreLabel
 
 var score: int = 0
-const CENTER_X := 254.0      # ideal center x (same as spawn x)
-const MAX_DISTANCE := 200.0  # how far away before score goes to 0
+const CENTER_X := 256.0
+const MAX_DISTANCE := 200.0 
 var array = [Vector2(500, -94), Vector2(23, -94), Vector2(500, -130), Vector2(23, -130) ]
 var block_index = 0
 var current_top_y := -94.0
@@ -17,7 +18,6 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("Jump"):
-		# tell current block to fall
 		drop.emit()  
 	
 func _on_block_spawn():
@@ -34,20 +34,16 @@ func spawn_block() -> void:
 		add_child(new_instance)
 		
 		
-		# connect global drop signal to this block's drop handler
 		drop.connect(new_instance._on_game_drop)
 
-		# connect this block's landed signal to our scoring function
 		new_instance.landed.connect(_on_block_landed)
 		new_instance.spawn.connect(_on_block_spawn)
 
 
 func _on_block_landed(final_position: Vector2) -> void:
-	# How far horizontally from the ideal temple center?
-		var dx: float = abs(final_position.x - CENTER_X)
+		var dx: float = abs(((final_position.x) * 1.1)- CENTER_X)
 
-	# Alignment score: 100 if perfectly centered, 0 if far away
-		var ratio: float = clamp(1.0 - (dx / MAX_DISTANCE), 0.0, 1.0)
+		var ratio: float = clamp(1.0-(dx / MAX_DISTANCE), 0.0, 1.0)
 		var align_score: int = int(round(ratio * 100.0))
 		
 
@@ -56,15 +52,9 @@ func _on_block_landed(final_position: Vector2) -> void:
 		current_top_y = min(current_top_y, final_position.y)
 		var next_y := current_top_y - BLOCK_HEIGHT
 		
-
-
 		array.clear()
-
-
 		array.append(Vector2(500, next_y))
 		array.append(Vector2(23, next_y))
 		print("Block landed at x=", final_position.x, " → +", align_score, " points. Total score: ", score)
-			  
-	# If you have a label in the scene (e.g. $ScoreLabel), you can also do:
-	# $ScoreLabel.text = "Score: %d" % score
+		score_label.text = "Score: %d" % score
   
