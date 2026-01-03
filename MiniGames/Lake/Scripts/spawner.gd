@@ -3,8 +3,8 @@ extends Area2D
 @export var fish_scene: PackedScene
 @export var spawn_count: int = 10
 @export var min_spawn_distance: float = 100
-@export var spawn_interval: float = 3
-@export var max_fish: int = 40
+@export var spawn_interval: float = 5
+@export var max_fish: int = 10
 
 var player: Node2D = null
 var active_fish: Array = []
@@ -13,8 +13,6 @@ var first_time: bool = true
 
 func _ready() -> void:
 	player = get_tree().get_first_node_in_group("player")
-	body_entered.connect(_on_body_entered)
-	body_exited.connect(_on_body_exited)
 
 func _process(delta: float) -> void:
 	if not player:
@@ -28,18 +26,6 @@ func _process(delta: float) -> void:
 	if spawn_timer >= spawn_interval and active_fish.size() < max_fish:
 		_spawn_fish()
 		spawn_timer = 0.0
-
-func _on_body_entered(body: Node2D) -> void:
-	if body.is_in_group("player"):
-		
-		# Player entered water, spawn initial fish
-		if first_time: 
-			for i in spawn_count:
-				_spawn_fish()
-				first_time = false
-
-func _on_body_exited(body: Node2D) -> void:
-	pass
 
 func _spawn_fish() -> void:
 	if not fish_scene or not player:

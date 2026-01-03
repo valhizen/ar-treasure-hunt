@@ -26,6 +26,7 @@ var water_bounds: Rect2 = Rect2()
 
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var attack_timer: Timer = $AttackTimer
+@onready var sound: AudioStreamPlayer2D = $AudioStreamPlayer2D
 
 func _ready() -> void:
 	spawn_position = global_position
@@ -60,13 +61,6 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	if is_dead or not player:
 		return
-
-	# Keep fish in water
-	if water_bounds.has_area() and not water_bounds.has_point(global_position):
-		var dir := (spawn_position - global_position).normalized()
-		velocity = dir * speed
-		state = "patrol"
-		patrol_target = spawn_position
 
 	if healthbar_timer > 0:
 		healthbar_timer -= delta
@@ -130,6 +124,8 @@ func _on_attack_timer_timeout() -> void:
 				player.take_damage(damage)
 
 func take_damage(amount: float) -> void:
+	sound.play()
+
 	if is_dead:
 		return
 

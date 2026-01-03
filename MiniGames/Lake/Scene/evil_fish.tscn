@@ -1,8 +1,9 @@
-[gd_scene load_steps=13 format=3 uid="uid://dujcuejnyuluo"]
+[gd_scene load_steps=14 format=3 uid="uid://dujcuejnyuluo"]
 
 [ext_resource type="Script" uid="uid://rxu1oeelrau1" path="res://MiniGames/Lake/Scripts/evil_fish.gd" id="1_eq645"]
 [ext_resource type="Texture2D" uid="uid://durp8rkmkxuq2" path="res://MiniGames/Lake/Assets/evil_fish.png" id="2_fs31p"]
 [ext_resource type="Texture2D" uid="uid://q3iogeu6lk3d" path="res://MiniGames/Lake/Assets/evil_fish_dmg.png" id="2_y54t3"]
+[ext_resource type="AudioStream" uid="uid://dcj68efws4gx2" path="res://MiniGames/Lake/Assets/hurt.wav" id="4_xmyeq"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fs31p"]
 size = Vector2(34, 24)
@@ -80,3 +81,6 @@ shape = SubResource("RectangleShape2D_fs31p")
 scale = Vector2(0.3, 0.3)
 sprite_frames = SubResource("SpriteFrames_y54t3")
 animation = &"swim"
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_xmyeq")
