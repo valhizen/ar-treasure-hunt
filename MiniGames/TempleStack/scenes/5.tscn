@@ -4,14 +4,14 @@
 [ext_resource type="Texture2D" uid="uid://ce7gfr5ixohnb" path="res://MiniGames/TempleStack/assets/nyatapola.png" id="2_ep6bl"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_cgrg5"]
-size = Vector2(229, 39)
+size = Vector2(229, 30)
 
 [node name="Block" type="CharacterBody2D"]
 script = ExtResource("1_ep6bl")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(-1.5, -0.5)
-scale = Vector2(0.15379538, 0.19597988)
+position = Vector2(-1.1920929e-07, 0)
+scale = Vector2(0.15379538, 0.15075378)
 texture = ExtResource("2_ep6bl")
 region_enabled = true
 region_rect = Rect2(1.4215088, 1261.1396, 1515.006, 199.71826)
@@ -27,5 +27,4 @@ target_position = Vector2(-8, 0)
 collide_with_areas = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(-0.5, -0.5)
 shape = SubResource("RectangleShape2D_cgrg5")

@@ -1623,7 +1623,7 @@ z_index = -13
 texture = ExtResource("10_a36du")
 
 [node name="MainCharacter" parent="." instance=ExtResource("3_enj1e")]
-position = Vector2(2466, -347)
+position = Vector2(84, -15)
 
 [node name="Coins" type="Label" parent="MainCharacter"]
 light_mask = 0
@@ -1635,6 +1635,16 @@ theme_override_fonts/font = ExtResource("5_xtx4a")
 theme_override_font_sizes/font_size = 16
 text = "Coins: 0
 "
+
+[node name="message3" type="Label" parent="."]
+offset_left = 2747.0
+offset_top = -348.0
+offset_right = 3111.0
+offset_bottom = -294.0
+theme_override_fonts/font = ExtResource("5_xtx4a")
+text = "Imperfections are noticed,
+Leap in,
+But your destiny is below you"
 
 [node name="message" type="Label" parent="."]
 offset_left = 1549.0
