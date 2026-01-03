@@ -1,7 +1,8 @@
-[gd_scene load_steps=20 format=3 uid="uid://c5kdcgw6xm48y"]
+[gd_scene load_steps=21 format=3 uid="uid://c5kdcgw6xm48y"]
 
 [ext_resource type="Script" uid="uid://cgv3xsv80swhc" path="res://MiniGames/CarChase/Scripts/coin.gd" id="1_0shs8"]
 [ext_resource type="Texture2D" uid="uid://b1m1yjjpcacbr" path="res://MiniGames/CarChase/Assets/coin.png" id="1_5mrom"]
+[ext_resource type="AudioStream" uid="uid://b0sw0fagjptq5" path="res://MiniGames/CarChase/Assets/coin-recieved.mp3" id="3_34b3j"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_0shs8"]
 atlas = ExtResource("1_5mrom")
@@ -127,7 +128,12 @@ script = ExtResource("1_0shs8")
 texture_filter = 1
 sprite_frames = SubResource("SpriteFrames_wmj6l")
 animation = &"spin"
-frame_progress = 0.19616953
+frame_progress = 0.5805175
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_5mrom")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_34b3j")
+volume_db = -8.711
+pitch_scale = 0.68

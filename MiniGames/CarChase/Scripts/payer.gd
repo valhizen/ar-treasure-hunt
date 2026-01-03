@@ -16,6 +16,7 @@ extends CharacterBody2D
 @export var helicopter: CharacterBody2D
 
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
+@onready var sound: AudioStreamPlayer2D = $AudioStreamPlayer2D
 
 var alive := true
 var coins := 0
@@ -25,6 +26,7 @@ var has_won := false
 
 func _ready() -> void:
 	animated_sprite_2d.play("default")
+	sound.play()
 	current_forward_speed = forward_speed
 
 func _physics_process(delta):

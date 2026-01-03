@@ -19,7 +19,7 @@ func _create_ui():
 	add_child(hud)
 	
 	# Coin Label (top-left)
-	coin_label = _create_label("Coins: 0", 20, Vector2(20, 20))
+	coin_label = _create_label("Coins: 0", 40, Vector2(20, 20))
 	coin_label.add_theme_color_override("font_color", Color(1, 0.84, 0)) # Gold color
 	hud.add_child(coin_label)
 	
