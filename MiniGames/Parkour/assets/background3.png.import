@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dtoq8fa5wfx82"
-path="res://.godot/imported/background3.png-6ecf316f328efec5502e8590907dc757.ctex"
+path="res://.godot/imported/background3.png-bde6ed5a74f05343b738838282c97a38.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://MiniGames/Parkour/background3.png"
-dest_files=["res://.godot/imported/background3.png-6ecf316f328efec5502e8590907dc757.ctex"]
+source_file="res://MiniGames/Parkour/assets/background3.png"
+dest_files=["res://.godot/imported/background3.png-bde6ed5a74f05343b738838282c97a38.ctex"]
 
 [params]
 

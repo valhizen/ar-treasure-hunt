@@ -22,8 +22,6 @@ func _physics_process(delta: float) -> void:
 
 
 func _on_game_drop() -> void:
-	# Switch to falling mode
-	print(global_position.x)
 	if global_position.x < 147 or global_position.x  > 330:
 		moving_sideways = true
 	else:
@@ -33,24 +31,20 @@ func _on_game_drop() -> void:
 
 func move_block() -> void:
 	if moving_sideways:
-		# Auto left-right motion
 		velocity.x = move_speed * direction
 		velocity.y = 0.0
 		move_and_slide()
 
-		# If we hit a wall, bounce back
 		if is_on_wall():
-			direction *= -1 # reverse the direction
+			direction *= -1 
 	else:
-		# Falling straight down
 		velocity.x = 0.0
 		velocity.y = fall_speed
 		move_and_slide()
 
-		# When we hit the floor, we "land"
 		if is_on_floor() and !has_landed:
 			has_landed = true
 			velocity = Vector2.ZERO
-			landed.emit(global_position) # tell the Game our final position
+			landed.emit(global_position)
 			spawn.emit() 
 			set_physics_process(false)
