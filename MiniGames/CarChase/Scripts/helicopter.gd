@@ -32,6 +32,15 @@ var drift_time := 0.0
 func _ready():
 	sprite.play("fly")
 	prop_sound.play()
+	
+	# Apply speed reduction based on deaths
+	var ui = get_node_or_null("/root/main/UI")
+	if ui and ui.has_method("get_speed_multiplier"):
+		var multiplier = ui.get_speed_multiplier()
+		forward_speed *= multiplier
+		aggro_speed_boost *= multiplier
+		aggro_duration *= multiplier
+	
 	base_forward_speed = forward_speed
 
 func _physics_process(delta):

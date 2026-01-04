@@ -27,7 +27,16 @@ var has_won := false
 func _ready() -> void:
 	animated_sprite_2d.play("default")
 	sound.play()
-	current_forward_speed = forward_speed
+	
+	# Apply speed reduction based on deaths
+	var ui = get_node("/root/main/UI")
+	if ui and ui.has_method("get_speed_multiplier"):
+		var multiplier = ui.get_speed_multiplier()
+		forward_speed *= multiplier
+		max_forward_speed *= multiplier
+		current_forward_speed = forward_speed
+	else:
+		current_forward_speed = forward_speed
 
 func _physics_process(delta):
 	if not alive and not has_won:
@@ -48,7 +57,11 @@ func _physics_process(delta):
 	
 	# Left / Right movement only (disable if won)
 	if not has_won:
-		var dir := Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
+		var dir := 0.0
+		if Input.is_key_pressed(KEY_D):
+			dir += 1.0
+		if Input.is_key_pressed(KEY_A):
+			dir -= 1.0
 		velocity.x = dir * side_speed
 	else:
 		velocity.x = 0  # No side movement when won
