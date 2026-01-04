@@ -1,10 +1,11 @@
 extends Control
 
 @export var bg_image: Texture2D
-@export var background_image: Texture2D  # Separate background image
+@export var background_image: Texture2D
 @export var grid_size: int = 3
 @export var tile_gap: int = 2
 @export var render_scale: float = 1.0 / 3.0
+
 
 @export var board_bg_color: Color = Color(1,1,1,0.6) 
 @export var border_color: Color = Color.BLACK
@@ -33,6 +34,7 @@ var final_score: int = 0
 const TILE_SCENE = preload("uid://ccjewxgukji3a")
 
 func _ready():
+	
 	win_label.visible = false
 	var zoom_level = Vector2(render_scale, render_scale)
 	get_viewport().canvas_transform = Transform2D.IDENTITY.scaled(zoom_level)
@@ -189,8 +191,8 @@ func on_puzzle_completed():
 	var minutes = int(elapsed_time) / 60
 	var seconds = int(elapsed_time) % 60
 	
-	win_label.text = "[center][color=yellow] PUZZLE COMPLETE! [/color]
-[color=yellow]Time: %d:%02d
+	win_label.text = "[center][color=green] PUZZLE COMPLETE! [/color]
+[color=green]Time: %d:%02d
 Moves: %d
 Score: %d points[/color][/center]" % [minutes, seconds, move_count, final_score]
 	
