@@ -9,6 +9,8 @@ extends CharacterBody2D
 @onready var message: Label = $"../message"
 @onready var message_2: Label = $"../message2"
 @onready var respawn_label: Label = $Respawn
+@onready var death: AudioStreamPlayer = $"../Music/death"
+@onready var coin: AudioStreamPlayer = $"../Music/coin"
 
 # Player controls
 @export var player_land_speed: float = 150
@@ -33,6 +35,7 @@ var max_velocity: float = max_velocity_air
 var jump_force: float = player_land_jump
 var hitbox: Area2D = null
 var checkpoint_position:Vector2
+var is_jumping: bool = false
 
 
 func _ready() -> void:
@@ -78,12 +81,14 @@ func _platformer_physics(delta: float) -> void:
 		if in_wall:
 			if is_on_wall():
 				velocity.y = gravity * delta * 0.5
-				if Input.is_action_pressed("Left") and Input.is_action_just_pressed("Jump"):
-					velocity.x = -player_speed
-					velocity.y = -300
-				elif Input.is_action_pressed("Right") and Input.is_action_just_pressed("Jump"):
-					velocity.x = -player_speed
-					velocity.y = -300
+				if Input.is_action_pressed("Left"):
+					if Input.is_action_just_pressed("Jump"):
+						velocity.x = -player_speed
+						velocity.y = -300
+				elif Input.is_action_pressed("Right"):
+					if Input.is_action_just_pressed("Jump"):
+						velocity.x = player_speed
+						velocity.y = -300
 		velocity.y += gravity * delta
 		if absf(velocity.y) >= max_velocity:
 			velocity.y = max_velocity
@@ -92,14 +97,15 @@ func _platformer_physics(delta: float) -> void:
 		airtime = 0
 	
 	# Movement
-	if Input.is_action_pressed("Left"):
-		animated_sprite.play("run_left")
-		velocity.x = -player_speed
-	elif Input.is_action_pressed("Right"):
-		animated_sprite.play("run_right")
-		velocity.x = player_speed
-	else:
-		velocity.x = 0
+	if not is_on_wall():
+		if Input.is_action_pressed("Left"):
+			animated_sprite.play("run_left")
+			velocity.x = -player_speed
+		elif Input.is_action_pressed("Right"):
+			animated_sprite.play("run_right")
+			velocity.x = player_speed
+		else:
+			velocity.x = 0
 	
 	if Input.is_action_just_pressed("Jump"):
 		if airtime < airtime_threshold:
@@ -119,15 +125,15 @@ func wait_seconds(seconds: float) -> void:
 
 func respawn_countdown() -> void:
 	respawn_label.visible = true
-
 	for i in range(4, 0, -1):
 		if i == 4:
 			respawn_label.text = "You Died!"
+			blink(20, 0.12) 
 			await wait_seconds(1.0)
 		else:
 			respawn_label.text = "Respawning in .." + str(i)
 			await wait_seconds(1.0)
-
+	
 	respawn_label.visible = false
 
 func striked():
@@ -144,12 +150,23 @@ func save_checkpoint(position: Vector2):
 	checkpoint_position = position
 
 func add_coin():
+	coin.play()
 	coins_collected += 1
 	var text = "Coins: " + str(coins_collected)
 	coins.text = text
- 
+func blink(times, interval) -> void:
+	animated_sprite.process_mode = Node.PROCESS_MODE_ALWAYS
+	animated_sprite.play("idle_down")
+	for i in times:
+		animated_sprite.visible = false
+		await get_tree().create_timer(interval, true).timeout
+		animated_sprite.visible = true
+		await get_tree().create_timer(interval, true).timeout
+
+	animated_sprite.process_mode = Node.PROCESS_MODE_INHERIT
 func die():
 	get_tree().paused = true
+	death.play()
 	await respawn_countdown()
 	await wait_seconds(0.0)
 	main_character.global_position = checkpoint_position

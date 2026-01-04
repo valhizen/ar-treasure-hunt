@@ -591,8 +591,7 @@ y_sort_enabled = true
 position = Vector2(0, -14.000002)
 scale = Vector2(1.021875, 1.0218749)
 sprite_frames = SubResource("SpriteFrames_nv2nb")
-animation = &"hanging"
-frame_progress = 0.45966575
+animation = &"run_down"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visibility_layer = 3
