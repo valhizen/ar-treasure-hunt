@@ -1,0 +1,14 @@
+[gd_scene load_steps=4 format=3 uid="uid://ctltbgr67pa0f"]
+
+[ext_resource type="Script" uid="uid://bkg6xreeh8gtw" path="res://MiniGames/Lake/Scripts/spawner.gd" id="1_gl1ng"]
+[ext_resource type="PackedScene" uid="uid://dujcuejnyuluo" path="res://MiniGames/Lake/Scene/evil_fish.tscn" id="2_m7gbn"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_gl1ng"]
+radius = 160.798
+
+[node name="spawner" type="Area2D"]
+script = ExtResource("1_gl1ng")
+fish_scene = ExtResource("2_m7gbn")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_gl1ng")

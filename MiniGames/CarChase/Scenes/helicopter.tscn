@@ -1,7 +1,9 @@
-[gd_scene load_steps=11 format=3 uid="uid://7lcl4wyyg0hk"]
+[gd_scene load_steps=13 format=3 uid="uid://7lcl4wyyg0hk"]
 
 [ext_resource type="Script" uid="uid://jhhsqcdieuto" path="res://MiniGames/CarChase/Scripts/helicopter.gd" id="1_8tof2"]
 [ext_resource type="Texture2D" uid="uid://b07okvewbdei6" path="res://MiniGames/CarChase/Assets/Helicopter_16x16.png" id="1_q860d"]
+[ext_resource type="AudioStream" uid="uid://bdf4xcap363e" path="res://MiniGames/CarChase/Assets/helicopter-sound.wav" id="3_1xgm0"]
+[ext_resource type="AudioStream" uid="uid://cpl754hyme03u" path="res://MiniGames/CarChase/Assets/siren.wav" id="4_rh7d7"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_8tof2"]
 atlas = ExtResource("1_q860d")
@@ -63,8 +65,14 @@ script = ExtResource("1_8tof2")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_ntwg0")
 animation = &"fly"
-frame_progress = 0.045658182
+frame_progress = 0.5872357
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(8, 32)
 shape = SubResource("RectangleShape2D_3gxcy")
+
+[node name="Propeller" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_1xgm0")
+
+[node name="Siren" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_rh7d7")

@@ -1,7 +1,8 @@
-[gd_scene load_steps=11 format=3 uid="uid://darfr4klpwdok"]
+[gd_scene load_steps=12 format=3 uid="uid://darfr4klpwdok"]
 
 [ext_resource type="Script" uid="uid://mefqbjv30dl4" path="res://MiniGames/CarChase/Scripts/payer.gd" id="1_3ig44"]
 [ext_resource type="Texture2D" uid="uid://du5a5gxwi8ql5" path="res://MiniGames/CarChase/Assets/Car_4_16x16_7.png" id="2_3ig44"]
+[ext_resource type="AudioStream" uid="uid://b0jdspuxfu2md" path="res://MiniGames/CarChase/Assets/car.wav" id="3_e6duo"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_okvmu"]
 size = Vector2(30, 63)
@@ -65,10 +66,13 @@ position = Vector2(1, -8.5)
 shape = SubResource("RectangleShape2D_okvmu")
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(1, -46)
-zoom = Vector2(2, 2)
+position = Vector2(0, -72)
+zoom = Vector2(1.5, 1.5)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 texture_filter = 1
 sprite_frames = SubResource("SpriteFrames_7w6y0")
 frame_progress = 0.25247413
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_e6duo")

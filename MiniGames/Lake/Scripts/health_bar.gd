@@ -35,6 +35,7 @@ func _ready() -> void:
 	container = PanelContainer.new()
 	add_child(container)
 	container.position = margin
+	container.scale = Vector2(1.25, 1.25)
 
 	var panel := StyleBoxFlat.new()
 	panel.bg_color = Color(0, 0, 0, 0.7)
@@ -62,6 +63,10 @@ func _ready() -> void:
 	# ─── Health ───
 	health_label = Label.new()
 	vbox.add_child(health_label)
+	
+	timer_label.add_theme_font_size_override("font_size", 20)
+	kill_label.add_theme_font_size_override("font_size", 18)
+	health_label.add_theme_font_size_override("font_size", 16)
 
 	health_bar = ProgressBar.new()
 	health_bar.custom_minimum_size = Vector2(health_bar_width, health_bar_height)
@@ -87,7 +92,7 @@ func _process(_delta: float) -> void:
 
 # ─────────────────────────────
 func _update_health() -> void:
-	var hp: float = player.player_health
+	var hp: float = player.health
 	health_bar.value = hp
 	health_label.text = "Health: %d / %d" % [hp, health_bar.max_value]
 

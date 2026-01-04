@@ -2,7 +2,7 @@ extends Node2D
 
 signal corrupter_defused
 
-@export var defuse_time: float = 10.0
+@export var defuse_time: float = 5
 @export var interaction_range: float = 100.0
 @export var corrupted_color: Color = Color(1, 1, 1, 1)
 @export var defused_color: Color = Color(1, 1, 1, 1)
@@ -17,6 +17,7 @@ var is_player_attacking: bool = false
 @onready var progress_bar: ProgressBar = $ProgressBar
 @onready var interaction_label: Label = $InteractionLabel
 @onready var detection_area: Area2D = $DetectionArea
+@onready var sound: AudioStreamPlayer2D = $AudioStreamPlayer2D
 
 var corrupt_particles: CPUParticles2D
 var clean_particles: CPUParticles2D
@@ -130,6 +131,8 @@ func _check_player_attacking() -> void:
 		is_player_attacking = true
 
 func _complete_defuse() -> void:
+	sound.play()
+	
 	is_defused = true
 
 	# 🔁 COLOR CHANGE VIA SPRITE MODULATE

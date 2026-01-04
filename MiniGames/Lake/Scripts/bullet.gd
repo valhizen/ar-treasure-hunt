@@ -4,10 +4,14 @@ extends Area2D
 @export var damage: float = 10.0
 @export var lifetime: float = 3.0
 
+@onready var sound: AudioStreamPlayer2D = $AudioStreamPlayer2D
+
 var direction: Vector2 = Vector2.RIGHT
 var traveled_distance: float = 0.0
 
 func _ready() -> void:
+	sound.play()
+	
 	# Set collision layers
 	collision_layer = 8  # Layer 4 (bullet layer)
 	collision_mask = 5   # Layer 1 (world) + Layer 3 (enemies) = 1 + 4 = 5

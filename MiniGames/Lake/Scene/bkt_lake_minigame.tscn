@@ -1,24 +1,19 @@
-[gd_scene load_steps=33 format=3 uid="uid://csnb0lphjaltq"]
+[gd_scene load_steps=30 format=3 uid="uid://csnb0lphjaltq"]
 
 [ext_resource type="Script" uid="uid://rxpxqpy8q0hy" path="res://MiniGames/Lake/Scripts/bkt_lake_minigame.gd" id="1_flvqo"]
-[ext_resource type="Script" uid="uid://d0bhwsjejg1qw" path="res://MiniGames/Lake/Scripts/water_area.gd" id="3_jumx5"]
-[ext_resource type="PackedScene" uid="uid://lcrit81sf1rs" path="res://MiniGames/Lake/Scene/floor.tscn" id="4_ad0wf"]
-[ext_resource type="PackedScene" uid="uid://dujcuejnyuluo" path="res://MiniGames/Lake/Scene/evil_fish.tscn" id="4_aj8t1"]
+[ext_resource type="PackedScene" uid="uid://s70v8hbbhqmm" path="res://MiniGames/Lake/Scene/main_audio.tscn" id="2_ad0wf"]
 [ext_resource type="PackedScene" uid="uid://8b5pju8f3t4k" path="res://MiniGames/Lake/Scene/corrupter.tscn" id="4_rv3kn"]
-[ext_resource type="PackedScene" uid="uid://bc5ii53dnn5qt" path="res://MiniGames/Lake/Scene/wall_right.tscn" id="4_rxdt4"]
 [ext_resource type="Script" uid="uid://clkld1ultic4y" path="res://MiniGames/Lake/Scripts/player.gd" id="6_mi4rp"]
 [ext_resource type="PackedScene" uid="uid://2wkekeli0aq2" path="res://MiniGames/Lake/Scene/bullet.tscn" id="7_aj8t1"]
 [ext_resource type="Script" uid="uid://n0vu67sm26oy" path="res://MiniGames/Lake/Scripts/health_bar.gd" id="8_dybc6"]
 [ext_resource type="Texture2D" uid="uid://d3g0wx0123mub" path="res://MiniGames/Lake/Assets/player-idle.png" id="8_fl6wi"]
 [ext_resource type="Texture2D" uid="uid://bppw3wbeebdhd" path="res://MiniGames/Lake/Assets/player-swiming.png" id="9_ad0wf"]
+[ext_resource type="AudioStream" uid="uid://dcj68efws4gx2" path="res://MiniGames/Lake/Assets/hurt.wav" id="9_fl6wi"]
 [ext_resource type="Script" uid="uid://c27o336bbdvfn" path="res://MiniGames/Lake/Scripts/death_screen.gd" id="9_k0r6a"]
 [ext_resource type="Script" uid="uid://cyy8kpjhdokkx" path="res://MiniGames/Lake/Scripts/game_manager.gd" id="10_ifbtl"]
 [ext_resource type="Script" uid="uid://vycb8tbp2q08" path="res://MiniGames/Lake/Scripts/win_screen.gd" id="11_3y6mu"]
-[ext_resource type="PackedScene" uid="uid://3rfolkqx5tjv" path="res://MiniGames/Lake/Scene/wall_left.tscn" id="13_fl6wi"]
-[ext_resource type="Texture2D" uid="uid://deoyn84cr4q2n" path="res://MiniGames/Lake/Assets/midground.png" id="16_onl2k"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_nmblp"]
-size = Vector2(2265, 621)
+[ext_resource type="PackedScene" uid="uid://ceq3c7e3w2cdn" path="res://MiniGames/Lake/Scene/map.tscn" id="13_fl6wi"]
+[ext_resource type="PackedScene" uid="uid://ctltbgr67pa0f" path="res://MiniGames/Lake/Scene/spawner.tscn" id="14_ad0wf"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mi4rp"]
 size = Vector2(40, 40)
@@ -130,46 +125,40 @@ animations = [{
 [node name="Bkt-lake-minigame" type="Node2D"]
 script = ExtResource("1_flvqo")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(-998, 992)
-scale = Vector2(1.3125, 1.314453)
-texture = ExtResource("16_onl2k")
+[node name="MainAudio" parent="." instance=ExtResource("2_ad0wf")]
+position = Vector2(-2528, 640)
 
-[node name="Sprite2D2" type="Sprite2D" parent="."]
-position = Vector2(144, 976)
-scale = Vector2(1.0666667, 1.25)
-texture = ExtResource("16_onl2k")
+[node name="map" parent="." instance=ExtResource("13_fl6wi")]
+position = Vector2(-352, 848)
 
-[node name="WaterArea" type="Area2D" parent="." groups=["water"]]
-position = Vector2(-434, 966)
-script = ExtResource("3_jumx5")
-fish_scene = ExtResource("4_aj8t1")
+[node name="Spawners" type="Node" parent="."]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="WaterArea"]
-position = Vector2(-39.5, 13.5)
-shape = SubResource("RectangleShape2D_nmblp")
+[node name="spawner3" parent="Spawners" instance=ExtResource("14_ad0wf")]
+position = Vector2(-224, 80)
 
-[node name="ColorRect" type="ColorRect" parent="WaterArea"]
-offset_left = -1220.0
-offset_top = -309.0
-offset_right = 1137.0
-offset_bottom = 379.0
-color = Color(0.5137255, 1, 1, 0.32941177)
+[node name="spawner4" parent="Spawners" instance=ExtResource("14_ad0wf")]
+position = Vector2(-1072, 1008)
+
+[node name="spawner6" parent="Spawners" instance=ExtResource("14_ad0wf")]
+position = Vector2(1184, 1072)
+
+[node name="spawner" parent="Spawners" instance=ExtResource("14_ad0wf")]
+position = Vector2(-96, 1232)
 
 [node name="Corrupters" type="Node2D" parent="."]
 position = Vector2(-1351, 1161)
 
 [node name="Corrupter" parent="Corrupters" instance=ExtResource("4_rv3kn")]
-position = Vector2(247, 87)
+position = Vector2(295, -73)
 
 [node name="Corrupter2" parent="Corrupters" instance=ExtResource("4_rv3kn")]
-position = Vector2(983, 87)
+position = Vector2(1415, -1113)
 
 [node name="Corrupter3" parent="Corrupters" instance=ExtResource("4_rv3kn")]
-position = Vector2(1863, 87)
+position = Vector2(2551, 55)
 
 [node name="Player" type="CharacterBody2D" parent="." groups=["player"]]
-position = Vector2(-400, 528)
+position = Vector2(-2272, 1040)
 script = ExtResource("6_mi4rp")
 bullet_scene = ExtResource("7_aj8t1")
 
@@ -183,6 +172,9 @@ zoom = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_jihxh")
 animation = &"swimming"
 
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="Player"]
+stream = ExtResource("9_fl6wi")
+
 [node name="HealthBar" type="CanvasLayer" parent="."]
 script = ExtResource("8_dybc6")
 
@@ -195,147 +187,17 @@ script = ExtResource("10_ifbtl")
 [node name="WinScreen" type="CanvasLayer" parent="." groups=["win_screen"]]
 script = ExtResource("11_3y6mu")
 
-[node name="Map" type="Node2D" parent="."]
+[node name="Label" type="Label" parent="."]
+offset_left = -2336.0
+offset_top = 896.0
+offset_right = -2186.0
+offset_bottom = 945.0
+text = "[WASD]       to move
+[Left Click] to shoot"
 
-[node name="wall9" parent="Map" instance=ExtResource("13_fl6wi")]
-position = Vector2(-1664, 1256)
-
-[node name="Floor17" parent="Map" instance=ExtResource("4_ad0wf")]
-position = Vector2(-336, 1296)
-
-[node name="Floor18" parent="Map" instance=ExtResource("4_ad0wf")]
-position = Vector2(-256, 1296)
-
-[node name="Floor19" parent="Map" instance=ExtResource("4_ad0wf")]
-position = Vector2(-176, 1296)
-
-[node name="Floor20" parent="Map" instance=ExtResource("4_ad0wf")]
-position = Vector2(-96, 1296)
-
-[node name="Floor21" parent="Map" instance=ExtResource("4_ad0wf")]
-position = Vector2(-16, 1296)
-
-[node name="Floor22" parent="Map" instance=ExtResource("4_ad0wf")]
-position = Vector2(64, 1296)
-
-[node name="Floor23" parent="Map" instance=ExtResource("4_ad0wf")]
-position = Vector2(144, 1296)
-
-[node name="Floor24" parent="Map" instance=ExtResource("4_ad0wf")]
-position = Vector2(224, 1296)
-
-[node name="Floor25" parent="Map" instance=ExtResource("4_ad0wf")]
-position = Vector2(304, 1296)
-
-[node name="Floor26" parent="Map" instance=ExtResource("4_ad0wf")]
-position = Vector2(384, 1296)
-
-[node name="Floor27" parent="Map" instance=ExtResource("4_ad0wf")]
-position = Vector2(464, 1296)
-
-[node name="Floor28" parent="Map" instance=ExtResource("4_ad0wf")]
-position = Vector2(544, 1296)
-
-[node name="wall4" parent="Map" instance=ExtResource("13_fl6wi")]
-position = Vector2(-1664.0001, 735.99994)
-scale = Vector2(0.82128906, 0.981791)
-
-[node name="wall" parent="Map" instance=ExtResource("13_fl6wi")]
-position = Vector2(-1664, 657)
-
-[node name="wall6" parent="Map" instance=ExtResource("13_fl6wi")]
-position = Vector2(-1664, 1036.2773)
-scale = Vector2(0.7442932, 0.9728112)
-
-[node name="wall5" parent="Map" instance=ExtResource("13_fl6wi")]
-position = Vector2(-1664, 958)
-scale = Vector2(0.82128906, 0.981791)
-
-[node name="wall7" parent="Map" instance=ExtResource("13_fl6wi")]
-position = Vector2(-1664, 1099.692)
-scale = Vector2(0.82128906, 0.981791)
-
-[node name="wall8" parent="Map" instance=ExtResource("13_fl6wi")]
-position = Vector2(-1664, 1177.9695)
-scale = Vector2(0.82128906, 0.981791)
-
-[node name="wall2" parent="Map" instance=ExtResource("13_fl6wi")]
-position = Vector2(-1664, 799.99994)
-
-[node name="wall3" parent="Map" instance=ExtResource("13_fl6wi")]
-position = Vector2(-1664, 878.99994)
-
-[node name="Floor" parent="Map" instance=ExtResource("4_ad0wf")]
-position = Vector2(-1616, 1296)
-
-[node name="Floor2" parent="Map" instance=ExtResource("4_ad0wf")]
-position = Vector2(-1536, 1296)
-
-[node name="Floor3" parent="Map" instance=ExtResource("4_ad0wf")]
-position = Vector2(-1456, 1296)
-
-[node name="Floor4" parent="Map" instance=ExtResource("4_ad0wf")]
-position = Vector2(-1376, 1296)
-
-[node name="Floor5" parent="Map" instance=ExtResource("4_ad0wf")]
-position = Vector2(-1296, 1296)
-
-[node name="Floor6" parent="Map" instance=ExtResource("4_ad0wf")]
-position = Vector2(-1216, 1296)
-
-[node name="Floor7" parent="Map" instance=ExtResource("4_ad0wf")]
-position = Vector2(-1136, 1296)
-
-[node name="Floor8" parent="Map" instance=ExtResource("4_ad0wf")]
-position = Vector2(-1056, 1296)
-
-[node name="Floor9" parent="Map" instance=ExtResource("4_ad0wf")]
-position = Vector2(-976, 1296)
-
-[node name="Floor10" parent="Map" instance=ExtResource("4_ad0wf")]
-position = Vector2(-896, 1296)
-
-[node name="Floor11" parent="Map" instance=ExtResource("4_ad0wf")]
-position = Vector2(-816, 1296)
-
-[node name="Floor12" parent="Map" instance=ExtResource("4_ad0wf")]
-position = Vector2(-736, 1296)
-
-[node name="Floor13" parent="Map" instance=ExtResource("4_ad0wf")]
-position = Vector2(-656, 1296)
-
-[node name="Floor14" parent="Map" instance=ExtResource("4_ad0wf")]
-position = Vector2(-576, 1296)
-
-[node name="Floor15" parent="Map" instance=ExtResource("4_ad0wf")]
-position = Vector2(-496, 1296)
-
-[node name="Floor16" parent="Map" instance=ExtResource("4_ad0wf")]
-position = Vector2(-416, 1296)
-
-[node name="wall_right" parent="Map" instance=ExtResource("4_rxdt4")]
-position = Vector2(656, 656)
-
-[node name="wall_right2" parent="Map" instance=ExtResource("4_rxdt4")]
-position = Vector2(656, 736)
-
-[node name="wall_right3" parent="Map" instance=ExtResource("4_rxdt4")]
-position = Vector2(656, 816)
-
-[node name="wall_right4" parent="Map" instance=ExtResource("4_rxdt4")]
-position = Vector2(656, 896)
-
-[node name="wall_right5" parent="Map" instance=ExtResource("4_rxdt4")]
-position = Vector2(656, 976)
-
-[node name="wall_right6" parent="Map" instance=ExtResource("4_rxdt4")]
-position = Vector2(656, 1056)
-
-[node name="wall_right7" parent="Map" instance=ExtResource("4_rxdt4")]
-position = Vector2(656, 1136)
-
-[node name="wall_right8" parent="Map" instance=ExtResource("4_rxdt4")]
-position = Vector2(656, 1216)
-
-[node name="Floor29" parent="Map" instance=ExtResource("4_ad0wf")]
-position = Vector2(624, 1296)
+[node name="Label2" type="Label" parent="."]
+offset_left = -1968.0
+offset_top = 1040.0
+offset_right = -1704.0
+offset_bottom = 1063.0
+text = "Find & Defuse all three Corrupters"

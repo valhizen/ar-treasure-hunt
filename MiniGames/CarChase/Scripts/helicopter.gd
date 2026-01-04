@@ -20,6 +20,8 @@ extends CharacterBody2D
 @export var drift_back_strength := 2.0  # How fast it drifts back off screen
 
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
+@onready var prop_sound: AudioStreamPlayer2D = $Propeller
+@onready var siren_sound: AudioStreamPlayer2D = $Siren
 
 var base_forward_speed := 0.0
 var is_aggressive := false
@@ -29,6 +31,7 @@ var drift_time := 0.0
 
 func _ready():
 	sprite.play("fly")
+	prop_sound.play()
 	base_forward_speed = forward_speed
 
 func _physics_process(delta):
@@ -110,11 +113,15 @@ func increase_aggression():
 func _become_aggressive():
 	is_aggressive = true
 	aggro_timer = aggro_duration
+	prop_sound.stop()
+	siren_sound.play()
 
 func _calm_down():
 	is_aggressive = false
 	sprite.modulate = Color.WHITE
-
+	prop_sound.play()
+	siren_sound.stop()
+	
 # Call this from other scripts when player does something to anger the helicopter
 func trigger_aggression():
 	_become_aggressive()
