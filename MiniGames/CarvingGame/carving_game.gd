@@ -2,8 +2,7 @@ extends Node2D
 
 @export_group("Wood Settings")
 @export var wood_size := Vector2(600, 800)
-@export var wood_texture_path := "res://wood_texture.jpg"  # Add your wood texture here
-@export var use_procedural_wood := true  # Fallback if no texture
+@export var wood_texture_resource: Texture2D 
 
 @export_group("Carving Settings")
 @export var carve_radius := 15.0
@@ -18,7 +17,7 @@ extends Node2D
 enum GameState{MENU, PLAYING, COMPLETED}
 
 # Game state
-var wood_texture: Image
+var wood_texture: Image  # This is the working Image, not the resource
 var target_silhouette: Image
 var chosen_target: Texture2D
 var carved_mask: Image
@@ -155,80 +154,45 @@ func create_tool_texture():
 	tool_circle.texture = ImageTexture.create_from_image(tool_image)
 	tool_circle.centered = true
 
-func load_wood_texture():
-	"""Load wood texture from file or generate procedural texture"""
-	wood_texture = Image.create(int(wood_size.x), int(wood_size.y), false, Image.FORMAT_RGBA8)
-	
-	if not use_procedural_wood and FileAccess.file_exists(wood_texture_path):
-		# Try to load texture from file
-		var loaded_texture = load(wood_texture_path)
-		if loaded_texture and loaded_texture is Texture2D:
-			wood_texture = loaded_texture.get_image()
-			wood_texture.resize(int(wood_size.x), int(wood_size.y))
-			wood_texture.convert(Image.FORMAT_RGBA8)
-			return
-	
-	# Fallback: Generate procedural wood texture
-	generate_procedural_wood()
-
-func generate_procedural_wood():
-	"""Generate a more realistic wood grain texture"""
-	var data = wood_texture.get_data()
-	var width = int(wood_size.x)
-	var height = int(wood_size.y)
-	
-	# Wood grain parameters
-	var grain_frequency = 0.02
-	var grain_strength = 0.15
-	
-	for y in range(height):
-		for x in range(width):
-			var idx = (y * width + x) * 4
-			
-			# Create wood grain effect using sine waves
-			var grain = sin(x * grain_frequency + sin(y * 0.05) * 3.0) * grain_strength
+func load_wood():
+	"""Load wood texture from the exported resource"""
+	if wood_texture_resource:
+		# Get the image from the resource and create a copy for working with
+		wood_texture = wood_texture_resource.get_image().duplicate()
+		wood_texture.resize(int(wood_size.x), int(wood_size.y))
+		wood_texture.convert(Image.FORMAT_RGBA8)
+	else:
+		# Fallback: create a simple brown wood texture
+		push_warning("No wood texture resource assigned! Using fallback brown texture.")
+		wood_texture = Image.create(int(wood_size.x), int(wood_size.y), false, Image.FORMAT_RGBA8)
+		
+		var wood_color = Color(0.6, 0.4, 0.2)  # Brown
+		var data = wood_texture.get_data()
+		var pixel_count = int(wood_size.x * wood_size.y)
+		
+		for i in range(pixel_count):
 			var noise = randf_range(-0.05, 0.05)
-			
-			# Base wood color with variations
-			var base_r = 0.55 + grain + noise
-			var base_g = 0.35 + grain * 0.8 + noise
-			var base_b = 0.20 + grain * 0.5 + noise
-			
-			data[idx] = int(clamp(base_r, 0, 1) * 255)
-			data[idx + 1] = int(clamp(base_g, 0, 1) * 255)
-			data[idx + 2] = int(clamp(base_b, 0, 1) * 255)
+			var idx = i * 4
+			data[idx] = int((wood_color.r + noise) * 255)
+			data[idx + 1] = int((wood_color.g + noise) * 255)
+			data[idx + 2] = int((wood_color.b + noise) * 255)
 			data[idx + 3] = 255
-	
-	wood_texture = Image.create_from_data(width, height, false, Image.FORMAT_RGBA8, data)
+		
+		wood_texture = Image.create_from_data(int(wood_size.x), int(wood_size.y), false, Image.FORMAT_RGBA8, data)
 
 func load_target_silhouette():
 	"""Load and prepare the target shape"""
 	if target_images.size() > 0:
 		chosen_target = target_images.pick_random()
-		target_silhouette = chosen_target.get_image()
+		target_silhouette = chosen_target.get_image().duplicate()
 		target_silhouette.resize(int(wood_size.x), int(wood_size.y))
 		target_silhouette.convert(Image.FORMAT_RGBA8)
 	else:
-		# Fallback: Create a simple heart shape
+		# Fallback: create a simple circle shape
+		push_warning("No target images assigned! Using fallback circle.")
 		target_silhouette = Image.create(int(wood_size.x), int(wood_size.y), false, Image.FORMAT_RGBA8)
 		target_silhouette.fill(Color.TRANSPARENT)
-		create_default_heart_shape()
-
-func create_default_heart_shape():
-	"""Create a default heart shape as target"""
-	var center = wood_size / 2
-	var size = min(wood_size.x, wood_size.y) * 0.3
-	
-	# Draw two circles for top of heart
-	draw_circle_on_image(target_silhouette, center + Vector2(-size * 0.3, -size * 0.2), size * 0.4, Color.BLACK)
-	draw_circle_on_image(target_silhouette, center + Vector2(size * 0.3, -size * 0.2), size * 0.4, Color.BLACK)
-	
-	# Draw triangle for bottom of heart
-	for y in range(int(center.y - size * 0.2), int(center.y + size * 0.6)):
-		var width_at_y = (center.y + size * 0.6 - y) / (size * 0.8) * size
-		for x in range(int(center.x - width_at_y), int(center.x + width_at_y)):
-			if x >= 0 and x < wood_size.x and y >= 0 and y < wood_size.y:
-				target_silhouette.set_pixel(x, y, Color.BLACK)
+		draw_circle_on_image(target_silhouette, wood_size / 2, 100, Color.WHITE)
 
 func show_menu():
 	"""Display main menu"""
@@ -277,7 +241,7 @@ func reset_game():
 	score = 0
 	
 	load_target_silhouette()
-	load_wood_texture()
+	load_wood()
 	
 	carved_mask = Image.create(int(wood_size.x), int(wood_size.y), false, Image.FORMAT_RGBA8)
 	carved_mask.fill(Color.WHITE)
