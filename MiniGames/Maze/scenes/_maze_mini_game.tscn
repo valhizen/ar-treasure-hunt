@@ -11,7 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://bg5vyqsmuikj6" path="res://Assets/MainCharacter/RUN/run_left.png" id="9_e2vi5"]
 [ext_resource type="Texture2D" uid="uid://wi0wf81wcrj4" path="res://Assets/MainCharacter/RUN/run_right.png" id="10_nrnkk"]
 [ext_resource type="Texture2D" uid="uid://ceyifacngnnhy" path="res://Assets/MainCharacter/RUN/run_up.png" id="11_l13o5"]
-[ext_resource type="Texture2D" uid="uid://bp2jvidjwh2k3" path="res://MiniGames/Maze/assets/light_texture.webp" id="12_bf73e"]
+[ext_resource type="Texture2D" uid="uid://bp2jvidjwh2k3" path="res://Assets/Light/2d_lights_and_shadows_neutral_point_light.webp" id="12_bf73e"]
 [ext_resource type="PackedScene" uid="uid://ck0uea45uedwh" path="res://MiniGames/Maze/scenes/enemy.tscn" id="13_ol6hd"]
 [ext_resource type="PackedScene" uid="uid://dfskvp4iwnlc2" path="res://MiniGames/Maze/scenes/coin.tscn" id="14_mb6qx"]
 
@@ -617,6 +617,7 @@ tile_map_data = PackedByteArray("AADp/+n/AAACAAAAAADq/+n/AAADAAAAAADr/+n/AAACAAA
 tile_set = SubResource("TileSet_xvtaq")
 
 [node name="CanvasModulate" type="CanvasModulate" parent="Environment"]
+visible = false
 color = Color(0.056291588, 0.056291603, 0.056291595, 1)
 
 [node name="Player" type="CharacterBody2D" parent="." groups=["player"]]
@@ -632,7 +633,7 @@ y_sort_enabled = true
 position = Vector2(2.5999756, -7.399994)
 scale = Vector2(1.2, 1.2)
 sprite_frames = SubResource("SpriteFrames_o5ll3")
-animation = &"idle_left"
+animation = &"run_right"
 
 [node name="MazeCollider" type="CollisionShape2D" parent="Player"]
 z_index = 3

@@ -2,7 +2,8 @@ extends Node2D
 
 @export_group("Wood Settings")
 @export var wood_size := Vector2(600, 800)
-@export var wood_color := Color(0.6, 0.4, 0.2)
+@export var wood_texture_path := "res://wood_texture.jpg"  # Add your wood texture here
+@export var use_procedural_wood := true  # Fallback if no texture
 
 @export_group("Carving Settings")
 @export var carve_radius := 15.0
@@ -14,14 +15,14 @@ extends Node2D
 @export_group("Target Silhouette")
 @export var target_images: Array[Texture2D] = []
 
-enum GameState{menu,playing,completed}
+enum GameState{MENU, PLAYING, COMPLETED}
 
 # Game state
 var wood_texture: Image
 var target_silhouette: Image
 var chosen_target: Texture2D
 var carved_mask: Image
-var game_state := GameState.menu  
+var game_state := GameState.MENU
 
 # Scoring
 var accuracy := 0.0
@@ -35,15 +36,31 @@ var score := 0
 var base_score_per_cut := 10
 var size_multiplier := 1.0
 
+# Node references
 @onready var wood_sprite: Sprite2D = $Wood
 @onready var target_sprite: Sprite2D = $TargetSprite
 @onready var carving_tool: Node2D = $CarvingTool
 @onready var tool_circle: Sprite2D = $CarvingTool/ToolCircle
 
-@onready var stats_label: Label = $UI/StatsLabel
-@onready var done_button: Button = $UI/DoneButton
-@onready var completed_stats: Label = $UI/CompletedStats
+# UI Elements
+@onready var menu_panel: Panel = $UI/MenuPanel
+@onready var start_button: Button = $UI/MenuPanel/VBox/StartButton
+@onready var quit_button: Button = $UI/MenuPanel/VBox/QuitButton
+@onready var menu_title: Label = $UI/MenuPanel/VBox/TitleLabel
 
+@onready var game_panel: Panel = $UI/GamePanel
+@onready var stats_label: Label = $UI/GamePanel/StatsVBox/StatsLabel
+@onready var tool_size_label: Label = $UI/GamePanel/ToolControls/SizeLabel
+@onready var decrease_tool_button: Button = $UI/GamePanel/ToolControls/DecreaseButton
+@onready var increase_tool_button: Button = $UI/GamePanel/ToolControls/IncreaseButton
+@onready var reset_button: Button = $UI/GamePanel/ButtonsHBox/ResetButton
+@onready var done_button: Button = $UI/GamePanel/ButtonsHBox/DoneButton
+@onready var show_target_button: CheckButton = $UI/GamePanel/ButtonsHBox/ShowTargetButton
+
+@onready var completed_panel: Panel = $UI/CompletedPanel
+@onready var completed_stats: Label = $UI/CompletedPanel/VBox/StatsLabel
+@onready var play_again_button: Button = $UI/CompletedPanel/VBox/PlayAgainButton
+@onready var menu_button: Button = $UI/CompletedPanel/VBox/MenuButton
 
 var is_carving := false
 var last_carve_pos := Vector2.ZERO
@@ -51,32 +68,52 @@ var current_stroke := []
 
 var needs_wood_update := false
 var update_timer := 0.0
-const UPDATE_INTERVAL := 0.1  # Update every 100ms for performance
+const UPDATE_INTERVAL := 0.05
 
-var circle_pattern = [] 
+var circle_pattern = []
 
 func _ready():
-	wood_sprite.position = get_viewport_rect().size / 2
-	target_sprite.position = wood_sprite.position
-	
-	# Precompute circle pattern
+	setup_scene()
+	setup_ui_connections()
 	precompute_circle_pattern()
 	calculate_size_multiplier()
-	
-	# Setup tool
 	create_tool_texture()
-	carving_tool.visible = false
-	
-	# Setup UI
-	if done_button:
-		done_button.pressed.connect(_on_done_button_pressed)
-		done_button.visible = false
-	
-	if completed_stats:
-		completed_stats.visible = false
-	
 	load_target_silhouette()
-	reset_game()
+	show_menu()
+
+func setup_scene():
+	"""Position main elements"""
+	var viewport_size = get_viewport_rect().size
+	wood_sprite.position = viewport_size / 2
+	target_sprite.position = wood_sprite.position
+	target_sprite.modulate = Color(0, 1, 0, 0.3)  # Green tint with transparency
+	carving_tool.visible = false
+
+func setup_ui_connections():
+	"""Connect all UI button signals"""
+	# Menu buttons
+	if start_button:
+		start_button.pressed.connect(start_game)
+	if quit_button:
+		quit_button.pressed.connect(quit_game)
+	
+	# Game buttons
+	if done_button:
+		done_button.pressed.connect(complete_game)
+	if reset_button:
+		reset_button.pressed.connect(reset_and_start)
+	if show_target_button:
+		show_target_button.toggled.connect(_on_show_target_toggled)
+	if increase_tool_button:
+		increase_tool_button.pressed.connect(func(): change_tool_size(radius_step))
+	if decrease_tool_button:
+		decrease_tool_button.pressed.connect(func(): change_tool_size(-radius_step))
+	
+	# Completion buttons
+	if play_again_button:
+		play_again_button.pressed.connect(start_game)
+	if menu_button:
+		menu_button.pressed.connect(show_menu)
 
 func precompute_circle_pattern():
 	"""Precompute relative positions for circle carving"""
@@ -90,50 +127,148 @@ func precompute_circle_pattern():
 func calculate_size_multiplier():
 	"""Calculate score multiplier based on tool size - smaller tools = higher reward"""
 	var normalized_size = (carve_radius - min_radius) / (max_radius - min_radius)
-	# Inverse relationship: smaller tool = higher multiplier (1.5x to 0.5x)
 	size_multiplier = 1.5 - normalized_size
 
 func change_tool_size(delta: float):
 	"""Change tool size and update everything needed"""
 	carve_radius = clamp(carve_radius + delta, min_radius, max_radius)
-	
-	# Recalculate everything that depends on radius
 	precompute_circle_pattern()
 	calculate_size_multiplier()
 	create_tool_texture()
-	
-	# Visual feedback
-	update_ui()
+	update_tool_size_label()
+
+func update_tool_size_label():
+	if tool_size_label:
+		tool_size_label.text = "Tool: %.0f px (%.1fx)" % [carve_radius, size_multiplier]
 
 func create_tool_texture():
+	"""Create visual representation of carving tool"""
 	var size = int(carve_radius * 2) + 4
 	var tool_image = Image.create(size, size, false, Image.FORMAT_RGBA8)
 	tool_image.fill(Color.TRANSPARENT)
 	
-	# Draw outer circle (border)
 	@warning_ignore("integer_division")
-	draw_circle_on_image(tool_image, Vector2(size/2, size/2), carve_radius + 1, Color.WHITE)
-	# Draw inner circle (semi-transparent)
-	@warning_ignore("integer_division")
-	draw_circle_on_image(tool_image, Vector2(size/2, size/2), carve_radius, tool_color)
+	var center = Vector2(size/2, size/2)
+	draw_circle_on_image(tool_image, center, carve_radius + 1, Color.WHITE)
+	draw_circle_on_image(tool_image, center, carve_radius, tool_color)
 	
 	tool_circle.texture = ImageTexture.create_from_image(tool_image)
 	tool_circle.centered = true
 
+func load_wood_texture():
+	"""Load wood texture from file or generate procedural texture"""
+	wood_texture = Image.create(int(wood_size.x), int(wood_size.y), false, Image.FORMAT_RGBA8)
+	
+	if not use_procedural_wood and FileAccess.file_exists(wood_texture_path):
+		# Try to load texture from file
+		var loaded_texture = load(wood_texture_path)
+		if loaded_texture and loaded_texture is Texture2D:
+			wood_texture = loaded_texture.get_image()
+			wood_texture.resize(int(wood_size.x), int(wood_size.y))
+			wood_texture.convert(Image.FORMAT_RGBA8)
+			return
+	
+	# Fallback: Generate procedural wood texture
+	generate_procedural_wood()
+
+func generate_procedural_wood():
+	"""Generate a more realistic wood grain texture"""
+	var data = wood_texture.get_data()
+	var width = int(wood_size.x)
+	var height = int(wood_size.y)
+	
+	# Wood grain parameters
+	var grain_frequency = 0.02
+	var grain_strength = 0.15
+	
+	for y in range(height):
+		for x in range(width):
+			var idx = (y * width + x) * 4
+			
+			# Create wood grain effect using sine waves
+			var grain = sin(x * grain_frequency + sin(y * 0.05) * 3.0) * grain_strength
+			var noise = randf_range(-0.05, 0.05)
+			
+			# Base wood color with variations
+			var base_r = 0.55 + grain + noise
+			var base_g = 0.35 + grain * 0.8 + noise
+			var base_b = 0.20 + grain * 0.5 + noise
+			
+			data[idx] = int(clamp(base_r, 0, 1) * 255)
+			data[idx + 1] = int(clamp(base_g, 0, 1) * 255)
+			data[idx + 2] = int(clamp(base_b, 0, 1) * 255)
+			data[idx + 3] = 255
+	
+	wood_texture = Image.create_from_data(width, height, false, Image.FORMAT_RGBA8, data)
+
 func load_target_silhouette():
+	"""Load and prepare the target shape"""
 	if target_images.size() > 0:
 		chosen_target = target_images.pick_random()
 		target_silhouette = chosen_target.get_image()
 		target_silhouette.resize(int(wood_size.x), int(wood_size.y))
 		target_silhouette.convert(Image.FORMAT_RGBA8)
 	else:
-		# Fallback default shape
+		# Fallback: Create a simple heart shape
 		target_silhouette = Image.create(int(wood_size.x), int(wood_size.y), false, Image.FORMAT_RGBA8)
 		target_silhouette.fill(Color.TRANSPARENT)
-		draw_circle_on_image(target_silhouette, wood_size / 2, 100, Color.BLACK)
+		create_default_heart_shape()
+
+func create_default_heart_shape():
+	"""Create a default heart shape as target"""
+	var center = wood_size / 2
+	var size = min(wood_size.x, wood_size.y) * 0.3
+	
+	# Draw two circles for top of heart
+	draw_circle_on_image(target_silhouette, center + Vector2(-size * 0.3, -size * 0.2), size * 0.4, Color.BLACK)
+	draw_circle_on_image(target_silhouette, center + Vector2(size * 0.3, -size * 0.2), size * 0.4, Color.BLACK)
+	
+	# Draw triangle for bottom of heart
+	for y in range(int(center.y - size * 0.2), int(center.y + size * 0.6)):
+		var width_at_y = (center.y + size * 0.6 - y) / (size * 0.8) * size
+		for x in range(int(center.x - width_at_y), int(center.x + width_at_y)):
+			if x >= 0 and x < wood_size.x and y >= 0 and y < wood_size.y:
+				target_silhouette.set_pixel(x, y, Color.BLACK)
+
+func show_menu():
+	"""Display main menu"""
+	game_state = GameState.MENU
+	
+	if menu_panel:
+		menu_panel.visible = true
+	if game_panel:
+		game_panel.visible = false
+	if completed_panel:
+		completed_panel.visible = false
+	
+	wood_sprite.visible = false
+	target_sprite.visible = false
+	carving_tool.visible = false
+
+func start_game():
+	"""Start a new game"""
+	reset_game()
+	game_state = GameState.PLAYING
+	
+	if menu_panel:
+		menu_panel.visible = false
+	if game_panel:
+		game_panel.visible = true
+	if completed_panel:
+		completed_panel.visible = false
+	
+	wood_sprite.visible = true
+	target_sprite.visible = true
+	
+	if show_target_button:
+		show_target_button.button_pressed = true
+
+func reset_and_start():
+	"""Reset and restart current game"""
+	start_game()
 
 func reset_game():
-	game_state = GameState.menu
+	"""Reset all game variables"""
 	time_elapsed = 0.0
 	cuts_made = 0
 	perfect_cuts = 0
@@ -142,23 +277,8 @@ func reset_game():
 	score = 0
 	
 	load_target_silhouette()
+	load_wood_texture()
 	
-	# Fresh wood - optimized with PackedByteArray
-	wood_texture = Image.create(int(wood_size.x), int(wood_size.y), false, Image.FORMAT_RGBA8)
-	var data = wood_texture.get_data()
-	var pixel_count = int(wood_size.x * wood_size.y)
-	
-	for i in range(pixel_count):
-		var noise = randf_range(-0.05, 0.05)
-		var idx = i * 4
-		data[idx] = int((wood_color.r + noise) * 255)
-		data[idx + 1] = int((wood_color.g + noise) * 255)
-		data[idx + 2] = int((wood_color.b + noise) * 255)
-		data[idx + 3] = 255
-	
-	wood_texture = Image.create_from_data(int(wood_size.x), int(wood_size.y), false, Image.FORMAT_RGBA8, data)
-	
-	# Carved mask - simple fill is fine
 	carved_mask = Image.create(int(wood_size.x), int(wood_size.y), false, Image.FORMAT_RGBA8)
 	carved_mask.fill(Color.WHITE)
 	
@@ -166,17 +286,8 @@ func reset_game():
 	update_target_sprite()
 	update_ui()
 
-func start_game():
-	reset_game()
-	game_state = GameState.playing
-	if done_button:
-		done_button.visible = true
-	if completed_stats:
-		completed_stats.visible = false
-	target_sprite.visible = true
-
 func update_wood_sprite():
-	"""Use blit operations and direct data manipulation"""
+	"""Update the wood sprite with carved areas"""
 	var display = wood_texture.duplicate()
 	var wood_data = display.get_data()
 	var mask_data = carved_mask.get_data()
@@ -184,8 +295,7 @@ func update_wood_sprite():
 	var pixel_count = int(wood_size.x * wood_size.y)
 	for i in range(pixel_count):
 		var mask_idx = i * 4
-		if mask_data[mask_idx] < 128:  # Check if carved (black in mask)
-			# Set to transparent
+		if mask_data[mask_idx] < 128:
 			wood_data[mask_idx + 3] = 0
 	
 	display = Image.create_from_data(int(wood_size.x), int(wood_size.y), false, Image.FORMAT_RGBA8, wood_data)
@@ -193,57 +303,53 @@ func update_wood_sprite():
 	needs_wood_update = false
 
 func update_target_sprite():
+	"""Update target sprite display"""
 	if target_silhouette:
 		target_sprite.texture = ImageTexture.create_from_image(target_silhouette)
 
 func update_ui():
-	if game_state == GameState.playing and stats_label:
-		stats_label.visible = true
-		stats_label.text = "SPACE: Reset | SCROLL: Tool Size | DONE: Submit Work\n\nTime: %.1fs | Score: %d | Cuts: %d\nAccuracy: %.1f%%\nPerfect: %d | Mistakes: %d\nTool Size: %.1f (%.1fx multiplier)" % [time_elapsed, score, cuts_made, accuracy, perfect_cuts, mistakes, carve_radius, size_multiplier]
-	elif game_state == GameState.menu and stats_label:
-		stats_label.visible = true
-		stats_label.text = "WOOD CARVING GAME\n\nPress SPACE to start\n\nCarve the target shape shown in green\nScroll to change tool size\nSmaller tools = higher score multiplier!"
-	elif game_state == GameState.completed:
-		if stats_label:
-			stats_label.visible = false
+	"""Update game UI elements"""
+	if game_state == GameState.PLAYING and stats_label:
+		stats_label.text = "Time: %.1fs | Score: %d\nAccuracy: %.1f%% | Cuts: %d\nPerfect: %d | Mistakes: %d" % [
+			time_elapsed, score, accuracy, cuts_made, perfect_cuts, mistakes
+		]
+	update_tool_size_label()
 
 func _input(event):
-	if event is InputEventKey and event.pressed:
-		if event.keycode == KEY_SPACE:
-			if game_state != GameState.playing:
-				start_game()
-			else:
-				reset_game()
-				start_game()
-		elif event.keycode == KEY_ENTER:
-			print("Time: %.1fs | Score: %d | Cuts: %d | Accuracy: %.1f%% | Perfect: %d | Mistakes: %d | Tool Size: %.1f" % 
-				[time_elapsed, score, cuts_made, accuracy, perfect_cuts, mistakes, carve_radius])
+	"""Handle input events"""
+	# Keep spacebar shortcut for quick restart
+	if event is InputEventKey and event.pressed and event.keycode == KEY_SPACE:
+		if game_state != GameState.PLAYING:
+			start_game()
 	
-	# Mouse wheel to change tool size
+	# Mouse wheel still works for tool size
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_WHEEL_UP and event.pressed:
 			change_tool_size(radius_step)
 		elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN and event.pressed:
 			change_tool_size(-radius_step)
 	
-	if game_state == GameState.playing:
+	if game_state == GameState.PLAYING:
 		if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 			if event.pressed:
 				start_carving()
 			else:
 				stop_carving()
+		
 		if event is InputEventMouseMotion:
 			carving_tool.position = event.position
 			if is_carving:
 				carve_at_position(event.position)
 
 func start_carving():
+	"""Begin carving operation"""
 	is_carving = true
 	carving_tool.visible = true
 	current_stroke = []
 	last_carve_pos = carving_tool.position
 
 func stop_carving():
+	"""End carving operation"""
 	is_carving = false
 	if current_stroke.size() > 0:
 		evaluate_stroke()
@@ -251,13 +357,13 @@ func stop_carving():
 	calculate_accuracy()
 
 func carve_at_position(pos: Vector2):
+	"""Carve at the given position"""
 	var local_pos = pos - wood_sprite.position + wood_size / 2
 	if local_pos.x < 0 or local_pos.x >= wood_size.x or local_pos.y < 0 or local_pos.y >= wood_size.y:
 		return
 	
-	# Optimized: Reduce interpolation steps
 	var distance = last_carve_pos.distance_to(pos)
-	var steps = max(1, int(distance / carve_radius * 0.5))  # Fewer steps
+	var steps = max(1, int(distance / carve_radius * 0.5))
 	
 	for i in range(steps):
 		var t = float(i) / float(steps)
@@ -271,7 +377,7 @@ func carve_at_position(pos: Vector2):
 	needs_wood_update = true
 
 func carve_circle_fast(center: Vector2):
-	"""Use precomputed pattern and direct data access"""
+	"""Fast circle carving using precomputed pattern"""
 	var mask_data = carved_mask.get_data()
 	var width = int(wood_size.x)
 	var height = int(wood_size.y)
@@ -282,17 +388,16 @@ func carve_circle_fast(center: Vector2):
 		
 		if px >= 0 and px < width and py >= 0 and py < height:
 			var idx = (py * width + px) * 4
-			mask_data[idx] = 0      # R
-			mask_data[idx + 1] = 0  # G
-			mask_data[idx + 2] = 0  # B
-			# Alpha stays the same
+			mask_data[idx] = 0
+			mask_data[idx + 1] = 0
+			mask_data[idx + 2] = 0
 	
 	carved_mask = Image.create_from_data(width, height, false, Image.FORMAT_RGBA8, mask_data)
 
 func evaluate_stroke():
-	"""Sample stroke instead of checking every pixel"""
+	"""Evaluate the quality of the current stroke"""
 	@warning_ignore("integer_division")
-	var sample_rate = max(1, current_stroke.size() / 20)  # Sample ~20 points
+	var sample_rate = max(1, current_stroke.size() / 20)
 	
 	var stroke_perfect = 0
 	var stroke_mistakes = 0
@@ -309,20 +414,17 @@ func evaluate_stroke():
 	perfect_cuts += stroke_perfect
 	mistakes += stroke_mistakes
 	
-	# Calculate score based on performance and tool size
-	# Perfect cuts give positive points, mistakes subtract points
 	var stroke_score = (stroke_perfect * base_score_per_cut - stroke_mistakes * base_score_per_cut * 0.5) * size_multiplier
 	score += int(stroke_score)
 
 func calculate_accuracy():
-	"""Use direct data access and sampling for large images"""
+	"""Calculate overall carving accuracy"""
 	var width = int(wood_size.x)
 	var height = int(wood_size.y)
 	var total_pixels = width * height
 	
-	# For large images, sample pixels instead of checking all
 	var sample_step = 1
-	if total_pixels > 100000:  # If image is large, sample
+	if total_pixels > 100000:
 		sample_step = 8
 	
 	var carved_data = carved_mask.get_data()
@@ -344,69 +446,81 @@ func calculate_accuracy():
 	accuracy = (float(correct) / float(total)) * 100.0
 
 func _process(delta):
-	if game_state == GameState.playing:
+	"""Main game loop"""
+	if game_state == GameState.PLAYING:
 		time_elapsed += delta
 		update_timer += delta
 		
-		# Throttled updates during carving
 		if needs_wood_update and update_timer >= UPDATE_INTERVAL:
 			update_wood_sprite()
 			update_timer = 0.0
+		
 		update_ui()
-		carving_tool.visible = true
-	else:
-		carving_tool.visible = false
-
-func _on_done_button_pressed():
-	if game_state == GameState.playing:
-		complete_game()
+		
+		# Update tool visibility
+		var mouse_pos = get_viewport().get_mouse_position()
+		var in_bounds = Rect2(wood_sprite.position - wood_size/2, wood_size).has_point(mouse_pos)
+		carving_tool.visible = in_bounds
 
 func complete_game():
 	"""Finish the game and show results"""
-	game_state = GameState.completed
+	game_state = GameState.COMPLETED
 	calculate_accuracy()
 	
-	# Calculate final score with bonuses
-	var time_bonus = max(0, int((60.0 - time_elapsed) * 5))  # Bonus for speed (under 60s)
-	var accuracy_bonus = int(accuracy * 2)  # Accuracy bonus
+	# Calculate bonuses
+	var time_bonus = max(0, int((60.0 - time_elapsed) * 5))
+	var accuracy_bonus = int(accuracy * 2)
 	var efficiency_bonus = 0
 	if cuts_made > 0:
-		efficiency_bonus = int((float(perfect_cuts) / float(cuts_made)) * 100)  # Efficiency bonus
+		efficiency_bonus = int((float(perfect_cuts) / float(cuts_made)) * 100)
 	
 	var final_score = score + time_bonus + accuracy_bonus + efficiency_bonus
 	
-	# Hide game elements
+	# Update UI
+	if menu_panel:
+		menu_panel.visible = false
+	if game_panel:
+		game_panel.visible = false
+	if completed_panel:
+		completed_panel.visible = true
+	
 	wood_sprite.visible = false
 	target_sprite.visible = false
 	carving_tool.visible = false
-	done_button.visible = false
 	
-	# Show completion screen
+	# Show results
 	if completed_stats:
-		completed_stats.visible = true
-		completed_stats.text = """
-		CARVING COMPLETED!          
-		PERFORMANCE BREAKDOWN:
-		  Base Score:        %d pts
-		  Time Bonus:        +%d pts
-		  Accuracy Bonus:    +%d pts  
-		  Efficiency Bonus:  +%d pts
-		  FINAL SCORE:       %d pts
-		DETAILED STATS:
-		  Time Taken:        %.1f seconds
-		  Accuracy:          %.1f%%
-		  Perfect Cuts:      %d
-		  Mistakes:          %d
-		  Total Cuts:        %d
-		  Avg Tool Size:     %.1f
-		Press SPACE to try again!
-		""" % [ score, time_bonus, accuracy_bonus, efficiency_bonus, 
-			   final_score, time_elapsed, accuracy, perfect_cuts, mistakes, 
-			   cuts_made, carve_radius]
-	
-	update_ui()
+		completed_stats.text = """CARVING COMPLETED!
+
+FINAL SCORE: %d points
+
+Base Score:          %d pts
+Time Bonus:          +%d pts
+Accuracy Bonus:      +%d pts
+Efficiency Bonus:    +%d pts
+
+STATS:
+Time Taken:          %.1f seconds
+Accuracy:            %.1f%%
+Perfect Cuts:        %d
+Mistakes:            %d
+Total Cuts:          %d
+Avg Tool Size:       %.1f px""" % [
+			final_score, score, time_bonus, accuracy_bonus, efficiency_bonus,
+			time_elapsed, accuracy, perfect_cuts, mistakes, cuts_made, carve_radius
+		]
+
+func _on_show_target_toggled(button_pressed: bool):
+	"""Toggle target visibility"""
+	if target_sprite:
+		target_sprite.visible = button_pressed
+
+func quit_game():
+	"""Quit the application"""
+	get_tree().quit()
 
 func draw_circle_on_image(img: Image, center: Vector2, radius: float, color: Color):
+	"""Draw a filled circle on an image"""
 	var radius_sq = radius * radius
 	for y in range(max(0, int(center.y - radius)), min(img.get_height(), int(center.y + radius + 1))):
 		for x in range(max(0, int(center.x - radius)), min(img.get_width(), int(center.x + radius + 1))):
