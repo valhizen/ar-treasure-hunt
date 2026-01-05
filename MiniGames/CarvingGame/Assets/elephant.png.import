@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b5y4cjxdwsht1"
-path="res://.godot/imported/wood_texture.jpeg-222006e4077a8fd16c9a78b2103fe5ef.ctex"
+uid="uid://c3ioauk8bp1xy"
+path="res://.godot/imported/elephant.png-fc654fc7bd6ebddd0ef672846192a973.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://MiniGames/CarvingGame/wood_texture.jpeg"
-dest_files=["res://.godot/imported/wood_texture.jpeg-222006e4077a8fd16c9a78b2103fe5ef.ctex"]
+source_file="res://MiniGames/CarvingGame/Assets/elephant.png"
+dest_files=["res://.godot/imported/elephant.png-fc654fc7bd6ebddd0ef672846192a973.ctex"]
 
 [params]
 

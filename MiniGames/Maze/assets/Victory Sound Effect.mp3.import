@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://cydlqitmccnxq"
+path="res://.godot/imported/Victory Sound Effect.mp3-c31e01666e5144cf5f775c8539d0dcff.mp3str"
+
+[deps]
+
+source_file="res://MiniGames/Maze/assets/Victory Sound Effect.mp3"
+dest_files=["res://.godot/imported/Victory Sound Effect.mp3-c31e01666e5144cf5f775c8539d0dcff.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

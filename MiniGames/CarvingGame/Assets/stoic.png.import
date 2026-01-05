@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bxfd2nknmb6rh"
-path="res://.godot/imported/decor.png-320a94d50fc888aeab21f7efee33d154.ctex"
+uid="uid://dn24i1n2xnef0"
+path="res://.godot/imported/stoic.png-44892c40733cf2fec2dff94e54564bec.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://MiniGames/CarvingGame/decor.png"
-dest_files=["res://.godot/imported/decor.png-320a94d50fc888aeab21f7efee33d154.ctex"]
+source_file="res://MiniGames/CarvingGame/Assets/stoic.png"
+dest_files=["res://.godot/imported/stoic.png-44892c40733cf2fec2dff94e54564bec.ctex"]
 
 [params]
 

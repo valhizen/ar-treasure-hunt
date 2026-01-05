@@ -3,7 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://bltt8evyl2b5e" path="res://MiniGames/Maze/assets/torch.png" id="1_35pan"]
 [ext_resource type="Texture2D" uid="uid://bp2jvidjwh2k3" path="res://MiniGames/Maze/assets/light_texture.webp" id="2_ndh44"]
 
-[node name="lantern" type="Node2D"]
+[node name="lantern" type="Node2D" groups=["lantern"]]
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 z_index = 3

@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://djt5glkda4mvy"
-path="res://.godot/imported/door.png-a5e09d42bb8530f19e0f3ebbd6dad981.ctex"
+path="res://.godot/imported/door.png-4c55ba6adddef6188e9061b521b75876.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://MiniGames/CarvingGame/door.png"
-dest_files=["res://.godot/imported/door.png-a5e09d42bb8530f19e0f3ebbd6dad981.ctex"]
+source_file="res://MiniGames/CarvingGame/Assets/door.png"
+dest_files=["res://.godot/imported/door.png-4c55ba6adddef6188e9061b521b75876.ctex"]
 
 [params]
 
