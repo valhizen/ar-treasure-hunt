@@ -1457,7 +1457,7 @@ z_index = -13
 texture = ExtResource("10_a36du")
 
 [node name="MainCharacter" parent="." instance=ExtResource("3_enj1e")]
-position = Vector2(1310, -282)
+position = Vector2(68, -24)
 
 [node name="Coins" type="Label" parent="MainCharacter"]
 visible = false

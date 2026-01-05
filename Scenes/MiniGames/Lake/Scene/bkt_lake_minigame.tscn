@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://rxpxqpy8q0hy" path="res://Scenes/MiniGames/Lake/Scripts/bkt_lake_minigame.gd" id="1_flvqo"]
 [ext_resource type="PackedScene" uid="uid://s70v8hbbhqmm" path="res://Scenes/MiniGames/Lake/Scene/main_audio.tscn" id="2_ad0wf"]
-[ext_resource type="PackedScene" uid="uid://8b5pju8f3t4k" path="res://Scenes/MiniGames/Lake/Scene/corrupter.tscn" id="4_rv3kn"]
+[ext_resource type="PackedScene" uid="uid://8b5pju8f3t4k" path="res://Scenes/MiniGames/Lake/corrupter.tscn" id="4_rv3kn"]
 [ext_resource type="Script" uid="uid://clkld1ultic4y" path="res://Scenes/MiniGames/Lake/Scripts/player.gd" id="6_mi4rp"]
 [ext_resource type="PackedScene" uid="uid://2wkekeli0aq2" path="res://Scenes/MiniGames/Lake/Scene/bullet.tscn" id="7_aj8t1"]
 [ext_resource type="Script" uid="uid://n0vu67sm26oy" path="res://Scenes/MiniGames/Lake/Scripts/health_bar.gd" id="8_dybc6"]
@@ -162,7 +162,7 @@ position = Vector2(1415, -1113)
 position = Vector2(2551, 55)
 
 [node name="Player" type="CharacterBody2D" parent="." groups=["player"]]
-position = Vector2(-578, 296)
+position = Vector2(-2345, 1122)
 collision_layer = 3
 script = ExtResource("6_mi4rp")
 bullet_scene = ExtResource("7_aj8t1")
