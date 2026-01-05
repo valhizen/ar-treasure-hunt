@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://6j8568xccagh"
-path="res://.godot/imported/p7.png-6ea1afe8d88cc7d38f242f1c84d344a1.ctex"
+uid="uid://ux84lprcmbgg"
+path="res://.godot/imported/Untitled78_20260101000743.png-14d994d093200f68f32eb0715d3393ae.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://MiniGames/PaperCollector/assets/p7.png"
-dest_files=["res://.godot/imported/p7.png-6ea1afe8d88cc7d38f242f1c84d344a1.ctex"]
+source_file="res://MiniGames/PaperCollector/assets/Untitled78_20260101000743.png"
+dest_files=["res://.godot/imported/Untitled78_20260101000743.png-14d994d093200f68f32eb0715d3393ae.ctex"]
 
 [params]
 

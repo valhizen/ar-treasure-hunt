@@ -12,6 +12,11 @@ var game_state := GameState.PLAYING
 @onready var score_label: Label = $UI/ScoreLabel
 @onready var completed_stats: Label = $UI/CompletedStats
 
+@onready var bg_music: AudioStreamPlayer = $BGMusic
+@onready var collect_sfx: AudioStreamPlayer = $CollectSFX
+@onready var game_over_sfx: AudioStreamPlayer = $GameOverSFX
+
+
 var score := 0
 var spawn_timer := 0.0
 var spawn_interval := initial_spawn_interval
@@ -26,6 +31,8 @@ func _ready():
 	_screen_width = get_viewport().get_visible_rect().size.x
 	score_label.text = "Papers: 0 / " + str(total_papers)
 	completed_stats.visible = false
+	bg_music.play()
+
 
 func _process(delta):
 	if game_state != GameState.PLAYING:
@@ -54,6 +61,8 @@ func _on_paper_collected():
 	collected_papers += 1
 	spawn_interval *= spawn_time_decline_factor
 	score_label.text = "Papers: %d / %d" % [collected_papers, total_papers]
+	collect_sfx.play()
+
 
 func _on_paper_removed():
 	active_papers -= 1
@@ -66,7 +75,10 @@ func complete_game():
 	game_state = GameState.COMPLETED
 	player.visible = false
 	score_label.visible = false
+	bg_music.stop()
+	game_over_sfx.play()
 	update_ui()
+
 
 func update_ui():
 	completed_stats.visible = true
