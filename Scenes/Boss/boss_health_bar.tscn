@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bsxjkb60t1ep8"]
+
+[ext_resource type="Script" uid="uid://6dimmu1fax6l" path="res://Scripts/Bosses/boss_health_bar.gd" id="1_6gr5d"]
+
+[node name="BossHealthBar" type="CanvasLayer"]
+script = ExtResource("1_6gr5d")

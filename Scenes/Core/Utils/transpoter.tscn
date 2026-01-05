@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://cwo0acqkt41kp"]
+
+[ext_resource type="Script" uid="uid://up206gr72j3p" path="res://Scripts/Core/Utils/transpoter.gd" id="1_66ww3"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_suu5n"]
+
+[node name="Transpoter" type="Area2D"]
+script = ExtResource("1_66ww3")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+scale = Vector2(3.740678, 3.4348297)
+shape = SubResource("CircleShape2D_suu5n")

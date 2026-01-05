@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://d37i7q7l0jkar"]
+
+[ext_resource type="Texture2D" uid="uid://6wn2snkx2f5t" path="res://Assets/Maps/Bhaktapur/16299E4F-8562-4122-A7B4-C100EBF6F9E7 1.png" id="1_14elu"]
+[ext_resource type="Texture2D" uid="uid://vaqjw85j4wei" path="res://Assets/Maps/Prlogue/BhaktapurDurbarSquare.png" id="2_jhm04"]
+
+[node name="BhaktapurDurbarSquare" type="Node2D"]
+
+[node name="16299e4f85624122A7b4C100ebf6f9e71" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(21, -558)
+texture = ExtResource("1_14elu")
+
+[node name="BhaktapurDurbarSquare" type="Sprite2D" parent="."]
+position = Vector2(3, -135)
+texture = ExtResource("2_jhm04")

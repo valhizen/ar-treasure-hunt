@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://dlb54db5qfuw1"]
+
+[ext_resource type="PackedScene" uid="uid://d0yf2d6rnrjgb" path="res://Scenes/Core/Maps/nyatapola_temple.tscn" id="1_h6gcb"]
+[ext_resource type="Script" uid="uid://osfdo86jp2l6" path="res://Scripts/Core/MIniGame/minigame_adapter.gd" id="2_1ruur"]
+
+[node name="Bhaktapur" type="Node2D"]
+
+[node name="NyatapolaTemple" parent="." instance=ExtResource("1_h6gcb")]
+position = Vector2(2, 16)
+
+[node name="MinigameAdapter" type="Node" parent="."]
+script = ExtResource("2_1ruur")
+minigame_id = "templestack"
+metadata/_custom_type_script = "uid://osfdo86jp2l6"

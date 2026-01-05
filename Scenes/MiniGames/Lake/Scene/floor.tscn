@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://lcrit81sf1rs"]
+
+[ext_resource type="Texture2D" uid="uid://j1eu03yiqu4n" path="res://MiniGames/Lake/Assets/tiles.png" id="1_j7ami"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_j7ami"]
+atlas = ExtResource("1_j7ami")
+region = Rect2(208, 120, 80, 56)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_whqx0"]
+size = Vector2(80, 56.5)
+
+[node name="Floor" type="StaticBody2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = SubResource("AtlasTexture_j7ami")
+centered = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(40, 27.75)
+shape = SubResource("RectangleShape2D_whqx0")

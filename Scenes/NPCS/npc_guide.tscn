@@ -1,0 +1,50 @@
+[gd_scene load_steps=9 format=3 uid="uid://bka5qc5y3c663"]
+
+[ext_resource type="Texture2D" uid="uid://c4ajwuwbgrdg4" path="res://Assets/NPCS/Generic Male NPCs.png" id="1_c7kmy"]
+[ext_resource type="Script" uid="uid://dmqmmbvdkca34" path="res://Scripts/Core/PlayerInteraction/actionable.gd" id="2_snha8"]
+[ext_resource type="Resource" uid="uid://bmdk2ob8wl02o" path="res://Dialogue/prologue_dialogue.dialogue" id="3_2lddi"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_snha8"]
+atlas = ExtResource("1_c7kmy")
+region = Rect2(0, 0, 80, 120)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2lddi"]
+atlas = ExtResource("1_c7kmy")
+region = Rect2(80, 0, 80, 120)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bm44r"]
+atlas = ExtResource("1_c7kmy")
+region = Rect2(160, 0, 80, 120)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_uvhck"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_snha8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2lddi")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bm44r")
+}],
+"loop": true,
+"name": &"NPC1",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_2lddi"]
+
+[node name="NPCGuide" type="Node2D"]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_uvhck")
+animation = &"NPC1"
+
+[node name="Area2D" type="Area2D" parent="."]
+script = ExtResource("2_snha8")
+dialogue_resource = ExtResource("3_2lddi")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+scale = Vector2(5.954547, 7.6478243)
+shape = SubResource("CircleShape2D_2lddi")

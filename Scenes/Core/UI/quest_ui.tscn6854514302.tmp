@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://hxo7bmxej2ei"]
+
+[ext_resource type="Script" uid="uid://dhxodkqr72fhe" path="res://Scripts/Core/Utils/quest_ui.gd" id="1_aj8rf"]
+
+[node name="QuestUI" type="CanvasLayer"]
+script = ExtResource("1_aj8rf")

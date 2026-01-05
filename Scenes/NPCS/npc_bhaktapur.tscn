@@ -1,0 +1,49 @@
+[gd_scene load_steps=9 format=3 uid="uid://dc28vkcewwquj"]
+
+[ext_resource type="Texture2D" uid="uid://c4ajwuwbgrdg4" path="res://Assets/NPCS/Generic Male NPCs.png" id="1_hkcuk"]
+[ext_resource type="Script" uid="uid://dmqmmbvdkca34" path="res://Scripts/Core/PlayerInteraction/actionable.gd" id="2_jbisq"]
+[ext_resource type="Resource" uid="uid://bmdk2ob8wl02o" path="res://Dialogue/prologue_dialogue.dialogue" id="3_olej7"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0xdhe"]
+atlas = ExtResource("1_hkcuk")
+region = Rect2(480, 0, 80, 120)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jbisq"]
+atlas = ExtResource("1_hkcuk")
+region = Rect2(560, 0, 80, 120)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_olej7"]
+atlas = ExtResource("1_hkcuk")
+region = Rect2(640, 0, 80, 120)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_inhks"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0xdhe")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jbisq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_olej7")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_7con8"]
+radius = 59.64059
+
+[node name="NPCBhaktapur" type="Node2D"]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_inhks")
+
+[node name="Area2D" type="Area2D" parent="."]
+script = ExtResource("2_jbisq")
+dialogue_resource = ExtResource("3_olej7")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_7con8")

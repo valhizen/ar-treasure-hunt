@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://cuo80w8ug7et0"]
+
+[ext_resource type="Texture2D" uid="uid://bp6go2r60sici" path="res://Assets/Maps/Prlogue/BhaktapurMeasusume.png" id="1_8rjot"]
+
+[node name="MusemBhaktapur" type="Node2D"]
+
+[node name="BhaktapurMeasusume" type="Sprite2D" parent="."]
+position = Vector2(5, -293)
+texture = ExtResource("1_8rjot")

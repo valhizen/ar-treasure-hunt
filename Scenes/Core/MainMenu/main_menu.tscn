@@ -1,0 +1,508 @@
+[gd_scene load_steps=40 format=3 uid="uid://d14pb87g68ov5"]
+
+[ext_resource type="Script" uid="uid://c1q8cwv6nirr7" path="res://Scripts/Core/MainMenu/main_menu.gd" id="1_qthbx"]
+[ext_resource type="Shader" uid="uid://b8l2y0njl4n4h" path="res://Shaders/main_menu.gdshader" id="2_oiatc"]
+[ext_resource type="Texture2D" uid="uid://b43wj027rqesx" path="res://Assets/MainMenu/destroyed-background.png" id="3_mg3m2"]
+[ext_resource type="Texture2D" uid="uid://b26beyvdyk1yx" path="res://Assets/MainMenu/normal-background.png" id="4_ojb7r"]
+[ext_resource type="Script" uid="uid://bff32osy2o6f5" path="res://Scripts/Core/MainMenu/texture_rect.gd" id="5_6vr1a"]
+[ext_resource type="Texture2D" uid="uid://b3a2bswlo5ijg" path="res://Assets/MainMenu/title.png" id="6_7bbuq"]
+[ext_resource type="Texture2D" uid="uid://bvrlxwrfcgwjg" path="res://Assets/MainMenu/continue.png" id="9_ql5ya"]
+[ext_resource type="AudioStream" uid="uid://bila52c2cr1et" path="res://Assets/MainMenu/Sound/computer-mouse-click-352734.mp3" id="10_ka3nr"]
+[ext_resource type="Texture2D" uid="uid://iipmfpq824ny" path="res://Assets/MainMenu/new_game.png" id="12_m2y5l"]
+[ext_resource type="Texture2D" uid="uid://bdo825oou5hb4" path="res://Assets/MainMenu/options.png" id="14_u5051"]
+[ext_resource type="Texture2D" uid="uid://box1aydk72yy3" path="res://Assets/MainMenu/quit.png" id="16_ai24q"]
+[ext_resource type="PackedScene" uid="uid://cfeukxk76yvn" path="res://Scenes/Core/MainMenu/audio_stream_player.tscn" id="17_qby1g"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_x0y5d"]
+shader = ExtResource("2_oiatc")
+shader_parameter/normal = ExtResource("4_ojb7r")
+shader_parameter/destroyed = ExtResource("3_mg3m2")
+shader_parameter/progress = 0.0
+shader_parameter/shake_power = 0.03
+shader_parameter/shake_speed = 5.0
+shader_parameter/shake_block_size = 30.5
+shader_parameter/shake_color_rate = 0.01
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_16l0f"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lr4r8"]
+atlas = ExtResource("9_ql5ya")
+region = Rect2(1, 3, 476, 185)
+
+[sub_resource type="Animation" id="Animation_b2353"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TextureRect:texture:region")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Rect2(1, 3, 476, 185)]
+}
+
+[sub_resource type="Animation" id="Animation_tad4g"]
+resource_name = "click"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TextureRect:texture:region")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [Rect2(481, 198, 476, 185), Rect2(999, 223, 391, 150), Rect2(1, 393, 476, 185)]
+}
+
+[sub_resource type="Animation" id="Animation_0tqiq"]
+resource_name = "hover"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TextureRect:texture:region")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [Rect2(481, 3, 476, 185), Rect2(961, 3, 476, 185), Rect2(1, 198, 476, 185), Rect2(481, 198, 476, 185)]
+}
+
+[sub_resource type="Animation" id="Animation_nbdpr"]
+resource_name = "normal"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TextureRect:texture:region")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Rect2(1, 3, 476, 185)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_feycm"]
+_data = {
+&"RESET": SubResource("Animation_b2353"),
+&"click": SubResource("Animation_tad4g"),
+&"hover": SubResource("Animation_0tqiq"),
+&"normal": SubResource("Animation_nbdpr")
+}
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_twrek"]
+atlas = ExtResource("12_m2y5l")
+region = Rect2(1, 3, 476, 185)
+
+[sub_resource type="Animation" id="Animation_suvpf"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TextureRect:texture:region")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Rect2(1, 3, 476, 185)]
+}
+
+[sub_resource type="Animation" id="Animation_535dn"]
+resource_name = "click"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TextureRect:texture:region")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [Rect2(481, 3, 476, 185), Rect2(999, 223, 391, 150), Rect2(1, 393, 476, 185)]
+}
+
+[sub_resource type="Animation" id="Animation_xclov"]
+resource_name = "hover"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TextureRect:texture:region")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [Rect2(481, 3, 476, 185), Rect2(961, 3, 476, 185), Rect2(1, 198, 476, 185), Rect2(481, 198, 476, 185)]
+}
+
+[sub_resource type="Animation" id="Animation_fds0b"]
+resource_name = "normal"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TextureRect:texture:region")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Rect2(1, 3, 476, 185)]
+}
+
+[sub_resource type="Animation" id="Animation_feycm"]
+resource_name = "test"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TextureRect:texture:region")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Rect2(1, 3, 476, 185)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_xclov"]
+_data = {
+&"RESET": SubResource("Animation_suvpf"),
+&"click": SubResource("Animation_535dn"),
+&"hover": SubResource("Animation_xclov"),
+&"normal": SubResource("Animation_fds0b"),
+&"test": SubResource("Animation_feycm")
+}
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_535dn"]
+atlas = ExtResource("14_u5051")
+region = Rect2(1, 3, 476, 185)
+
+[sub_resource type="Animation" id="Animation_h0f67"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TextureRect:texture:region")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Rect2(1, 3, 476, 185)]
+}
+
+[sub_resource type="Animation" id="Animation_enanl"]
+resource_name = "click"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TextureRect:texture:region")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [Rect2(481, 198, 476, 185), Rect2(999, 223, 391, 150), Rect2(1, 393, 476, 185)]
+}
+
+[sub_resource type="Animation" id="Animation_4mvbk"]
+resource_name = "hover"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TextureRect:texture:region")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [Rect2(481, 3, 476, 185), Rect2(961, 3, 476, 185), Rect2(1, 198, 476, 185), Rect2(481, 198, 476, 185)]
+}
+
+[sub_resource type="Animation" id="Animation_tuol5"]
+resource_name = "normal"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TextureRect:texture:region")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Rect2(1, 3, 476, 185)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_fds0b"]
+_data = {
+&"RESET": SubResource("Animation_h0f67"),
+&"click": SubResource("Animation_enanl"),
+&"hover": SubResource("Animation_4mvbk"),
+&"normal": SubResource("Animation_tuol5")
+}
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nbdpr"]
+atlas = ExtResource("16_ai24q")
+region = Rect2(1, 3, 476, 185)
+
+[sub_resource type="Animation" id="Animation_hkq7o"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TextureRect:texture:region")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Rect2(1, 3, 476, 185)]
+}
+
+[sub_resource type="Animation" id="Animation_8ldfi"]
+resource_name = "click"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TextureRect:texture:region")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [Rect2(481, 198, 476, 185), Rect2(999, 223, 391, 150), Rect2(1, 393, 476, 185)]
+}
+
+[sub_resource type="Animation" id="Animation_xqa33"]
+resource_name = "hover"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TextureRect:texture:region")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [Rect2(481, 3, 476, 185), Rect2(961, 3, 476, 185), Rect2(1, 198, 476, 185), Rect2(481, 198, 476, 185)]
+}
+
+[sub_resource type="Animation" id="Animation_twrek"]
+resource_name = "normal"
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TextureRect:texture:region")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Rect2(1, 3, 476, 185)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_b2353"]
+_data = {
+&"RESET": SubResource("Animation_hkq7o"),
+&"click": SubResource("Animation_8ldfi"),
+&"hover": SubResource("Animation_xqa33"),
+&"normal": SubResource("Animation_twrek")
+}
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_qthbx")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+material = SubResource("ShaderMaterial_x0y5d")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_ojb7r")
+script = ExtResource("5_6vr1a")
+
+[node name="Title" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.125
+anchor_top = 0.25
+anchor_right = 0.25
+anchor_bottom = 0.5
+grow_horizontal = 0
+grow_vertical = 0
+texture = ExtResource("6_7bbuq")
+expand_mode = 5
+stretch_mode = 3
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.125
+anchor_top = 0.5
+anchor_right = 0.25
+anchor_bottom = 0.813
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_16l0f")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
+layout_mode = 2
+
+[node name="Continue" type="Button" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+focus_neighbor_top = NodePath("../Quit")
+focus_neighbor_bottom = NodePath("../NewGame")
+
+[node name="TextureRect" type="TextureRect" parent="PanelContainer/VBoxContainer/Continue"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("AtlasTexture_lr4r8")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="PanelContainer/VBoxContainer/Continue"]
+libraries = {
+&"": SubResource("AnimationLibrary_feycm")
+}
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="PanelContainer/VBoxContainer/Continue"]
+stream = ExtResource("10_ka3nr")
+
+[node name="NewGame" type="Button" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+focus_neighbor_top = NodePath("../Continue")
+focus_neighbor_bottom = NodePath("../Options")
+
+[node name="TextureRect" type="TextureRect" parent="PanelContainer/VBoxContainer/NewGame"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("AtlasTexture_twrek")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="PanelContainer/VBoxContainer/NewGame"]
+libraries = {
+&"": SubResource("AnimationLibrary_xclov")
+}
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="PanelContainer/VBoxContainer/NewGame"]
+stream = ExtResource("10_ka3nr")
+
+[node name="Options" type="Button" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+focus_neighbor_top = NodePath("../NewGame")
+focus_neighbor_bottom = NodePath("../Quit")
+
+[node name="TextureRect" type="TextureRect" parent="PanelContainer/VBoxContainer/Options"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("AtlasTexture_535dn")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="PanelContainer/VBoxContainer/Options"]
+libraries = {
+&"": SubResource("AnimationLibrary_fds0b")
+}
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="PanelContainer/VBoxContainer/Options"]
+stream = ExtResource("10_ka3nr")
+
+[node name="Quit" type="Button" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+focus_neighbor_top = NodePath("../Options")
+focus_neighbor_bottom = NodePath("../Continue")
+theme_override_constants/h_separation = 0
+theme_override_font_sizes/font_size = 1
+
+[node name="TextureRect" type="TextureRect" parent="PanelContainer/VBoxContainer/Quit"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("AtlasTexture_nbdpr")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="PanelContainer/VBoxContainer/Quit"]
+libraries = {
+&"": SubResource("AnimationLibrary_b2353")
+}
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="PanelContainer/VBoxContainer/Quit"]
+stream = ExtResource("10_ka3nr")
+
+[node name="AudioStreamPlayer" parent="." instance=ExtResource("17_qby1g")]
+
+[connection signal="focus_entered" from="PanelContainer/VBoxContainer/Continue" to="PanelContainer/VBoxContainer/Continue" method="_on_focus_entered"]
+[connection signal="focus_exited" from="PanelContainer/VBoxContainer/Continue" to="PanelContainer/VBoxContainer/Continue" method="_on_focus_exited"]
+[connection signal="mouse_entered" from="PanelContainer/VBoxContainer/Continue" to="PanelContainer/VBoxContainer/Continue" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="PanelContainer/VBoxContainer/Continue" to="PanelContainer/VBoxContainer/Continue" method="_on_mouse_exited"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/Continue" to="PanelContainer/VBoxContainer/Continue" method="_on_pressed"]
+[connection signal="focus_entered" from="PanelContainer/VBoxContainer/NewGame" to="PanelContainer/VBoxContainer/NewGame" method="_on_focus_entered"]
+[connection signal="focus_exited" from="PanelContainer/VBoxContainer/NewGame" to="PanelContainer/VBoxContainer/NewGame" method="_on_focus_exited"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/NewGame" to="PanelContainer/VBoxContainer/NewGame" method="_on_pressed"]
+[connection signal="focus_entered" from="PanelContainer/VBoxContainer/Options" to="PanelContainer/VBoxContainer/Options" method="_on_focus_entered"]
+[connection signal="focus_exited" from="PanelContainer/VBoxContainer/Options" to="PanelContainer/VBoxContainer/Options" method="_on_focus_exited"]
+[connection signal="mouse_entered" from="PanelContainer/VBoxContainer/Options" to="PanelContainer/VBoxContainer/Options" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="PanelContainer/VBoxContainer/Options" to="PanelContainer/VBoxContainer/Options" method="_on_mouse_exited"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/Options" to="PanelContainer/VBoxContainer/Options" method="_on_pressed"]
+[connection signal="focus_entered" from="PanelContainer/VBoxContainer/Quit" to="PanelContainer/VBoxContainer/Quit" method="_on_focus_entered"]
+[connection signal="focus_exited" from="PanelContainer/VBoxContainer/Quit" to="PanelContainer/VBoxContainer/Quit" method="_on_focus_exited"]
+[connection signal="mouse_entered" from="PanelContainer/VBoxContainer/Quit" to="PanelContainer/VBoxContainer/Quit" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="PanelContainer/VBoxContainer/Quit" to="PanelContainer/VBoxContainer/Quit" method="_on_mouse_exited"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/Quit" to="PanelContainer/VBoxContainer/Quit" method="_on_pressed"]

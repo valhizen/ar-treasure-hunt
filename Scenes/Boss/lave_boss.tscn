@@ -1,0 +1,316 @@
+[gd_scene load_steps=63 format=3 uid="uid://dgr63qsw07fd5"]
+
+[ext_resource type="Texture2D" uid="uid://mh0nfresuoyb" path="res://Assets/Bosses/LavaBoss/03_demon_cleave/demon_cleave_1.png" id="1_4nisj"]
+[ext_resource type="Texture2D" uid="uid://8pbfmfwgtey2" path="res://Assets/Bosses/LavaBoss/03_demon_cleave/demon_cleave_2.png" id="2_gdmfx"]
+[ext_resource type="Texture2D" uid="uid://3kajcjy8x5nb" path="res://Assets/Bosses/LavaBoss/03_demon_cleave/demon_cleave_3.png" id="3_e1mfk"]
+[ext_resource type="Texture2D" uid="uid://cpuqbknhd3le3" path="res://Assets/Bosses/LavaBoss/03_demon_cleave/demon_cleave_4.png" id="4_7vau7"]
+[ext_resource type="Texture2D" uid="uid://rinu7fcs60dg" path="res://Assets/Bosses/LavaBoss/03_demon_cleave/demon_cleave_5.png" id="5_hra3a"]
+[ext_resource type="Texture2D" uid="uid://c2pawk8tdrpw0" path="res://Assets/Bosses/LavaBoss/03_demon_cleave/demon_cleave_6.png" id="6_e7ucl"]
+[ext_resource type="Texture2D" uid="uid://ci6pfa26dw3mx" path="res://Assets/Bosses/LavaBoss/03_demon_cleave/demon_cleave_7.png" id="7_kfnep"]
+[ext_resource type="Texture2D" uid="uid://7vo4jqw4lghw" path="res://Assets/Bosses/LavaBoss/03_demon_cleave/demon_cleave_8.png" id="8_427pm"]
+[ext_resource type="Texture2D" uid="uid://g445x7ty6yo3" path="res://Assets/Bosses/LavaBoss/03_demon_cleave/demon_cleave_9.png" id="9_pmhyy"]
+[ext_resource type="Texture2D" uid="uid://bnqltfcaw670t" path="res://Assets/Bosses/LavaBoss/03_demon_cleave/demon_cleave_10.png" id="10_58rb7"]
+[ext_resource type="Texture2D" uid="uid://ntfas1u10yfa" path="res://Assets/Bosses/LavaBoss/03_demon_cleave/demon_cleave_11.png" id="11_xaxux"]
+[ext_resource type="Texture2D" uid="uid://t14lxhx5as8a" path="res://Assets/Bosses/LavaBoss/03_demon_cleave/demon_cleave_12.png" id="12_i3t5n"]
+[ext_resource type="Texture2D" uid="uid://cse2yrax4sb37" path="res://Assets/Bosses/LavaBoss/03_demon_cleave/demon_cleave_13.png" id="13_je3a2"]
+[ext_resource type="Texture2D" uid="uid://bokpnrcs6sofw" path="res://Assets/Bosses/LavaBoss/03_demon_cleave/demon_cleave_14.png" id="14_yi7sa"]
+[ext_resource type="Texture2D" uid="uid://bpe4y0rfy22sf" path="res://Assets/Bosses/LavaBoss/03_demon_cleave/demon_cleave_15.png" id="15_xpmgn"]
+[ext_resource type="Texture2D" uid="uid://bbp8gevh6p8cy" path="res://Assets/Bosses/LavaBoss/04_demon_take_hit/demon_take_hit_1.png" id="16_hflg6"]
+[ext_resource type="Texture2D" uid="uid://b4eqdnyj176ak" path="res://Assets/Bosses/LavaBoss/04_demon_take_hit/demon_take_hit_2.png" id="17_mltl3"]
+[ext_resource type="Texture2D" uid="uid://crqjn6p3sdot2" path="res://Assets/Bosses/LavaBoss/04_demon_take_hit/demon_take_hit_3.png" id="18_t4n56"]
+[ext_resource type="Texture2D" uid="uid://dhla51xyrfbwx" path="res://Assets/Bosses/LavaBoss/04_demon_take_hit/demon_take_hit_4.png" id="19_p0tyw"]
+[ext_resource type="Texture2D" uid="uid://c8ko8myk2pxov" path="res://Assets/Bosses/LavaBoss/04_demon_take_hit/demon_take_hit_5.png" id="20_b1bqm"]
+[ext_resource type="Texture2D" uid="uid://nfv0drf73oiw" path="res://Assets/Bosses/LavaBoss/05_demon_death/demon_death_1.png" id="21_653mh"]
+[ext_resource type="Texture2D" uid="uid://x015ff4v8bj5" path="res://Assets/Bosses/LavaBoss/05_demon_death/demon_death_2.png" id="22_2jxnm"]
+[ext_resource type="Texture2D" uid="uid://b5akciwf72d00" path="res://Assets/Bosses/LavaBoss/05_demon_death/demon_death_3.png" id="23_2sivi"]
+[ext_resource type="Texture2D" uid="uid://b8m61wfm6d4t" path="res://Assets/Bosses/LavaBoss/05_demon_death/demon_death_4.png" id="24_a3opq"]
+[ext_resource type="Texture2D" uid="uid://b05klgvnbc6vs" path="res://Assets/Bosses/LavaBoss/05_demon_death/demon_death_5.png" id="25_5jc2s"]
+[ext_resource type="Texture2D" uid="uid://dkq3jti2c3dg0" path="res://Assets/Bosses/LavaBoss/05_demon_death/demon_death_6.png" id="26_mhlo8"]
+[ext_resource type="Texture2D" uid="uid://doapjrej2oaj4" path="res://Assets/Bosses/LavaBoss/05_demon_death/demon_death_7.png" id="27_ir3pr"]
+[ext_resource type="Texture2D" uid="uid://3a1qaj831dv8" path="res://Assets/Bosses/LavaBoss/05_demon_death/demon_death_8.png" id="28_jhij0"]
+[ext_resource type="Texture2D" uid="uid://dfsuw512i428c" path="res://Assets/Bosses/LavaBoss/05_demon_death/demon_death_9.png" id="29_klmxm"]
+[ext_resource type="Texture2D" uid="uid://bl5vjwrhe68bu" path="res://Assets/Bosses/LavaBoss/05_demon_death/demon_death_10.png" id="30_7gsxy"]
+[ext_resource type="Texture2D" uid="uid://dl4ewrcwgo44a" path="res://Assets/Bosses/LavaBoss/05_demon_death/demon_death_11.png" id="31_l81g3"]
+[ext_resource type="Texture2D" uid="uid://t8pi4m6ctrdv" path="res://Assets/Bosses/LavaBoss/05_demon_death/demon_death_12.png" id="32_i8cbt"]
+[ext_resource type="Texture2D" uid="uid://bfonw0ebhlwc" path="res://Assets/Bosses/LavaBoss/05_demon_death/demon_death_13.png" id="33_i5qeh"]
+[ext_resource type="Texture2D" uid="uid://duwf0ep876880" path="res://Assets/Bosses/LavaBoss/05_demon_death/demon_death_14.png" id="34_j5rsw"]
+[ext_resource type="Texture2D" uid="uid://b06rcesyagi85" path="res://Assets/Bosses/LavaBoss/05_demon_death/demon_death_15.png" id="35_s5an8"]
+[ext_resource type="Texture2D" uid="uid://f7fkxokkbm8o" path="res://Assets/Bosses/LavaBoss/05_demon_death/demon_death_16.png" id="36_xngtt"]
+[ext_resource type="Texture2D" uid="uid://c17kf6lchedgj" path="res://Assets/Bosses/LavaBoss/05_demon_death/demon_death_17.png" id="37_fmhbd"]
+[ext_resource type="Texture2D" uid="uid://bnt0hbr88y724" path="res://Assets/Bosses/LavaBoss/05_demon_death/demon_death_18.png" id="38_2j24r"]
+[ext_resource type="Texture2D" uid="uid://k818wnbllrd3" path="res://Assets/Bosses/LavaBoss/05_demon_death/demon_death_19.png" id="39_ry0q1"]
+[ext_resource type="Texture2D" uid="uid://c67yhchsdxfmj" path="res://Assets/Bosses/LavaBoss/05_demon_death/demon_death_20.png" id="40_wphag"]
+[ext_resource type="Texture2D" uid="uid://isgoj84s7e2o" path="res://Assets/Bosses/LavaBoss/05_demon_death/demon_death_21.png" id="41_03enr"]
+[ext_resource type="Texture2D" uid="uid://dlcdjl6ost83m" path="res://Assets/Bosses/LavaBoss/05_demon_death/demon_death_22.png" id="42_si06o"]
+[ext_resource type="Texture2D" uid="uid://dgqpj8a1wfejr" path="res://Assets/Bosses/LavaBoss/01_demon_idle/demon_idle_1.png" id="43_jiecg"]
+[ext_resource type="Texture2D" uid="uid://dp67rciif0tak" path="res://Assets/Bosses/LavaBoss/01_demon_idle/demon_idle_2.png" id="44_ewyd6"]
+[ext_resource type="Texture2D" uid="uid://c3nrb0o605j6k" path="res://Assets/Bosses/LavaBoss/01_demon_idle/demon_idle_3.png" id="45_5ralq"]
+[ext_resource type="Texture2D" uid="uid://cgk4fjocyttos" path="res://Assets/Bosses/LavaBoss/01_demon_idle/demon_idle_4.png" id="46_vnwao"]
+[ext_resource type="Texture2D" uid="uid://celobkk62vrq2" path="res://Assets/Bosses/LavaBoss/01_demon_idle/demon_idle_5.png" id="47_ptg5h"]
+[ext_resource type="Texture2D" uid="uid://bs6d5fkmy288d" path="res://Assets/Bosses/LavaBoss/01_demon_idle/demon_idle_6.png" id="48_vh4nq"]
+[ext_resource type="Texture2D" uid="uid://coc7g8jbe08fd" path="res://Assets/Bosses/LavaBoss/02_demon_walk/demon_walk_1.png" id="49_trekh"]
+[ext_resource type="Texture2D" uid="uid://w0to5f1x82lx" path="res://Assets/Bosses/LavaBoss/02_demon_walk/demon_walk_2.png" id="50_x8y84"]
+[ext_resource type="Texture2D" uid="uid://rtsek6cgfi0o" path="res://Assets/Bosses/LavaBoss/02_demon_walk/demon_walk_3.png" id="51_3746i"]
+[ext_resource type="Texture2D" uid="uid://qbk75772vmgc" path="res://Assets/Bosses/LavaBoss/02_demon_walk/demon_walk_4.png" id="52_fmbm7"]
+[ext_resource type="Texture2D" uid="uid://dxao0gd7pbstt" path="res://Assets/Bosses/LavaBoss/02_demon_walk/demon_walk_5.png" id="53_a0oy0"]
+[ext_resource type="Texture2D" uid="uid://d23axesrhdqr0" path="res://Assets/Bosses/LavaBoss/02_demon_walk/demon_walk_6.png" id="54_1o0i3"]
+[ext_resource type="Texture2D" uid="uid://ol3lp5y3juxc" path="res://Assets/Bosses/LavaBoss/02_demon_walk/demon_walk_7.png" id="55_1viyp"]
+[ext_resource type="Texture2D" uid="uid://cg66ws01dyewv" path="res://Assets/Bosses/LavaBoss/02_demon_walk/demon_walk_8.png" id="56_grhe7"]
+[ext_resource type="Texture2D" uid="uid://br46ams0rgp6w" path="res://Assets/Bosses/LavaBoss/02_demon_walk/demon_walk_9.png" id="57_7pgqt"]
+[ext_resource type="Texture2D" uid="uid://tpqq7sok8387" path="res://Assets/Bosses/LavaBoss/02_demon_walk/demon_walk_10.png" id="58_mo1we"]
+[ext_resource type="Texture2D" uid="uid://3e4l3gaor05x" path="res://Assets/Bosses/LavaBoss/02_demon_walk/demon_walk_11.png" id="59_7wjl0"]
+[ext_resource type="Texture2D" uid="uid://d3wghxb8b82fv" path="res://Assets/Bosses/LavaBoss/02_demon_walk/demon_walk_12.png" id="60_lidw7"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_1t3ep"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_4nisj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_gdmfx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_e1mfk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_7vau7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_hra3a")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_e7ucl")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_kfnep")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_427pm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_pmhyy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_58rb7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_xaxux")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_i3t5n")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_je3a2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_yi7sa")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_xpmgn")
+}],
+"loop": true,
+"name": &"cleave",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("16_hflg6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_mltl3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_t4n56")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_p0tyw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_b1bqm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_653mh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_2jxnm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_2sivi")
+}, {
+"duration": 1.0,
+"texture": ExtResource("24_a3opq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("25_5jc2s")
+}, {
+"duration": 1.0,
+"texture": ExtResource("26_mhlo8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("27_ir3pr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("28_jhij0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("29_klmxm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("30_7gsxy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("31_l81g3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("32_i8cbt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("33_i5qeh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("34_j5rsw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("35_s5an8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("36_xngtt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("37_fmhbd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("38_2j24r")
+}, {
+"duration": 1.0,
+"texture": ExtResource("39_ry0q1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("40_wphag")
+}, {
+"duration": 1.0,
+"texture": ExtResource("41_03enr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("42_si06o")
+}],
+"loop": false,
+"name": &"death",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("43_jiecg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("44_ewyd6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("45_5ralq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("46_vnwao")
+}, {
+"duration": 1.0,
+"texture": ExtResource("47_ptg5h")
+}, {
+"duration": 1.0,
+"texture": ExtResource("48_vh4nq")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("16_hflg6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_mltl3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_t4n56")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_p0tyw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_b1bqm")
+}],
+"loop": false,
+"name": &"take_hit",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("43_jiecg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("44_ewyd6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("45_5ralq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("46_vnwao")
+}, {
+"duration": 1.0,
+"texture": ExtResource("47_ptg5h")
+}, {
+"duration": 1.0,
+"texture": ExtResource("48_vh4nq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("49_trekh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("50_x8y84")
+}, {
+"duration": 1.0,
+"texture": ExtResource("51_3746i")
+}, {
+"duration": 1.0,
+"texture": ExtResource("52_fmbm7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("53_a0oy0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("54_1o0i3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("55_1viyp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("56_grhe7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("57_7pgqt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("58_mo1we")
+}, {
+"duration": 1.0,
+"texture": ExtResource("59_7wjl0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("60_lidw7")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 12.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_4nisj"]
+
+[node name="LaveBoss" type="CharacterBody2D"]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_1t3ep")
+animation = &"walk"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-2, 42)
+scale = Vector2(3.1008935, 3.0085623)
+shape = SubResource("CircleShape2D_4nisj")

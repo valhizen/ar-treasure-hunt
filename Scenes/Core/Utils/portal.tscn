@@ -1,0 +1,59 @@
+[gd_scene load_steps=9 format=3 uid="uid://ec8232jrd7pi"]
+
+[ext_resource type="Texture2D" uid="uid://dvnf3fauipk6l" path="res://Assets/Utils/Dimensional_Portal.png" id="1_qtcs5"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_luns5"]
+atlas = ExtResource("1_qtcs5")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qh5w3"]
+atlas = ExtResource("1_qtcs5")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m1qou"]
+atlas = ExtResource("1_qtcs5")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gi03r"]
+atlas = ExtResource("1_qtcs5")
+region = Rect2(0, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2mdj2"]
+atlas = ExtResource("1_qtcs5")
+region = Rect2(32, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lfvqd"]
+atlas = ExtResource("1_qtcs5")
+region = Rect2(64, 32, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_v5d6c"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_luns5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qh5w3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m1qou")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gi03r")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2mdj2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lfvqd")
+}],
+"loop": true,
+"name": &"default",
+"speed": 8.0
+}]
+
+[node name="Portal" type="Node2D"]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_v5d6c")
+frame_progress = 0.9001811

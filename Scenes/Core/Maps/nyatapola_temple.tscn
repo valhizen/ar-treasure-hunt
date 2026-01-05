@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://d0yf2d6rnrjgb"]
+
+[ext_resource type="Texture2D" uid="uid://dda17udslwp7e" path="res://Assets/Maps/Prlogue/The_Biggest_Treasure_Hunt_of_Nepal_Register_Now_About_Event11.png" id="1_fxq2w"]
+
+[node name="NyatapolaTemple" type="Node2D"]
+
+[node name="TheBiggestTreasureHuntOfNepalRegisterNowAboutEvent11" type="Sprite2D" parent="."]
+position = Vector2(-4, -510)
+texture = ExtResource("1_fxq2w")

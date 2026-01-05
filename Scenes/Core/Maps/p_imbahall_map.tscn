@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://cihw82itdp8c2"]
+
+[ext_resource type="Texture2D" uid="uid://bs5wc2l7wuix8" path="res://Assets/Maps/Patan/pimbahall.png" id="1_0jaga"]
+
+[node name="PImbahallMap" type="Node2D"]
+
+[node name="Pimbahall" type="Sprite2D" parent="."]
+position = Vector2(0, 4)
+texture = ExtResource("1_0jaga")

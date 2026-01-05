@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://dci2xonk20x4e"]
+
+[ext_resource type="Texture2D" uid="uid://cv2u4s50brwhs" path="res://Assets/Maps/Prlogue/MainCharacterHouse.png" id="1_8fcs5"]
+
+[node name="MainCharacterHosueExterior" type="Node2D"]
+scale = Vector2(0.6, 0.6)
+
+[node name="MainCharacterHouse" type="Sprite2D" parent="."]
+position = Vector2(131, 65)
+texture = ExtResource("1_8fcs5")

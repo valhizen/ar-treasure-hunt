@@ -1,0 +1,69 @@
+[gd_scene load_steps=6 format=3 uid="uid://kle33vg3e7gs"]
+
+[ext_resource type="Script" uid="uid://q7hrsu3qunt" path="res://MiniGames/MuseumPuzzle/scripts/game.gd" id="1_kmklc"]
+[ext_resource type="Texture2D" uid="uid://b4qs6relhwbe3" path="res://MiniGames/MuseumPuzzle/assets/temple.png" id="2_vmh8g"]
+[ext_resource type="Texture2D" uid="uid://dfsaxmvgaef45" path="res://MiniGames/MuseumPuzzle/assets/background.png" id="3_ltmqj"]
+
+[sub_resource type="Shader" id="Shader_bpqqo"]
+code = "shader_type canvas_item;
+
+uniform float blur_amount : hint_range(0.0, 10.0) = 1.0;
+
+void fragment() {
+    // Get the screen texture UV
+    vec2 uv = SCREEN_UV;
+    
+    // Define the color accumulation variable
+    vec4 color = vec4(0.0);
+    
+    // Sample the texture multiple times with offsets
+    // A simple 5-tap blur
+    color += texture(SCREEN_TEXTURE, uv + vec2(-0.01 * blur_amount, 0.0));
+    color += texture(SCREEN_TEXTURE, uv + vec2(-0.005 * blur_amount, 0.0));
+    color += texture(SCREEN_TEXTURE, uv); // Center sample
+    color += texture(SCREEN_TEXTURE, uv + vec2(0.005 * blur_amount, 0.0));
+    color += texture(SCREEN_TEXTURE, uv + vec2(0.01 * blur_amount, 0.0));
+    
+    // Average the colors
+    color /= 5.0;
+    
+    COLOR = color;
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_152k6"]
+shader = SubResource("Shader_bpqqo")
+
+[node name="Game" type="Control"]
+z_index = 1
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_kmklc")
+bg_image = ExtResource("2_vmh8g")
+render_scale = 0.6
+
+[node name="Background" type="TextureRect" parent="."]
+z_index = -1
+material = SubResource("ShaderMaterial_152k6")
+layout_mode = 0
+offset_right = 3306.0
+offset_bottom = 1812.0
+texture = ExtResource("3_ltmqj")
+
+[node name="WinLabel" type="RichTextLabel" parent="."]
+unique_name_in_owner = true
+z_index = 10
+layout_mode = 0
+offset_left = 1113.0
+offset_top = 199.0
+offset_right = 2236.0
+offset_bottom = 1566.0
+theme_override_font_sizes/normal_font_size = 90
+bbcode_enabled = true
+text = "You Won!!"
+horizontal_alignment = 1
+vertical_alignment = 1

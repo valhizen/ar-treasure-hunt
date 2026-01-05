@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://s70v8hbbhqmm"]
+
+[ext_resource type="AudioStream" uid="uid://wt35qg5k0gbd" path="res://MiniGames/Lake/Assets/watery_cave_loop.ogg" id="1_wr8ee"]
+
+[node name="MainAudio" type="Node2D"]
+
+[node name="Music" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("1_wr8ee")
+volume_db = -12.552
+autoplay = true
