@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://cg5irw5wg806c"
+path="res://.godot/imported/Lantern Placing (Nr. 1 Minecraft Sound) - Sound Effect for editing.mp3-18eb5eefcfe616ba6aebff0db9f568dc.mp3str"
+
+[deps]
+
+source_file="res://MiniGames/Maze/assets/Lantern Placing (Nr. 1 Minecraft Sound) - Sound Effect for editing.mp3"
+dest_files=["res://.godot/imported/Lantern Placing (Nr. 1 Minecraft Sound) - Sound Effect for editing.mp3-18eb5eefcfe616ba6aebff0db9f568dc.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4
