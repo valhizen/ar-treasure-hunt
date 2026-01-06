@@ -3,6 +3,7 @@ extends Area2D
 class_name MinigameExitPortal
 ## MinigameExitPortal - Place inside minigames to allow player to exit
 ## Can be configured to require confirmation or allow instant exit
+## Optionally specify a target_scene to transition directly to that scene
 
 #region Signals
 signal player_entered_portal
@@ -20,6 +21,8 @@ signal exit_cancelled
 @export var interact_action: String = "interact"
 ## Show warning if minigame not complete
 @export var warn_if_incomplete: bool = true
+## Optional: Direct scene path to transition to (leave empty for default behavior)
+@export_file("*.tscn") var target_scene: String = ""
 
 @export_category("Visual")
 @export var show_prompt: bool = true
@@ -236,7 +239,13 @@ func _do_exit() -> void:
 	"""Actually exit the minigame"""
 	print("[MinigameExitPortal] Exiting minigame...")
 	
-	# Get the minigame base (parent should be MinigameBase or have exit method)
+	# If a target scene is specified, go directly there
+	if not target_scene.is_empty():
+		# Use call_deferred to avoid issues during physics callbacks
+		call_deferred("_exit_to_scene", target_scene)
+		return
+	
+	# Default behavior: Get the minigame base (parent should be MinigameBase or have exit method)
 	var minigame = _find_minigame_base()
 	
 	if minigame:
@@ -247,10 +256,12 @@ func _do_exit() -> void:
 			minigame.request_exit()
 		else:
 			# Direct exit through manager
-			_exit_via_manager()
+			call_deferred("_exit_via_manager")
 	else:
 		# Fallback: exit via manager
-		_exit_via_manager()
+		call_deferred("_exit_via_manager")
+
+
 
 
 func _find_minigame_base() -> Node:
@@ -272,18 +283,61 @@ func _find_minigame_base() -> Node:
 	return null
 
 
+
 func _exit_via_manager() -> void:
 	"""Exit through MinigameManager"""
 	var manager = get_node_or_null("/root/MinigameManager")
-	if manager:
+	if manager and manager.is_in_minigame:
 		manager.exit_minigame(null)
-	else:
-		push_error("[MinigameExitPortal] MinigameManager not found!")
-		# Last resort: just change scene back
-		var game_manager = get_node_or_null("/root/GameManager")
-		if game_manager:
+		return
+	
+	# Fallback: try GameManager
+	var game_manager = get_node_or_null("/root/GameManager")
+	if game_manager:
+		if game_manager.has_method("return_to_menu"):
 			game_manager.return_to_menu()
-
+			return
+	
+	# Last resort: direct scene change
+	var tree = get_tree()
+	if tree:
+		push_warning("[MinigameExitPortal] No manager found, returning to main menu")
+		tree.change_scene_to_file("res://Scenes/Core/MainMenu/main_menu.tscn")
+	else:
+		push_error("[MinigameExitPortal] Cannot exit - no tree or manager available")
+func _exit_to_scene(scene_path: String) -> void:
+	"""Transition directly to a specific scene"""
+	print("[MinigameExitPortal] Transitioning to: ", scene_path)
+	
+	if not ResourceLoader.exists(scene_path):
+		push_error("[MinigameExitPortal] Target scene not found: ", scene_path)
+		_exit_via_manager()
+		return
+	
+	# Check if tree is still valid
+	var tree = get_tree()
+	if tree == null:
+		push_error("[MinigameExitPortal] Scene tree is null, cannot transition")
+		return
+	
+	# Try using MinigameManager first (preserves state properly)
+	var manager = get_node_or_null("/root/MinigameManager")
+	if manager and manager.is_in_minigame:
+		# Let MinigameManager handle the exit properly
+		manager.saved_scene_path = scene_path
+		manager.exit_minigame(null)
+		return
+	
+	# Try using GameManager for smooth transitions
+	var game_manager = get_node_or_null("/root/GameManager")
+	if game_manager and game_manager.has_method("change_scene"):
+		game_manager.change_scene(scene_path)
+		return
+	
+	# Direct scene change as fallback
+	var error = tree.change_scene_to_file(scene_path)
+	if error != OK:
+		push_error("[MinigameExitPortal] Failed to change scene: ", error)
 
 #region Editor Helpers
 func _get_configuration_warnings() -> PackedStringArray:
@@ -297,6 +351,10 @@ func _get_configuration_warnings() -> PackedStringArray:
 	
 	if not has_shape:
 		warnings.append("No collision shape! Add a CollisionShape2D child.")
+	
+	# Warn if target scene doesn't exist
+	if not target_scene.is_empty() and not ResourceLoader.exists(target_scene):
+		warnings.append("Target scene not found: %s" % target_scene)
 	
 	return warnings
 #endregion

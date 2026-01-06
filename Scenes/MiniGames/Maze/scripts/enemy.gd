@@ -5,6 +5,9 @@ extends CharacterBody2D
 @export var attack_range: float = 30.0
 @export var damage: int = 10
 @export var attack_cooldown: float = 1.0
+@export var fear_range: float = 200.0
+@export var fear_strength: float = 1.5
+
 
 var player: Node2D = null
 var animated_sprite: AnimatedSprite2D = null
@@ -26,7 +29,19 @@ func _physics_process(delta):
 		if attack_timer >= attack_cooldown:
 			can_attack = true
 			attack_timer = 0.0
-	
+			
+	var nearest_lantern = get_nearest_lantern()
+
+	if nearest_lantern:
+		var lantern_distance = global_position.distance_to(nearest_lantern.global_position)
+		if lantern_distance <= fear_range:
+			# RUN AWAY from lantern
+			var flee_dir = (global_position - nearest_lantern.global_position).normalized()
+			velocity = flee_dir * speed * fear_strength
+			update_animation(flee_dir)
+			move_and_slide()
+			return  # lantern fear overrides everything
+
 	if not player:
 		velocity = Vector2.ZERO
 		play_idle_animation()
@@ -106,3 +121,17 @@ func attack_player():
 		player.take_damage(damage)
 		can_attack = false
 		attack_timer = 0.0
+		
+		
+func get_nearest_lantern() -> Node2D:
+	var lanterns = get_tree().get_nodes_in_group("lantern")
+	var nearest: Node2D = null
+	var min_dist := INF
+	
+	for lantern in lanterns:
+		var d = global_position.distance_to(lantern.global_position)
+		if d < min_dist:
+			min_dist = d
+			nearest = lantern
+	
+	return nearest

@@ -3,7 +3,6 @@ class_name MainCharacter
 
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 @onready var actionable_finder: Area2D = $Direction/ActionableFinder
-@onready var point_light_2d: PointLight2D = $PointLight2D
 
 
 # === MODE ===
@@ -270,12 +269,7 @@ func _try_dodge() -> void:
 			"up": dodge_direction = Vector2.UP
 			"down": dodge_direction = Vector2.DOWN
 	
-	# Play dodge animation if available
-	var dodge_anim = "dodge_" + facing_direction
-	if animated_sprite_2d.sprite_frames.has_animation(dodge_anim):
-		animated_sprite_2d.play(dodge_anim)
-	
-	# Visual effect - ghost trail
+	# Visual effect - ghost trail (no dodge animation available)
 	_spawn_dodge_ghost()
 
 
@@ -310,7 +304,7 @@ func _topdown_movement(delta: float) -> void:
 	
 	var input = Input.get_vector("Left", "Right", "Up", "Down")
 	
-	# Sprint handling
+	# Sprint handling (uses run animation since no sprint animation exists)
 	var speed = player_speed
 	is_sprinting = false
 
@@ -323,12 +317,10 @@ func _topdown_movement(delta: float) -> void:
 		else:
 			facing_direction = "down" if input.y > 0 else "up"
 		
-		if is_sprinting:
-			_play_anim("sprint" if animated_sprite_2d.sprite_frames.has_animation("sprint_" + facing_direction) else "run")
-		else:
-			animated_sprite_2d.play("run_" + facing_direction)
+		# Use run animation (no sprint animation available)
+		animated_sprite_2d.play("run_" + facing_direction)
 	else:
-		if "run" in animated_sprite_2d.animation or "sprint" in animated_sprite_2d.animation:
+		if "run" in animated_sprite_2d.animation:
 			animated_sprite_2d.play("idle_" + facing_direction)
 	
 	move_and_slide()
@@ -412,18 +404,12 @@ func _update_platformer_animation() -> void:
 	if is_attacking:
 		return
 	
-	if not is_on_floor():
-		if velocity.y < 0:
-			_play_anim("jump" if animated_sprite_2d.sprite_frames.has_animation("jump_" + facing_direction) else "run")
-		else:
-			_play_anim("fall" if animated_sprite_2d.sprite_frames.has_animation("fall_" + facing_direction) else "idle")
-	elif abs(velocity.x) > 10:
-		if is_sprinting:
-			_play_anim("sprint" if animated_sprite_2d.sprite_frames.has_animation("sprint_" + facing_direction) else "run")
-		else:
-			_play_anim("run")
+	# No jump/fall animations available, use run when moving, idle when not
+	if abs(velocity.x) > 10:
+		# Use run animation (no sprint animation available)
+		animated_sprite_2d.play("run_" + facing_direction)
 	else:
-		_play_anim("idle")
+		animated_sprite_2d.play("idle_" + facing_direction)
 
 
 func _play_anim(type: String) -> void:
@@ -451,11 +437,16 @@ func _attack(num: int) -> void:
 	is_attacking = true
 	_disable_hitbox()
 	
-	var anim_name = "attack_" + str(num) + "_" + facing_direction
+	# Only left/right attack animations exist, so map up/down to right/left
+	var attack_facing = facing_direction
+	if facing_direction == "up" or facing_direction == "down":
+		attack_facing = "right"  # Default to right for up/down attacks
+	
+	var anim_name = "attack_" + str(num) + "_" + attack_facing
 	if animated_sprite_2d.sprite_frames.has_animation(anim_name):
 		animated_sprite_2d.play(anim_name)
 	else:
-		animated_sprite_2d.play("attack_1_" + facing_direction)
+		animated_sprite_2d.play("attack_1_right")
 	
 	if hitbox:
 		match facing_direction:
@@ -522,9 +513,7 @@ func _on_animation_finished() -> void:
 	if "attack" in animated_sprite_2d.animation:
 		is_attacking = false
 		_disable_hitbox()
-		_play_anim("idle")
-	elif "dodge" in animated_sprite_2d.animation:
-		_play_anim("idle")
+		animated_sprite_2d.play("idle_" + facing_direction)
 
 
 func heal(amount: float) -> void:

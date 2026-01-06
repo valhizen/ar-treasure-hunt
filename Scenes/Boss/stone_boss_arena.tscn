@@ -211,7 +211,7 @@ tile_set = SubResource("TileSet_wa7em")
 position = Vector2(3510, 333)
 
 [node name="MainCharacter" parent="." instance=ExtResource("2_p2xy5")]
-position = Vector2(3031, 359)
+position = Vector2(3151, 370)
 enable_combat = true
 
 [node name="BossHealthBar" parent="." instance=ExtResource("4_8wl22")]

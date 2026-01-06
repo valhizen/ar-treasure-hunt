@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://ck4c6drrhi2p1"
+path="res://.godot/imported/8 Bit Death Sound Effect.mp3-5e50362e18dde598199b2618feded1bd.mp3str"
+
+[deps]
+
+source_file="res://Scenes/MiniGames/Maze/assets/8 Bit Death Sound Effect.mp3"
+dest_files=["res://.godot/imported/8 Bit Death Sound Effect.mp3-5e50362e18dde598199b2618feded1bd.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

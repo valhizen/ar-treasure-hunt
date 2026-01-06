@@ -162,8 +162,9 @@ position = Vector2(1415, -1113)
 position = Vector2(2551, 55)
 
 [node name="Player" type="CharacterBody2D" parent="." groups=["player"]]
-position = Vector2(-578, 296)
+position = Vector2(1300, 638)
 collision_layer = 3
+collision_mask = 3
 script = ExtResource("6_mi4rp")
 bullet_scene = ExtResource("7_aj8t1")
 
@@ -208,14 +209,13 @@ offset_bottom = 1063.0
 text = "Find & Defuse all three Corrupters"
 
 [node name="Portal" parent="." instance=ExtResource("15_3iwff")]
-position = Vector2(1583, 589)
-scale = Vector2(2, 2)
+position = Vector2(1558, 629)
+scale = Vector2(2.229133, 3.716866)
 
 [node name="Area2D" type="Area2D" parent="Portal"]
 collision_layer = 0
 collision_mask = 2
 script = ExtResource("16_lc2q1")
-exit_mode = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Portal/Area2D"]
 shape = SubResource("CircleShape2D_lc2q1")

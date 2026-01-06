@@ -180,6 +180,7 @@ radius = 5.0
 collision_mask = 17
 script = ExtResource("1_w3hih")
 speed = 90.0
+damage = 20
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_a20i5")

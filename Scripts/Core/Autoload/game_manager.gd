@@ -71,36 +71,56 @@ func continue_game() -> void:
 		return
 	
 	var save_data = save_manager.load_game()
-	if not save_data:
-		push_warning("[GameManager] No save found, starting new game")
+	
+	# Debug: Print save contents
+	print("========== SAVE FILE DEBUG ==========")
+	if save_data == null:
+		print("save_data is NULL!")
+		print("======================================")
 		start_new_game()
 		return
 	
-	# Load player data
+	print("Keys in save_data: ", save_data.keys())
+	print("current_map: ", save_data.get("current_map", "MISSING"))
+	print("player_position: ", save_data.get("player_position", "MISSING"))
+	var pd = save_data.get("player_data", {})
+	print("player_data empty: ", pd.is_empty())
+	print("completed_minigames: ", pd.get("completed_minigames", {}))
+	print("======================================")
+	
+	# Load player data - FIX: correct method name
 	var player_data = get_node_or_null("/root/PlayerData")
-	if player_data and player_data.has_method("from_dictionary"):
-		var pd = save_data.get("player_data", {})
-		if pd.size() > 0:
-			player_data.from_dictionary(pd)
+	if player_data and player_data.has_method("load_from_dictionary"):
+		if not pd.is_empty():
+			player_data.load_from_dictionary(pd)
+			print("[GameManager] PlayerData restored!")
+			print("  - Completed minigames: ", player_data.get_total_completed_minigames())
+			print("  - Total score: ", player_data.total_score)
+		else:
+			push_warning("[GameManager] No player_data in save!")
 	
 	# Get map to load
 	current_map = save_data.get("current_map", "")
-	if current_map == "":
+	
+	# Store player position for spawning
+	var pos = save_data.get("player_position", null)
+	if pos is Vector2:
+		_pending_player_position = pos
+	elif pos is Dictionary:
+		_pending_player_position = Vector2(float(pos.get("x", 0)), float(pos.get("y", 0)))
+	else:
+		_pending_player_position = Vector2.ZERO
+	
+	if current_map == "" or current_map == "main_character_house":
 		print("[GameManager] No map in save, going to wake up scene")
 		_transition_to_scene(WAKE_UP_SCENE)
 	else:
-		# Build scene path from map name
 		var scene_path = _get_scene_path_for_map(current_map)
+		print("[GameManager] Loading map: ", current_map, " -> ", scene_path)
 		_transition_to_scene(scene_path)
-	
-	# Store player position for spawning
-	var pos = save_data.get("player_position", Vector2.ZERO)
-	if pos is Vector2:
-		_pending_player_position = pos
 	
 	current_state = GameState.PLAYING
 	game_continued.emit()
-
 
 func quit_game() -> void:
 	"""Quit to desktop"""
@@ -149,29 +169,41 @@ func _transition_to_scene(scene_path: String) -> void:
 		scene_changed.emit(current_map)
 
 
+# In GameManager - update _on_scene_loaded()
 func _on_scene_loaded() -> void:
 	"""Called after scene transition completes"""
-	# Find and register player
 	await get_tree().process_frame
+	
+	# ALWAYS set current_map from the loaded scene
+	var current_scene = get_tree().current_scene
+	if current_scene:
+		var scene_path = current_scene.scene_file_path
+		if scene_path and not scene_path.is_empty():
+			current_map = _extract_map_name(scene_path)
+			print("[GameManager] current_map set to: ", current_map)
+	
+	# Find and register player
 	current_player = _find_player()
 	
 	if current_player:
-		print("[GameManager] Player found: %s" % current_player.name)
+		print("[GameManager] Player found: ", current_player.name)
 		
 		# Apply pending position if continuing
 		if _pending_player_position != Vector2.ZERO:
 			current_player.global_position = _pending_player_position
 			_pending_player_position = Vector2.ZERO
 			print("[GameManager] Applied saved position")
-		
-		# Or use spawn point
 		elif current_spawn_point != "":
 			var spawn = _find_spawn_point(current_spawn_point)
 			if spawn:
 				current_player.global_position = spawn.global_position
-				print("[GameManager] Spawned at: %s" % current_spawn_point)
+				print("[GameManager] Spawned at: ", current_spawn_point)
 			current_spawn_point = ""
-
+		
+		# Save position to PlayerData
+		var player_data = get_node_or_null("/root/PlayerData")
+		if player_data and not current_map.is_empty():
+			player_data.save_map_position(current_map, current_player.global_position)
 
 func _find_player() -> CharacterBody2D:
 	"""Find player node in current scene"""
@@ -277,8 +309,44 @@ func save_current_game(slot: int = 1) -> bool:
 func auto_save() -> void:
 	"""Trigger auto-save"""
 	var save_manager = get_node_or_null("/root/SaveManager")
-	if save_manager and current_player:
-		save_manager.auto_save(current_map, current_player.global_position)
+	if not save_manager:
+		push_warning("[GameManager] No SaveManager for auto-save")
+		return
+	
+	# Get position from current_player OR from PlayerData's saved position
+	var position = Vector2.ZERO
+	var map_name = current_map
+	
+	if current_player:
+		position = current_player.global_position
+	else:
+		# Fallback: use saved position from PlayerData
+		var player_data = get_node_or_null("/root/PlayerData")
+		if player_data and not map_name.is_empty():
+			position = player_data.get_map_position(map_name)
+	
+	# If we still don't have a map name, try to get it from MinigameManager
+	if map_name.is_empty():
+		var minigame_manager = get_node_or_null("/root/MinigameManager")
+		if minigame_manager:
+			map_name = minigame_manager.saved_map
+			if position == Vector2.ZERO:
+				position = minigame_manager.saved_position
+	
+	if map_name.is_empty():
+		push_warning("[GameManager] Cannot auto-save: no map name")
+		return
+	
+	# Save to both auto-save slot AND most recent manual slot
+	save_manager.auto_save(map_name, position)
+	
+	# Also update the most recent manual save slot (1-4)
+	var most_recent = save_manager._get_most_recent_slot()
+	if most_recent > 0:  # Don't overwrite if only auto-save exists
+		save_manager.save_game(most_recent)
+		print("[GameManager] Auto-saved to slot 0 and slot ", most_recent)
+	else:
+		print("[GameManager] Auto-saved to slot 0")
 #endregion
 
 

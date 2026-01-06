@@ -53,7 +53,6 @@ signal sound_played
 
 func _ready() -> void:
 	# Check if intro has already played
-	_start_intro()
 	if _has_intro_played():
 		# Skip intro, just set up indicator if needed
 		call_deferred("_skip_to_gameplay")

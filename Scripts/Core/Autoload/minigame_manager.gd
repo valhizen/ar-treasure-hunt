@@ -1,6 +1,7 @@
 extends Node
 ## MinigameManager - Minigame Loading & Management
 ## AutoLoad Singleton: Handles entering/exiting minigames, preserves position
+## UPDATED: Auto-injects pause menu into minigames
 
 #region Signals
 signal minigame_starting(minigame_id: String)
@@ -8,6 +9,7 @@ signal minigame_started(minigame_id: String)
 signal minigame_completed(minigame_id: String, result: MinigameResult)
 signal minigame_failed(minigame_id: String, reason: String)
 signal minigame_exited(minigame_id: String)
+signal minigame_blocked(minigame_id: String, reason: String)
 #endregion
 
 #region State Variables
@@ -15,6 +17,7 @@ var current_minigame_id: String = ""
 var current_minigame_map: String = ""
 var current_minigame_instance: Node = null
 var current_minigame_data: Dictionary = {}
+var current_pause_menu: CanvasLayer = null  # NEW: Reference to pause menu
 
 # Saved state for returning from minigame
 var saved_map: String = ""
@@ -25,23 +28,35 @@ var saved_player_facing: Vector2 = Vector2.DOWN
 var is_in_minigame: bool = false
 #endregion
 
+#region Pause Menu Scene
+const PAUSE_MENU_SCENE: String = "res://Scenes/Core/UI/minigame_pause_menu.tscn"
+var pause_menu_packed: PackedScene = null
+#endregion
+
 #region Minigame Registry
-# Stores info about all available minigames
 var minigame_registry: Dictionary = {}
 
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	_load_minigame_registry()
+	_preload_pause_menu()
 	print("[MinigameManager] Initialized")
+
+
+func _preload_pause_menu() -> void:
+	"""Preload the pause menu scene"""
+	if ResourceLoader.exists(PAUSE_MENU_SCENE):
+		pause_menu_packed = load(PAUSE_MENU_SCENE)
+		print("[MinigameManager] Pause menu preloaded")
+	else:
+		print("[MinigameManager] Pause menu scene not found at: %s" % PAUSE_MENU_SCENE)
+		print("[MinigameManager] Will create pause menu programmatically")
 
 
 func _load_minigame_registry() -> void:
 	"""Load all minigame manifests into registry"""
-	# You can populate this from files or hardcode
-	# Example entries - replace with your actual minigames
 	minigame_registry = {
-		# Bhaktapur minigames
 		"nyatapola_temple": {
 			"id": "nyatapola_temple",
 			"display_name": "Nyatapola Temple Challenge",
@@ -74,11 +89,10 @@ func _load_minigame_registry() -> void:
 			"scene_path": "res://Scenes/Minigames/Bhaktapur/museum_exploration.tscn",
 			"difficulty": 0,
 			"max_score": 500,
-			"time_limit": 0,  # No time limit
+			"time_limit": 0,
 			"keys_available": 1,
 			"base_currency_reward": 15
 		},
-		# Kathmandu minigames
 		"kathmandu_market": {
 			"id": "kathmandu_market",
 			"display_name": "Market Trading",
@@ -90,30 +104,25 @@ func _load_minigame_registry() -> void:
 			"keys_available": 1,
 			"base_currency_reward": 30
 		},
-		# Add more as needed
 	}
 	
 	print("[MinigameManager] Loaded %d minigames" % minigame_registry.size())
 
 
 func register_minigame(minigame_id: String, data: Dictionary) -> void:
-	"""Register a new minigame (can be called by MinigameData resources)"""
 	minigame_registry[minigame_id] = data
 	print("[MinigameManager] Registered minigame: %s" % minigame_id)
 
 
 func unregister_minigame(minigame_id: String) -> void:
-	"""Remove a minigame from registry"""
 	minigame_registry.erase(minigame_id)
 
 
 func get_minigame_info(minigame_id: String) -> Dictionary:
-	"""Get info about a minigame"""
 	return minigame_registry.get(minigame_id, {})
 
 
 func get_minigames_for_map(map_name: String) -> Array[Dictionary]:
-	"""Get all minigames for a specific map"""
 	var result: Array[Dictionary] = []
 	for minigame_data in minigame_registry.values():
 		if minigame_data.get("map", "") == map_name:
@@ -122,33 +131,37 @@ func get_minigames_for_map(map_name: String) -> Array[Dictionary]:
 
 
 func get_all_minigames() -> Dictionary:
-	"""Get entire registry"""
 	return minigame_registry
 #endregion
 
 #region Enter Minigame
 func start_minigame(minigame_id: String, entry_position: Vector2 = Vector2.ZERO, player_facing: Vector2 = Vector2.DOWN) -> bool:
-	"""
-	Start a minigame.
-	Call this from minigame trigger zones.
-	"""
+	"""Start a minigame."""
 	if is_in_minigame:
 		push_warning("[MinigameManager] Already in a minigame!")
 		return false
 	
 	if not minigame_registry.has(minigame_id):
-		push_error("[MinigameManager] Unknown minigame: %s" % minigame_id)
+		push_error("[MinigameManager] Unknown minigame: ", minigame_id)
 		return false
 	
 	var minigame_data = minigame_registry[minigame_id]
 	var scene_path = minigame_data.get("scene_path", "")
+	var map_name = minigame_data.get("map", "")
+	
+	# Check if already completed
+	var player_data = get_node_or_null("/root/PlayerData")
+	if player_data and player_data.is_minigame_completed(minigame_id, map_name):
+		print("[MinigameManager] Minigame already completed: ", minigame_id)
+		minigame_blocked.emit(minigame_id, "already_completed")
+		return false
 	
 	if scene_path.is_empty():
-		push_error("[MinigameManager] No scene path for minigame: %s" % minigame_id)
+		push_error("[MinigameManager] No scene path for minigame: ", minigame_id)
 		return false
 	
 	if not ResourceLoader.exists(scene_path):
-		push_error("[MinigameManager] Scene not found: %s" % scene_path)
+		push_error("[MinigameManager] Scene not found: ", scene_path)
 		return false
 	
 	# Save current state
@@ -156,6 +169,10 @@ func start_minigame(minigame_id: String, entry_position: Vector2 = Vector2.ZERO,
 	if game_manager:
 		saved_map = game_manager.current_map
 		saved_scene_path = _get_current_scene_path()
+		
+		if saved_map.is_empty() and not saved_scene_path.is_empty():
+			saved_map = saved_scene_path.get_file().get_basename()
+			print("[MinigameManager] Extracted map name from scene: ", saved_map)
 	else:
 		saved_map = ""
 		saved_scene_path = ""
@@ -164,18 +181,16 @@ func start_minigame(minigame_id: String, entry_position: Vector2 = Vector2.ZERO,
 	saved_player_facing = player_facing
 	
 	# Store map position in PlayerData
-	var player_data = get_node_or_null("/root/PlayerData")
 	if player_data and not saved_map.is_empty():
 		player_data.save_map_position(saved_map, saved_position)
 	
 	current_minigame_id = minigame_id
-	current_minigame_map = minigame_data.get("map", saved_map)
+	current_minigame_map = map_name if not map_name.is_empty() else saved_map
 	current_minigame_data = minigame_data
 	
 	minigame_starting.emit(minigame_id)
-	print("[MinigameManager] Starting minigame: %s (saved pos: %s)" % [minigame_id, saved_position])
+	print("[MinigameManager] Starting minigame: ", minigame_id, " (saved map: ", saved_map, ", pos: ", saved_position, ")")
 	
-	# Load minigame scene
 	_load_minigame_scene(scene_path)
 	
 	return true
@@ -185,24 +200,21 @@ func _load_minigame_scene(scene_path: String) -> void:
 	"""Load the minigame scene"""
 	is_in_minigame = true
 	
-	# Notify GameManager
 	var game_manager = get_node_or_null("/root/GameManager")
 	if game_manager and game_manager.has_method("set_minigame_state"):
 		game_manager.set_minigame_state(true)
 	
-	# Change scene
 	var error = get_tree().change_scene_to_file(scene_path)
 	if error != OK:
 		push_error("[MinigameManager] Failed to load minigame scene: %d" % error)
 		is_in_minigame = false
 		return
 	
-	# Wait for scene to load
 	await get_tree().process_frame
 	await get_tree().process_frame
 	
-	# Connect to minigame
 	_connect_to_minigame()
+	_inject_pause_menu()  # NEW: Add pause menu to minigame
 	
 	minigame_started.emit(current_minigame_id)
 	print("[MinigameManager] Minigame loaded: %s" % current_minigame_id)
@@ -214,11 +226,9 @@ func _connect_to_minigame() -> void:
 	if not root:
 		return
 	
-	# Find the minigame root node (should extend MinigameBase)
 	current_minigame_instance = root
 	
 	if root.has_method("_initialize_minigame"):
-		# Connect signals
 		if root.has_signal("completed") and not root.completed.is_connected(_on_minigame_completed):
 			root.completed.connect(_on_minigame_completed)
 		if root.has_signal("failed") and not root.failed.is_connected(_on_minigame_failed):
@@ -226,14 +236,128 @@ func _connect_to_minigame() -> void:
 		if root.has_signal("exited") and not root.exited.is_connected(_on_minigame_exited):
 			root.exited.connect(_on_minigame_exited)
 		
-		# Initialize the minigame
 		root._initialize_minigame(_get_minigame_init_data())
 	else:
 		push_warning("[MinigameManager] Minigame scene doesn't have _initialize_minigame method")
 
 
+func _inject_pause_menu() -> void:
+	"""Inject pause menu into current minigame scene"""
+	var root = get_tree().current_scene
+	if not root:
+		return
+	
+	# Check if pause menu already exists
+	if root.has_node("MinigamePauseMenu"):
+		current_pause_menu = root.get_node("MinigamePauseMenu")
+		print("[MinigameManager] Pause menu already exists in scene")
+		return
+	
+	# Create pause menu
+	if pause_menu_packed:
+		current_pause_menu = pause_menu_packed.instantiate()
+	else:
+		# Create programmatically
+		current_pause_menu = _create_pause_menu_programmatically()
+	
+	if current_pause_menu:
+		current_pause_menu.name = "MinigamePauseMenu"
+		root.add_child(current_pause_menu)
+		
+		# Set minigame name
+		var display_name = current_minigame_data.get("display_name", current_minigame_id)
+		if current_pause_menu.has_method("set_minigame_name"):
+			current_pause_menu.set_minigame_name(display_name)
+		
+		print("[MinigameManager] Pause menu injected")
+
+
+func _create_pause_menu_programmatically() -> CanvasLayer:
+	"""Create pause menu without needing a .tscn file"""
+	var menu = CanvasLayer.new()
+	menu.layer = 100
+	menu.process_mode = Node.PROCESS_MODE_ALWAYS
+	
+	# Blur/darken overlay
+	var blur = ColorRect.new()
+	blur.name = "BlurOverlay"
+	blur.color = Color(0, 0, 0, 0.6)
+	blur.set_anchors_preset(Control.PRESET_FULL_RECT)
+	blur.mouse_filter = Control.MOUSE_FILTER_STOP
+	menu.add_child(blur)
+	
+	# Panel
+	var panel = PanelContainer.new()
+	panel.name = "Panel"
+	panel.set_anchors_preset(Control.PRESET_CENTER)
+	panel.custom_minimum_size = Vector2(400, 360)
+	panel.position = Vector2(-200, -180)
+	menu.add_child(panel)
+	
+	# Margin
+	var margin = MarginContainer.new()
+	margin.add_theme_constant_override("margin_left", 40)
+	margin.add_theme_constant_override("margin_right", 40)
+	margin.add_theme_constant_override("margin_top", 30)
+	margin.add_theme_constant_override("margin_bottom", 30)
+	margin.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	margin.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	panel.add_child(margin)
+	
+	# VBox
+	var vbox = VBoxContainer.new()
+	vbox.name = "VBox"
+	vbox.add_theme_constant_override("separation", 15)
+	margin.add_child(vbox)
+	
+	# Title
+	var title = Label.new()
+	title.name = "Title"
+	title.text = "PAUSED"
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	title.add_theme_font_size_override("font_size", 32)
+	vbox.add_child(title)
+	
+	# Spacer
+	var spacer = Control.new()
+	spacer.custom_minimum_size.y = 20
+	vbox.add_child(spacer)
+	
+	# Resume button
+	var resume_btn = Button.new()
+	resume_btn.name = "ResumeButton"
+	resume_btn.text = "Resume"
+	resume_btn.custom_minimum_size.y = 50
+	resume_btn.pressed.connect(_on_pause_resume)
+	vbox.add_child(resume_btn)
+	
+	# Restart button
+	var restart_btn = Button.new()
+	restart_btn.name = "RestartButton"
+	restart_btn.text = "Restart"
+	restart_btn.custom_minimum_size.y = 50
+	restart_btn.pressed.connect(_on_pause_restart)
+	vbox.add_child(restart_btn)
+	
+	# Exit button
+	var exit_btn = Button.new()
+	exit_btn.name = "ExitButton"
+	exit_btn.text = "Exit Minigame"
+	exit_btn.custom_minimum_size.y = 50
+	exit_btn.add_theme_color_override("font_color", Color(1, 0.4, 0.4))
+	exit_btn.pressed.connect(_on_pause_exit)
+	vbox.add_child(exit_btn)
+	
+	# Start hidden
+	menu.visible = false
+	
+	# Add script behavior
+	menu.set_script(preload("res://Scripts/Core/MinigamePauseMenuSimple.gd") if ResourceLoader.exists("res://Scripts/Core/MinigamePauseMenuSimple.gd") else null)
+	
+	return menu
+
+
 func _get_minigame_init_data() -> Dictionary:
-	"""Data passed to minigame on start"""
 	var player_data = get_node_or_null("/root/PlayerData")
 	var record_key = current_minigame_id
 	
@@ -249,7 +373,6 @@ func _get_minigame_init_data() -> Dictionary:
 
 
 func _get_player_position() -> Vector2:
-	"""Get current player position"""
 	var game_manager = get_node_or_null("/root/GameManager")
 	if game_manager and game_manager.current_player:
 		return game_manager.current_player.global_position
@@ -257,48 +380,105 @@ func _get_player_position() -> Vector2:
 
 
 func _get_current_scene_path() -> String:
-	"""Get path of current scene"""
 	var current = get_tree().current_scene
 	if current:
 		return current.scene_file_path
 	return ""
 #endregion
 
+#region Pause Menu Handlers
+func _on_pause_resume() -> void:
+	"""Resume from pause menu"""
+	if current_pause_menu:
+		current_pause_menu.visible = false
+	get_tree().paused = false
+	print("[MinigameManager] Resumed from pause")
+
+
+func _on_pause_restart() -> void:
+	"""Restart minigame from pause menu"""
+	if current_pause_menu:
+		current_pause_menu.visible = false
+	get_tree().paused = false
+	get_tree().reload_current_scene()
+	print("[MinigameManager] Restarting minigame")
+
+
+func _on_pause_exit() -> void:
+	"""Exit minigame from pause menu"""
+	if current_pause_menu:
+		current_pause_menu.visible = false
+	get_tree().paused = false
+	force_exit()
+	print("[MinigameManager] Exiting minigame via pause menu")
+
+
+func show_pause_menu() -> void:
+	"""Show the pause menu (can be called from minigame)"""
+	if current_pause_menu:
+		current_pause_menu.visible = true
+		get_tree().paused = true
+		
+		# Focus first button
+		var resume_btn = current_pause_menu.get_node_or_null("Panel/MarginContainer/VBox/ResumeButton")
+		if not resume_btn:
+			resume_btn = current_pause_menu.get_node_or_null("Panel/VBox/ResumeButton")
+		if resume_btn:
+			resume_btn.grab_focus()
+
+
+func hide_pause_menu() -> void:
+	"""Hide the pause menu"""
+	if current_pause_menu:
+		current_pause_menu.visible = false
+	get_tree().paused = false
+#endregion
+
+#region Input Handling for Pause
+func _input(event: InputEvent) -> void:
+	if not is_in_minigame:
+		return
+	
+	# Handle ESC/pause during minigame
+	if event.is_action_pressed("ui_cancel") or event.is_action_pressed("pause"):
+		if current_pause_menu:
+			if current_pause_menu.visible:
+				hide_pause_menu()
+			else:
+				show_pause_menu()
+			get_viewport().set_input_as_handled()
+#endregion
+
 #region Exit Minigame
 func exit_minigame(result: MinigameResult = null) -> void:
-	"""
-	Exit current minigame and return to map.
-	Called by minigame when complete or by player quitting.
-	"""
+	"""Exit current minigame and return to map."""
 	if not is_in_minigame:
 		push_warning("[MinigameManager] Not in a minigame!")
 		return
 	
 	var minigame_id = current_minigame_id
 	
-	# Process result if provided
 	if result:
 		_process_minigame_result(result)
 		
-		# Submit score online
 		var score_manager = get_node_or_null("/root/ScoreManager")
 		if score_manager:
 			score_manager.submit_minigame_result(minigame_id, result)
 	
-	# Clear state
+	# Clear pause menu reference
+	current_pause_menu = null
+	
 	current_minigame_instance = null
 	current_minigame_id = ""
 	current_minigame_data = {}
 	is_in_minigame = false
 	
-	# Notify GameManager
 	var game_manager = get_node_or_null("/root/GameManager")
 	if game_manager and game_manager.has_method("set_minigame_state"):
 		game_manager.set_minigame_state(false)
 	
 	minigame_exited.emit(minigame_id)
 	
-	# Return to map at saved position
 	_return_to_map()
 
 
@@ -309,14 +489,12 @@ func _return_to_map() -> void:
 	var game_manager = get_node_or_null("/root/GameManager")
 	
 	if game_manager:
-		# Use GameManager's scene change with position
 		if game_manager.has_method("change_map"):
 			game_manager.change_map(saved_map, saved_position)
 		elif game_manager.has_method("change_scene"):
 			game_manager._pending_player_position = saved_position
 			game_manager.change_scene(saved_scene_path)
 		else:
-			# Fallback: direct scene change
 			_direct_return_to_map()
 	else:
 		_direct_return_to_map()
@@ -330,7 +508,6 @@ func _direct_return_to_map() -> void:
 	
 	get_tree().change_scene_to_file(saved_scene_path)
 	
-	# Wait and position player
 	await get_tree().process_frame
 	await get_tree().process_frame
 	
@@ -340,7 +517,6 @@ func _direct_return_to_map() -> void:
 
 
 func _find_player() -> Node2D:
-	"""Find player in current scene"""
 	var players = get_tree().get_nodes_in_group("player")
 	if players.size() > 0:
 		return players[0] as Node2D
@@ -351,57 +527,93 @@ func _process_minigame_result(result: MinigameResult) -> void:
 	"""Process the minigame result and update PlayerData"""
 	var player_data = get_node_or_null("/root/PlayerData")
 	if not player_data:
+		push_error("[MinigameManager] No PlayerData!")
 		return
 	
+	var minigame_id_to_use = result.minigame_id if not result.minigame_id.is_empty() else current_minigame_id
+	
 	if result.success:
-		# Mark as complete
 		player_data.complete_minigame(
-			result.minigame_id if not result.minigame_id.is_empty() else current_minigame_id,
+			minigame_id_to_use,
 			current_minigame_map,
 			{
 				"score": result.score,
 				"time": result.time_taken,
-				"stars": result.stars
+				"stars": result.stars,
+				"success": true
 			}
 		)
 		
-		# Award keys
+		print("[MinigameManager] Recorded completion: ", minigame_id_to_use, " on map: ", current_minigame_map)
+		
 		for key_id in result.keys_found:
 			player_data.collect_key(key_id, current_minigame_map)
 		
-		# Award items
 		for item in result.items_awarded:
 			if item.get("special", false):
 				player_data.add_special_item(item.get("id", ""))
 			else:
 				player_data.add_item(item.get("id", ""), item.get("amount", 1))
 		
-		# Award currency
 		if result.currency_awarded > 0:
 			player_data.add_currency(result.currency_awarded)
 		
-		# Auto-save
-		var game_manager = get_node_or_null("/root/GameManager")
-		if game_manager and game_manager.has_method("auto_save"):
-			game_manager.auto_save()
+		_save_after_minigame()
 		
-		minigame_completed.emit(current_minigame_id, result)
-		print("[MinigameManager] Minigame completed: %s (Score: %d, Stars: %d)" % [
-			current_minigame_id, result.score, result.stars
-		])
+		minigame_completed.emit(minigame_id_to_use, result)
+		print("[MinigameManager] Minigame completed: ", minigame_id_to_use, " (Score: ", result.score, ", Stars: ", result.stars, ")")
 	else:
-		minigame_failed.emit(current_minigame_id, result.failure_reason)
-		print("[MinigameManager] Minigame failed: %s (%s)" % [current_minigame_id, result.failure_reason])
+		minigame_failed.emit(minigame_id_to_use, result.failure_reason)
+		print("[MinigameManager] Minigame failed: ", minigame_id_to_use, " (", result.failure_reason, ")")
+
+
+func _save_after_minigame() -> void:
+	"""Save game after minigame completion"""
+	var save_manager = get_node_or_null("/root/SaveManager")
+	if not save_manager:
+		push_error("[MinigameManager] No SaveManager!")
+		return
+	
+	var player_data = get_node_or_null("/root/PlayerData")
+	var game_manager = get_node_or_null("/root/GameManager")
+	
+	var save_data = {
+		"save_name": "Auto-Save",
+		"timestamp": Time.get_unix_time_from_system(),
+		"datetime": Time.get_datetime_string_from_system(),
+		"current_map": saved_map,
+		"player_position": {
+			"x": saved_position.x,
+			"y": saved_position.y
+		},
+		"player_data": player_data.to_dictionary() if player_data else {},
+		"game_version": ProjectSettings.get_setting("application/config/version", "1.0.0"),
+		"is_auto_save": true
+	}
+	
+	if game_manager:
+		game_manager.current_map = saved_map
+	
+	save_manager._write_save_file(0, save_data)
+	print("[MinigameManager] Auto-saved to slot 0 (map: ", saved_map, ")")
+	
+	var most_recent = save_manager._get_most_recent_slot()
+	if most_recent > 0:
+		save_manager._write_save_file(most_recent, save_data)
+		print("[MinigameManager] Also saved to slot ", most_recent)
+	
+	# Also sync to server
+	var score_manager = get_node_or_null("/root/ScoreManager")
+	if score_manager:
+		score_manager.sync_progress()
 #endregion
 
-#region Signal Handlers (from minigame)
+#region Signal Handlers
 func _on_minigame_completed(result: MinigameResult) -> void:
-	"""Called when minigame emits completed signal"""
 	exit_minigame(result)
 
 
 func _on_minigame_failed(reason: String) -> void:
-	"""Called when minigame emits failed signal"""
 	var result = MinigameResult.new()
 	result.success = false
 	result.failure_reason = reason
@@ -409,17 +621,15 @@ func _on_minigame_failed(reason: String) -> void:
 
 
 func _on_minigame_exited() -> void:
-	"""Called when player exits minigame early"""
 	exit_minigame(null)
 #endregion
 
-#region Quick Exit (ESC handling)
+#region Quick Exit
 func request_exit() -> void:
-	"""Request to exit current minigame (called from pause menu or ESC)"""
+	"""Request to exit current minigame"""
 	if not is_in_minigame:
 		return
 	
-	# Ask minigame to handle exit
 	if current_minigame_instance and current_minigame_instance.has_method("request_exit"):
 		current_minigame_instance.request_exit()
 	else:

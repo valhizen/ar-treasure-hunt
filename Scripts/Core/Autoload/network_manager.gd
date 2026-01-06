@@ -10,13 +10,13 @@ signal connection_status_changed(is_online: bool)
 
 #region Configuration
 ## Your backend server URL (change this!)
-@export var base_url: String = "https://your-server.com/api"
+@export var base_url: String = "https://api.arth.valhizen.dev/api"
 
 ## For local development
 const LOCAL_URL: String = "http://localhost:3000/api"
 
 ## Use local server in debug builds
-@export var use_local_in_debug: bool = true
+@export var use_local_in_debug: bool = false
 
 ## Request timeout in seconds
 @export var timeout_seconds: float = 30.0

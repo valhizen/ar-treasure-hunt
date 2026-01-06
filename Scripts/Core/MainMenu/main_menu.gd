@@ -9,7 +9,7 @@ extends Control
 #endregion
 
 #region Node References
-@onready var container: Control = $Container
+@onready var container: Control = $PanelContainer/VBoxContainer/Continue
 @onready var continue_button: Control = $PanelContainer/VBoxContainer/Continue
 @onready var new_game_button: Control = $PanelContainer/VBoxContainer/NewGame
 @onready var options_button: Control = $PanelContainer/VBoxContainer/Options
@@ -146,12 +146,24 @@ func _on_continue_pressed() -> void:
 	
 	var save_manager = get_node_or_null("/root/SaveManager")
 	var game_manager = get_node_or_null("/root/GameManager")
+	var player_data = get_node_or_null("/root/PlayerData")
 	
 	if game_manager and game_manager.has_method("continue_game"):
 		game_manager.continue_game()
 	elif save_manager and save_manager.has_method("load_game"):
 		var save_data = save_manager.load_game()
 		if save_data:
+			# ========== THIS IS THE FIX ==========
+			# Apply the loaded data to PlayerData singleton
+			if player_data and player_data.has_method("load_from_dictionary"):
+				var pd = save_data.get("player_data", {})
+				if not pd.is_empty():
+					player_data.load_from_dictionary(pd)
+					print("[MainMenu] PlayerData restored successfully")
+				else:
+					print("[MainMenu] Warning: No player_data in save file")
+			# =====================================
+			
 			var map_name = save_data.get("current_map", "")
 			if map_name != "":
 				var scene_path = "res://Scenes/Core/Maps/%s.tscn" % map_name
@@ -166,7 +178,6 @@ func _on_continue_pressed() -> void:
 	else:
 		print("[MainMenu] No save system, going to wake up scene")
 		_change_scene(wake_up_scene_path)
-
 
 func _on_new_game_pressed() -> void:
 	"""Start new game"""

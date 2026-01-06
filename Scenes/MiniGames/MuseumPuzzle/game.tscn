@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://kle33vg3e7gs"]
 
-[ext_resource type="Script" uid="uid://q7hrsu3qunt" path="res://MiniGames/MuseumPuzzle/game.gd" id="1_wf7at"]
-[ext_resource type="Texture2D" uid="uid://b1v3uqlbsau76" path="res://MiniGames/MuseumPuzzle/puzzle_image.png" id="2_brp0u"]
+[ext_resource type="Script" uid="uid://q7hrsu3qunt" path="res://Scenes/MiniGames/MuseumPuzzle/game.gd" id="1_wf7at"]
+[ext_resource type="Texture2D" uid="uid://b1v3uqlbsau76" path="res://Scenes/MiniGames/MuseumPuzzle/puzzle_image.png" id="2_brp0u"]
 
 [node name="Game" type="Control"]
 layout_mode = 3
