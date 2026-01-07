@@ -27,15 +27,13 @@ var game_state := GameState.MENU
 var mask_texture: ImageTexture
 var wood_shader_material: ShaderMaterial
 
-# Scoring
-var accuracy := 0.0
-var cuts_made := 0
-var perfect_cuts := 0
-var mistakes := 0
-var score := 0
+# Scoring - Deferred calculation
+var total_carved_pixels := 0
+var carved_in_target := 0
+var carved_outside_target := 0
 
 # Tool size scoring
-var base_score_per_cut := 10
+var base_score_per_pixel := 1
 var size_multiplier := 1.0
 
 # Node references
@@ -52,7 +50,6 @@ var size_multiplier := 1.0
 @onready var menu_title: Label = $UI/MenuPanel/VBox/TitleLabel
 
 @onready var game_panel: Panel = $UI/GamePanel
-@onready var stats_label: Label = $UI/GamePanel/StatsVBox/StatsLabel
 @onready var tool_size_label: Label = $UI/GamePanel/ToolControls/SizeLabel
 @onready var decrease_tool_button: Button = $UI/GamePanel/ToolControls/DecreaseButton
 @onready var increase_tool_button: Button = $UI/GamePanel/ToolControls/IncreaseButton
@@ -67,10 +64,8 @@ var size_multiplier := 1.0
 @onready var carve_sfx: AudioStreamPlayer2D = $CarveSFXPlayer
 @onready var bgm_player: AudioStreamPlayer2D = $BGMPlayer
 
-
 var is_carving := false
 var last_carve_pos := Vector2.ZERO
-var current_stroke := []
 
 var needs_wood_update := false
 var update_timer := 0.0
@@ -96,7 +91,7 @@ void fragment() {
 
 func _ready():
 	setup_scene()
-	setup_shader() # Initialize shader optimization
+	setup_shader()
 	setup_ui_connections()
 	precompute_circle_pattern()
 	calculate_size_multiplier()
@@ -236,11 +231,9 @@ func reset_and_start():
 	start_game()
 
 func reset_game():
-	cuts_made = 0
-	perfect_cuts = 0
-	mistakes = 0
-	accuracy = 0.0
-	score = 0
+	total_carved_pixels = 0
+	carved_in_target = 0
+	carved_outside_target = 0
 	
 	load_target_silhouette()
 	create_ghost_overlay()
@@ -255,25 +248,17 @@ func reset_game():
 	wood_shader_material.set_shader_parameter("mask_tex", mask_texture)
 	
 	update_target_sprite()
-	update_ui()
+	update_tool_size_label()
 
 func update_wood_sprite():
 	"""Optimized: Update the GPU texture only"""
 	if mask_texture:
-		# ImageTexture.update (or set_image depending on Godot version) is efficient
 		mask_texture.update(carved_mask)
 	needs_wood_update = false
 
 func update_target_sprite():
 	if target_silhouette:
 		target_sprite.texture = ImageTexture.create_from_image(target_silhouette)
-
-func update_ui():
-	if game_state == GameState.PLAYING and stats_label:
-		stats_label.text = "Score: %d\nAccuracy: %.1f%% | Cuts: %d\nPerfect: %d | Mistakes: %d \n Use mouse scroll to adjust chisel size" % [
-			score, accuracy, cuts_made, perfect_cuts, mistakes
-		]
-	update_tool_size_label()
 
 func _input(event):
 	if event is InputEventKey and event.pressed and event.keycode == KEY_SPACE:
@@ -301,7 +286,6 @@ func _input(event):
 func start_carving():
 	is_carving = true
 	carving_tool.visible = true
-	current_stroke = []
 	last_carve_pos = carving_tool.position
 	
 	if carve_sfx and not carve_sfx.playing:
@@ -311,13 +295,9 @@ func stop_carving():
 	is_carving = false
 	if carve_sfx and carve_sfx.playing:
 		carve_sfx.stop()
-	if current_stroke.size() > 0:
-		evaluate_stroke()
-	current_stroke.clear()
-	calculate_accuracy()
 
 func carve_at_position(pos: Vector2):
-	"""Optimized carving logic"""
+	"""Optimized carving logic - No per-stroke evaluation"""
 	var local_pos = pos - wood_sprite.position + wood_size / 2
 	if local_pos.x < 0 or local_pos.x >= wood_size.x or local_pos.y < 0 or local_pos.y >= wood_size.y:
 		return
@@ -325,8 +305,9 @@ func carve_at_position(pos: Vector2):
 	var distance = last_carve_pos.distance_to(pos)
 	var steps = max(1, int(distance / carve_radius * 0.5))
 	
-	# OPTIMIZATION: Get data once, modify, set data once
+	# Get data once, modify, set data once
 	var mask_data = carved_mask.get_data()
+	var target_data = target_silhouette.get_data()
 	var width = int(wood_size.x)
 	var height = int(wood_size.y)
 	
@@ -334,19 +315,18 @@ func carve_at_position(pos: Vector2):
 		var t = float(i) / float(steps)
 		var interp_pos = last_carve_pos.lerp(pos, t)
 		var interp_local = interp_pos - wood_sprite.position + wood_size / 2
-		# Pass data array directly
-		carve_circle_fast_optimized(interp_local, mask_data, width, height)
+		
+		# Carve and track statistics in one pass
+		carve_circle_with_tracking(interp_local, mask_data, target_data, width, height)
 	
 	# Commit changes back to image once
 	carved_mask.set_data(width, height, false, Image.FORMAT_RGBA8, mask_data)
 	
 	last_carve_pos = pos
-	current_stroke.append(local_pos)
-	cuts_made += 1
 	needs_wood_update = true
 
-func carve_circle_fast_optimized(center: Vector2, data: PackedByteArray, width: int, height: int):
-	"""Optimized: Modifies byte array directly"""
+func carve_circle_with_tracking(center: Vector2, mask_data: PackedByteArray, target_data: PackedByteArray, width: int, height: int):
+	"""Carve and track stats in single pass - prevents double-counting"""
 	var cx = int(center.x)
 	var cy = int(center.y)
 	
@@ -356,65 +336,22 @@ func carve_circle_fast_optimized(center: Vector2, data: PackedByteArray, width: 
 		
 		if px >= 0 and px < width and py >= 0 and py < height:
 			var idx = (py * width + px) * 4
-			data[idx] = 0     # R
-			data[idx + 1] = 0 # G
-			data[idx + 2] = 0 # B
-			# Alpha remains 255 in mask, shader reads Red channel
-	
-func evaluate_stroke():
-	@warning_ignore("integer_division")
-	var sample_rate = max(1, current_stroke.size() / 20)
-	
-	var stroke_perfect = 0
-	var stroke_mistakes = 0
-	
-	# Optimization: Local access
-	var wood_w = wood_size.x
-	var wood_h = wood_size.y
-	
-	for i in range(0, current_stroke.size(), sample_rate):
-		var pos = current_stroke[i]
-		if pos.x >= 0 and pos.x < wood_w and pos.y >= 0 and pos.y < wood_h:
-			var target_pixel = target_silhouette.get_pixel(int(pos.x), int(pos.y))
-			if target_pixel.a > 0.5:
-				stroke_perfect += 1
-			else:
-				stroke_mistakes += 1
-	
-	perfect_cuts += stroke_perfect
-	mistakes += stroke_mistakes
-	
-	var stroke_score = (stroke_perfect * base_score_per_cut - stroke_mistakes * base_score_per_cut * 0.5) * size_multiplier
-	score += int(stroke_score)
-
-func calculate_accuracy():
-	var width = int(wood_size.x)
-	var height = int(wood_size.y)
-	
-	# Adaptive sampling for performance
-	var sample_step = 8
-	
-	var carved_data = carved_mask.get_data()
-	var target_data = target_silhouette.get_data()
-	
-	var correct = 0
-	var total = 0
-	
-	# Optimized loop
-	for y in range(0, height, sample_step):
-		var y_offset = y * width
-		for x in range(0, width, sample_step):
-			var idx = (y_offset + x) * 4
 			
-			# Check logic: Carved (black, <128) vs Target (visible, >128)
-			var carved = carved_data[idx] < 128
-			var target = target_data[idx + 3] > 128
-			
-			total += 1
-			if carved == target:
-				correct += 1
-	
-	accuracy = (float(correct) / float(total)) * 100.0
+			# Only count if this pixel wasn't already carved
+			if mask_data[idx] >= 128:
+				# Mark as carved
+				mask_data[idx] = 0
+				mask_data[idx + 1] = 0
+				mask_data[idx + 2] = 0
+				
+				# Track statistics
+				total_carved_pixels += 1
+				
+				# Check if this pixel is inside target
+				if target_data[idx + 3] > 128:
+					carved_in_target += 1
+				else:
+					carved_outside_target += 1
 
 func _process(delta):
 	if game_state == GameState.PLAYING:
@@ -424,10 +361,7 @@ func _process(delta):
 			update_wood_sprite()
 			update_timer = 0.0
 		
-		update_ui()
-		
 		var mouse_pos = get_viewport().get_mouse_position()
-		# Simple bounds check
 		var half_size = wood_size / 2
 		var in_bounds = (mouse_pos.x > wood_sprite.position.x - half_size.x and 
 						 mouse_pos.x < wood_sprite.position.x + half_size.x and 
@@ -435,16 +369,59 @@ func _process(delta):
 						 mouse_pos.y < wood_sprite.position.y + half_size.y)
 		carving_tool.visible = in_bounds
 
+func calculate_final_stats() -> Dictionary:
+	"""Calculate all statistics once at the end"""
+	var width = int(wood_size.x)
+	var height = int(wood_size.y)
+	
+	# Count target pixels
+	var target_data = target_silhouette.get_data()
+	var total_target_pixels = 0
+	
+	for y in range(height):
+		var y_offset = y * width
+		for x in range(width):
+			var idx = (y_offset + x) * 4
+			if target_data[idx + 3] > 128:
+				total_target_pixels += 1
+	
+	# Calculate metrics
+	var accuracy = 0.0
+	if total_target_pixels > 0:
+		accuracy = (float(carved_in_target) / float(total_target_pixels)) * 100.0
+	
+	var precision = 0.0
+	if total_carved_pixels > 0:
+		precision = (float(carved_in_target) / float(total_carved_pixels)) * 100.0
+	
+	# Calculate score out of 100
+	# Base score: 60 points for accuracy (how much of target you carved)
+	# Precision bonus: 30 points (avoiding mistakes)
+	# Tool size bonus: 10 points
+	var accuracy_score = (accuracy / 100.0) * 60.0
+	var precision_score = (precision / 100.0) * 30.0
+	var tool_score = (size_multiplier - 0.5) / 1.0 * 10.0  # Normalized from 0.5-1.5 to 0-10
+	
+	var final_score = clamp(accuracy_score + precision_score + tool_score, 0.0, 100.0)
+	
+	return {
+		"accuracy": accuracy,
+		"precision": precision,
+		"score": int(final_score),
+		"accuracy_score": accuracy_score,
+		"precision_score": precision_score,
+		"tool_score": tool_score,
+		"carved_in_target": carved_in_target,
+		"carved_outside_target": carved_outside_target,
+		"total_carved": total_carved_pixels,
+		"total_target": total_target_pixels
+	}
+
 func complete_game():
 	game_state = GameState.COMPLETED
-	calculate_accuracy() # Final full calculation could go here if needed, but keeping simple
 	
-	var accuracy_bonus = int(accuracy * 2)
-	var efficiency_bonus = 0
-	if cuts_made > 0:
-		efficiency_bonus = int((float(perfect_cuts) / float(cuts_made)) * 100)
-	
-	var final_score = score + accuracy_bonus + efficiency_bonus
+	# Calculate everything once at the end
+	var stats = calculate_final_stats()
 	
 	if menu_panel: menu_panel.visible = false
 	if game_panel: game_panel.visible = false
@@ -452,29 +429,36 @@ func complete_game():
 	
 	wood_sprite.visible = false
 	target_sprite.visible = false
-	ghost_overlay.visible= false
+	ghost_overlay.visible = false
 	carving_tool.visible = false
 	
 	if bgm_player:
 		bgm_player.stop()
 	
+	
 	if completed_stats:
 		completed_stats.text = """CARVING COMPLETED!
 
-FINAL SCORE: %d points
+FINAL SCORE: %d / 100
 
-Base Score:          %d pts
-Accuracy Bonus:      +%d pts
-Efficiency Bonus:    +%d pts
+Score Breakdown:
+  Accuracy:          %.1f pts (%.1f%%)
+  Precision:         %.1f pts (%.1f%%)
+  Tool Size Bonus:   %.1f pts
 
-STATS:
-Accuracy:            %.1f%%
-Perfect Cuts:        %d
-Mistakes:            %d
-Total Cuts:          %d
-Avg Tool Size:       %.1f px""" % [
-			final_score, score,  accuracy_bonus, efficiency_bonus,
-			accuracy, perfect_cuts, mistakes, cuts_made, carve_radius
+DETAILED STATS:
+Accuracy			: %.1f%%
+Carving Precision:   %.1f%% 
+Tool Size Multiplier: %.1fx""" % [
+			stats.score,
+			
+			stats.accuracy_score, stats.accuracy,
+			stats.precision_score, stats.precision,
+			stats.tool_score,
+			
+			stats.accuracy,
+			stats.precision,
+			size_multiplier
 		]
 
 func quit_game():
@@ -513,29 +497,17 @@ func create_ghost_overlay():
 
 	var target_data := target_silhouette.get_data()
 	var ghost_data := ghost_image.get_data()
-
-	# Optimization: Flatten loops or just optimize checks
-	# Since this runs only once on start, we don't need to go crazy, 
-	# but we can skip iterations faster.
 	
 	for y in range(1, height - 1):
-		# Skip rows that don't align with spacing logic to save edge checks
-		# Logic in original: if (x + y) % dot_spacing != 0: continue
-		# We can't skip rows entirely because x changes the sum, but we can't optimize easily without changing visuals.
-		# Keeping original loop logic but cleaner variable access.
-		
 		var y_idx = y * width
 		for x in range(1, width - 1):
 			if (x + y) % dot_spacing != 0: continue
 
 			var idx :int = (y_idx + x) * 4
-			if target_data[idx + 3] <= 128: continue # Not part of silhouette
+			if target_data[idx + 3] <= 128: continue
 
-			# Check edge (inline optimization)
+			# Check edge
 			var is_edge := false
-			
-			# Check cardinal neighbors only first for speed (approximate)
-			# Or keep full check for exact visual match
 			for dy in [-1, 0, 1]:
 				for dx in [-1, 0, 1]:
 					if dx == 0 and dy == 0: continue
