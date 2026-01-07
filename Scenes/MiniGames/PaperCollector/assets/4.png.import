@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cawji13cxolyv"
-path="res://.godot/imported/bird.png-7a9643206c181bffb35dcfdbc73e4067.ctex"
+uid="uid://x3oe88l446et"
+path="res://.godot/imported/4.png-df823602fabf5cb5ca78a4d9c1d32b54.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Scenes/MiniGames/CarvingGame/bird.png"
-dest_files=["res://.godot/imported/bird.png-7a9643206c181bffb35dcfdbc73e4067.ctex"]
+source_file="res://Scenes/MiniGames/PaperCollector/assets/4.png"
+dest_files=["res://.godot/imported/4.png-df823602fabf5cb5ca78a4d9c1d32b54.ctex"]
 
 [params]
 

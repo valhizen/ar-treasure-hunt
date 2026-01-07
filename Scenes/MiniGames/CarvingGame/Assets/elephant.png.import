@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bqyl5myltnijn"
-path="res://.godot/imported/Untitled78_20260101000841.png-a7b5d71ae965bf0416181275a7c8caca.ctex"
+uid="uid://c3ioauk8bp1xy"
+path="res://.godot/imported/elephant.png-7f392d5e0e402258867ce395ff57384b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Scenes/MiniGames/PaperCollector/assets/Untitled78_20260101000841.png"
-dest_files=["res://.godot/imported/Untitled78_20260101000841.png-a7b5d71ae965bf0416181275a7c8caca.ctex"]
+source_file="res://Scenes/MiniGames/CarvingGame/Assets/elephant.png"
+dest_files=["res://.godot/imported/elephant.png-7f392d5e0e402258867ce395ff57384b.ctex"]
 
 [params]
 

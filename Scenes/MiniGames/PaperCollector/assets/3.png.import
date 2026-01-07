@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c62psxr38bwch"
-path="res://.godot/imported/horse.png-75ed3db2b8de90ded837f2e3e7bc6d5e.ctex"
+uid="uid://24k20xbw0qm6"
+path="res://.godot/imported/3.png-6913d549d0a40bea8d0fe9f2bca17905.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Scenes/MiniGames/CarvingGame/horse.png"
-dest_files=["res://.godot/imported/horse.png-75ed3db2b8de90ded837f2e3e7bc6d5e.ctex"]
+source_file="res://Scenes/MiniGames/PaperCollector/assets/3.png"
+dest_files=["res://.godot/imported/3.png-6913d549d0a40bea8d0fe9f2bca17905.ctex"]
 
 [params]
 

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://x3oe88l446et"
-path="res://.godot/imported/Untitled78_20260101000820.png-4bc85970ba727ad1f269249f305b5a00.ctex"
+uid="uid://cuwhbtbuw34"
+path="res://.godot/imported/bg_.jpg-da0eb94210230d119ddc10ef7e19e1d6.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Scenes/MiniGames/PaperCollector/assets/Untitled78_20260101000820.png"
-dest_files=["res://.godot/imported/Untitled78_20260101000820.png-4bc85970ba727ad1f269249f305b5a00.ctex"]
+source_file="res://Scenes/MiniGames/PaperCollector/assets/bg_.jpg"
+dest_files=["res://.godot/imported/bg_.jpg-da0eb94210230d119ddc10ef7e19e1d6.ctex"]
 
 [params]
 

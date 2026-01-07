@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://p73m7lm7uydx"
-path="res://.godot/imported/Untitled78_20260101000802.png-876eba489747005a2d230bb21879a61d.ctex"
+uid="uid://b4i5l3w4qcygv"
+path="res://.godot/imported/woodWorkBG.webp-7e356ce5e9d960abe225c23e84f2b6b5.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Scenes/MiniGames/PaperCollector/assets/Untitled78_20260101000802.png"
-dest_files=["res://.godot/imported/Untitled78_20260101000802.png-876eba489747005a2d230bb21879a61d.ctex"]
+source_file="res://Scenes/MiniGames/CarvingGame/Assets/woodWorkBG.webp"
+dest_files=["res://.godot/imported/woodWorkBG.webp-7e356ce5e9d960abe225c23e84f2b6b5.ctex"]
 
 [params]
 

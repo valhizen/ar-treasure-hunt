@@ -13,7 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://ceyifacngnnhy" path="res://Assets/MainCharacter/RUN/run_up.png" id="11_glf57"]
 [ext_resource type="AudioStream" uid="uid://cydlqitmccnxq" path="res://Scenes/MiniGames/Maze/assets/Victory Sound Effect.mp3" id="12_hl8yg"]
 [ext_resource type="AudioStream" uid="uid://ckfl4mkswj2yc" path="res://Scenes/MiniGames/PaperCollector/assets/Epic Spectrum - Within Us (freetouse.com).mp3" id="12_k5whn"]
-[ext_resource type="Texture2D" uid="uid://dj4pb2se62get" path="res://Scenes/MiniGames/PaperCollector/assets/BG.png" id="12_skb0d"]
+[ext_resource type="Texture2D" uid="uid://cuwhbtbuw34" path="res://Scenes/MiniGames/PaperCollector/assets/bg_.jpg" id="12_mt53y"]
 [ext_resource type="AudioStream" uid="uid://bf1wu2kdun4t1" path="res://Scenes/MiniGames/PaperCollector/assets/good-6081.mp3" id="13_skb0d"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lquwl"]
@@ -552,9 +552,9 @@ offset_bottom = 872.0
 [node name="BgDbg" type="Sprite2D" parent="."]
 modulate = Color(1, 1, 1, 0.4)
 z_index = -1
-position = Vector2(982.7772, 385.9693)
-scale = Vector2(1.8988726, 1.328065)
-texture = ExtResource("12_skb0d")
+position = Vector2(979, 522.00006)
+scale = Vector2(2.2330105, 2.3603988)
+texture = ExtResource("12_mt53y")
 
 [node name="Floor" type="Sprite2D" parent="."]
 position = Vector2(1028.5, 1097)
