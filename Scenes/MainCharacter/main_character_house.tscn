@@ -374,3 +374,11 @@ metadata/_custom_type_script = "uid://dhxodkqr72fhe"
 
 [node name="CanvasModulate2" type="CanvasModulate" parent="."]
 color = Color(0.0142752165, 0.014275218, 0.014275218, 1)
+
+[node name="Label" type="Label" parent="."]
+offset_left = -200.0
+offset_top = -142.0
+offset_right = 85.0
+offset_bottom = -93.0
+text = "Use WASD to Move 
+ E to Interact"

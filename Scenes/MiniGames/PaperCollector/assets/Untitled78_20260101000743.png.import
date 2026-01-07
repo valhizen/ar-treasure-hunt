@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b1v3uqlbsau76"
-path="res://.godot/imported/puzzle_image.png-3cbfacf7af726c78e49171db05f602fe.ctex"
+uid="uid://ux84lprcmbgg"
+path="res://.godot/imported/Untitled78_20260101000743.png-58e60cb03ae17964a8871c222bcd729c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Scenes/MiniGames/MuseumPuzzle/puzzle_image.png"
-dest_files=["res://.godot/imported/puzzle_image.png-3cbfacf7af726c78e49171db05f602fe.ctex"]
+source_file="res://Scenes/MiniGames/PaperCollector/assets/Untitled78_20260101000743.png"
+dest_files=["res://.godot/imported/Untitled78_20260101000743.png-58e60cb03ae17964a8871c222bcd729c.ctex"]
 
 [params]
 

@@ -1,11 +1,11 @@
 [gd_scene load_steps=2 format=3 uid="uid://ccjewxgukji3a"]
 
-[ext_resource type="Script" uid="uid://c4edp7w4hvs5i" path="res://MiniGames/MuseumPuzzle/scripts/tile.gd" id="1_3dk36"]
+[ext_resource type="Script" uid="uid://c4edp7w4hvs5i" path="res://Scenes/MiniGames/MuseumPuzzle/scripts/tile.gd" id="1_txcal"]
 
 [node name="Tile" type="TextureRect"]
 offset_right = 40.0
 offset_bottom = 40.0
 expand_mode = 1
-script = ExtResource("1_3dk36")
+script = ExtResource("1_txcal")
 
 [connection signal="gui_input" from="." to="." method="_on_gui_input"]

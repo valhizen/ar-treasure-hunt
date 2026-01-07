@@ -36,3 +36,10 @@ dialogue_resource = ExtResource("5_kd6n3")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Actionable"]
 scale = Vector2(-49.589153, -36.579617)
 shape = SubResource("CircleShape2D_8jxct")
+
+[node name="Label" type="Label" parent="."]
+offset_left = -62.0
+offset_top = 34.0
+offset_right = 86.0
+offset_bottom = 57.0
+text = "Space to Interact"
