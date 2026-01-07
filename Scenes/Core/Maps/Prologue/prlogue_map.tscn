@@ -28152,7 +28152,7 @@ texture = ExtResource("33_yxspu")
 [node name="StaticBody2D" type="StaticBody2D" parent="YSorted/sponsor3"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="YSorted/sponsor3/StaticBody2D"]
-position = Vector2(-614.9761, -841.52185)
+position = Vector2(-638.1099, -1984.6451)
 scale = Vector2(1, 1.0000007)
 shape = SubResource("RectangleShape2D_ogveu")
 
@@ -28182,7 +28182,7 @@ texture = ExtResource("35_utx8r")
 [node name="StaticBody2D" type="StaticBody2D" parent="YSorted/sponsor5"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="YSorted/sponsor5/StaticBody2D"]
-position = Vector2(-614.9761, -841.52185)
+position = Vector2(-1242.3732, -1101.369)
 scale = Vector2(1, 1.0000007)
 shape = SubResource("RectangleShape2D_ogveu")
 
