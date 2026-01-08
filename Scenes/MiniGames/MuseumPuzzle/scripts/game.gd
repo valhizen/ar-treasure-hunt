@@ -56,6 +56,23 @@ func _process(delta):
 func _create_ui():
 	var screen_size = get_viewport_rect().size / render_scale
 	
+	# Already Completed Label - Shows at top if puzzle is already done
+	var completed_label = Label.new()
+	completed_label.name = "AlreadyCompletedLabel"
+	completed_label.text = "✓ YOU HAVE COMPLETED THIS GAME"
+	completed_label.visible = false
+	completed_label.position = Vector2(0, 20)
+	completed_label.size = Vector2(screen_size.x, 60)
+	completed_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	completed_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	completed_label.z_index = 150
+	completed_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	completed_label.add_theme_font_size_override("font_size", 28)
+	completed_label.add_theme_color_override("font_color", Color(0.3, 1.0, 0.3))
+	completed_label.add_theme_constant_override("outline_size", 6)
+	completed_label.add_theme_color_override("font_outline_color", Color(0, 0.5, 0))
+	add_child(completed_label)
+	
 	# Hint Button - Larger and more visible
 	hint_button = Button.new()
 	hint_button.text = "Hint"
@@ -63,7 +80,7 @@ func _create_ui():
 	hint_button.custom_minimum_size = Vector2(180, 80)
 	hint_button.position = Vector2(screen_size.x - 400, 20)
 	hint_button.pressed.connect(_on_hint_pressed)
-	hint_button.z_index = 100  # Higher z-index
+	hint_button.z_index = 100
 	_style_button(hint_button, Color(0.15, 0.65, 0.25), 28)
 	add_child(hint_button)
 	
@@ -74,35 +91,38 @@ func _create_ui():
 	solve_button.custom_minimum_size = Vector2(180, 80)
 	solve_button.position = Vector2(screen_size.x - 200, 20)
 	solve_button.pressed.connect(_on_auto_solve_pressed)
-	solve_button.z_index = 100  # Higher z-index
+	solve_button.z_index = 100
 	_style_button(solve_button, Color(0.75, 0.25, 0.15), 28)
 	add_child(solve_button)
 	
-	# Status Label - Better visibility with MUCH higher z-index
+	# Status Label - Better visibility
 	status_label = Label.new()
 	status_label.text = ""
-	status_label.visible = false  # Start hidden
-	status_label.position = Vector2(20, 20)
+	status_label.visible = false
+	status_label.position = Vector2(20, 100)
 	status_label.size = Vector2(screen_size.x - 450, 80)
-	status_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
+	status_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	status_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	status_label.z_index = 150  # Very high z-index to appear above everything
+	status_label.z_index = 150
+	status_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	status_label.add_theme_font_size_override("font_size", 32)
 	status_label.add_theme_color_override("font_color", Color(1, 1, 0.3))
 	status_label.add_theme_constant_override("outline_size", 6)
 	status_label.add_theme_color_override("font_outline_color", Color(0, 0, 0))
 	add_child(status_label)
 	
-	# Completion Panel - CREATED BUT HIDDEN
+	# Completion Panel
 	_create_completion_panel()
 
 func _create_completion_panel():
 	var screen_size = get_viewport_rect().size / render_scale
 	
 	completion_panel = Panel.new()
-	completion_panel.visible = false  # HIDDEN BY DEFAULT
+	completion_panel.visible = false
 	completion_panel.size = Vector2(700, 600)
 	completion_panel.position = (screen_size - completion_panel.size) / 2
+	completion_panel.z_index = 200
+	completion_panel.mouse_filter = Control.MOUSE_FILTER_STOP
 	
 	var style = StyleBoxFlat.new()
 	style.bg_color = Color(0.05, 0.05, 0.1, 0.98)
@@ -117,26 +137,28 @@ func _create_completion_panel():
 	style.corner_radius_bottom_right = 20
 	completion_panel.add_theme_stylebox_override("panel", style)
 	
-	# Title with glow effect
+	# Title
 	completion_title = Label.new()
 	completion_title.text = "PUZZLE COMPLETE!"
 	completion_title.position = Vector2(0, 40)
 	completion_title.size = Vector2(700, 80)
 	completion_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	completion_title.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	completion_title.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	completion_title.add_theme_font_size_override("font_size", 48)
 	completion_title.add_theme_color_override("font_color", Color(0.3, 1.0, 0.3))
 	completion_title.add_theme_constant_override("outline_size", 8)
 	completion_title.add_theme_color_override("font_outline_color", Color(0, 0.3, 0))
 	completion_panel.add_child(completion_title)
 	
-	# Score Label with better formatting
+	# Score Label
 	score_label = Label.new()
 	score_label.text = ""
 	score_label.position = Vector2(50, 150)
 	score_label.size = Vector2(600, 320)
 	score_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	score_label.vertical_alignment = VERTICAL_ALIGNMENT_TOP
+	score_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	score_label.add_theme_font_size_override("font_size", 32)
 	score_label.add_theme_color_override("font_color", Color(1, 1, 1))
 	score_label.add_theme_constant_override("outline_size", 4)
@@ -144,15 +166,15 @@ func _create_completion_panel():
 	score_label.add_theme_constant_override("line_spacing", 10)
 	completion_panel.add_child(score_label)
 	
-	# Return Button - Large and clear
+	# Return Button
 	return_button = Button.new()
 	return_button.text = "Continue"
 	return_button.custom_minimum_size = Vector2(300, 90)
 	return_button.position = Vector2(200, 480)
+	return_button.mouse_filter = Control.MOUSE_FILTER_STOP
 	return_button.pressed.connect(_on_return_pressed)
 	_style_button(return_button, Color(0.15, 0.45, 0.85), 36)
 	completion_panel.add_child(return_button)
-	completion_panel.z_index = 200
 	
 	add_child(completion_panel)
 
@@ -219,11 +241,35 @@ func start_game():
 	status_label.text = ""
 	completion_panel.visible = false
 	
+	# Check if puzzle is already completed
+	_check_already_completed()
+	
 	generate_tiles()
 	shuffle_board()
 	
 	# Start game AFTER everything is set up
 	game_started = true
+
+func _check_already_completed() -> void:
+	"""Check if this puzzle has already been completed"""
+	var player_data = get_node_or_null("/root/PlayerData")
+	var minigame_manager = get_node_or_null("/root/MinigameManager")
+	
+	if not player_data or not minigame_manager:
+		return
+	
+	var map_name = minigame_manager.get_saved_map()
+	if map_name.is_empty():
+		map_name = minigame_manager.current_minigame_map
+	
+	var is_completed = player_data.is_minigame_completed("sliding_puzzle", map_name)
+	
+	var completed_label = get_node_or_null("AlreadyCompletedLabel")
+	if completed_label:
+		completed_label.visible = is_completed
+		
+	if is_completed:
+		print("[SlidingPuzzle] ✓ This puzzle has already been completed on map: %s" % map_name)
 
 func generate_tiles():
 	tiles.resize(grid_size * grid_size)
@@ -558,16 +604,12 @@ func check_win():
 	print("YOU WON!")
 	
 	var final_score = _calculate_score()
-	_show_completion_screen(final_score)
 	
-	ScoreManager.submit_score("sliding_puzzle", final_score, {
-		"time_taken": time_elapsed,
-		"move_count": move_count,
-		"grid_size": grid_size,
-		"hints_used": hints_used,
-		"auto_solve_used": auto_solve_used,
-		"success": true
-	})
+	# Submit score to ScoreManager
+	_submit_score_to_leaderboard(final_score)
+	
+	# Show completion screen
+	_show_completion_screen(final_score)
 	
 	print("[SlidingPuzzle] Score: %d (moves: %d, time: %.1fs, hints: %d, auto: %s)" % [
 		final_score, move_count, time_elapsed, hints_used, str(auto_solve_used)
@@ -586,6 +628,28 @@ func _calculate_score() -> int:
 	
 	return max(100, base_score + move_bonus + time_bonus - hint_penalty - auto_penalty)
 
+func _submit_score_to_leaderboard(final_score: int) -> void:
+	"""Submit score to ScoreManager (like PaperCollector does)"""
+	var score_manager = get_node_or_null("/root/ScoreManager")
+	if not score_manager:
+		push_warning("[SlidingPuzzle] ScoreManager not found!")
+		return
+	
+	var extra_data = {
+		"time_taken": time_elapsed,
+		"move_count": move_count,
+		"grid_size": grid_size,
+		"hints_used": hints_used,
+		"auto_solve_used": auto_solve_used,
+		"success": true,
+		"optimal_moves": grid_size * grid_size * grid_size,
+		"efficiency": float(grid_size * grid_size * grid_size) / move_count if move_count > 0 else 0.0
+	}
+	
+	# Submit score (works offline too - queues for later)
+	score_manager.submit_score("sliding_puzzle", final_score, extra_data)
+	print("[SlidingPuzzle] ✅ Score submitted: %d" % final_score)
+
 func _show_completion_screen(final_score: int):
 	var minutes = int(time_elapsed / 60)
 	var seconds = int(time_elapsed) % 60
@@ -597,17 +661,52 @@ func _show_completion_screen(final_score: int):
 	score_text += "Auto-Solve: %s" % ("Yes" if auto_solve_used else "No")
 	
 	score_label.text = score_text
+	
+	# Disable tile interactions when showing completion screen
+	for tile in tiles:
+		if tile != null:
+			tile.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	
 	completion_panel.visible = true
+	
+	# Move completion panel to front
+	move_child(completion_panel, get_child_count() - 1)
 
 func _on_return_pressed():
-	# Hide completion screen and reset
+	print("[SlidingPuzzle] Continue button pressed!")
+	
+	# Hide completion screen
 	completion_panel.visible = false
 	
-	# Option 1: Return to main menu (update path to your actual scene)
-	# get_tree().change_scene_to_file("res://Scenes/MainMenu.tscn")
-	
-	# Option 2: Restart the puzzle
-	start_game()
-	
-	# Option 3: Go back to museum or previous scene
-	# get_tree().change_scene_to_file("res://Scenes/Museum.tscn")
+	# Return via MinigameManager (proper flow)
+	var minigame_manager = get_node_or_null("/root/MinigameManager")
+	if minigame_manager:
+		print("[SlidingPuzzle] Returning via MinigameManager.exit_minigame()...")
+		
+		# Create result object for MinigameManager
+		var MinigameResult = load("res://Scripts/Core/Minigames/minigame_result.gd") if ResourceLoader.exists("res://Scripts/Core/Minigames/minigame_result.gd") else null
+		var result = null
+		
+		if MinigameResult:
+			result = MinigameResult.new()
+			result.success = true
+			result.score = _calculate_score()
+			result.time_taken = time_elapsed
+			result.minigame_id = "sliding_puzzle"
+		
+		# Exit minigame and return to map
+		minigame_manager.exit_minigame(result)
+	else:
+		# Fallback: Try to go back to museum or main menu
+		print("[SlidingPuzzle] MinigameManager not found, using fallback...")
+		
+		# Try museum scene first
+		if ResourceLoader.exists("res://Scenes/Museum.tscn"):
+			get_tree().change_scene_to_file("res://Scenes/Museum.tscn")
+		# Try main menu as backup
+		elif ResourceLoader.exists("res://Scenes/MainMenu.tscn"):
+			get_tree().change_scene_to_file("res://Scenes/MainMenu.tscn")
+		else:
+			# Last resort - restart the puzzle
+			print("[SlidingPuzzle] No return scene found, restarting puzzle...")
+			start_game()

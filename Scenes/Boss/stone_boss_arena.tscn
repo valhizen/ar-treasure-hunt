@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=4 uid="uid://dwxft6yf00ulm"]
+[gd_scene load_steps=17 format=4 uid="uid://dwxft6yf00ulm"]
 
 [ext_resource type="Script" uid="uid://crk7cvip1dsvo" path="res://Scripts/Bosses/stone_boss_arena.gd" id="1_kq3j6"]
 [ext_resource type="Texture2D" uid="uid://dj3uwoj0txhc0" path="res://Assets/Bosses/StoneBoss/19_Graveyard_16x16.png" id="1_yn4j8"]
@@ -6,6 +6,8 @@
 [ext_resource type="PackedScene" uid="uid://becutfl75778l" path="res://Scenes/Boss/stone_boss.tscn" id="3_0vi44"]
 [ext_resource type="PackedScene" uid="uid://bsxjkb60t1ep8" path="res://Scenes/Boss/boss_health_bar.tscn" id="4_8wl22"]
 [ext_resource type="PackedScene" uid="uid://xpsf4683e38g" path="res://Scenes/MainCharacter/player_health_bar.tscn" id="5_kq3j6"]
+[ext_resource type="PackedScene" uid="uid://ec8232jrd7pi" path="res://Scenes/Core/Utils/portal.tscn" id="7_iwme6"]
+[ext_resource type="Script" uid="uid://b5xdc822a35s8" path="res://Scripts/Core/MIniGame/minigameexitportal.gd" id="8_2ruig"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_p2xy5"]
 texture = ExtResource("1_yn4j8")
@@ -177,6 +179,10 @@ texture = ExtResource("1_yn4j8")
 physics_layer_0/collision_layer = 1
 sources/0 = SubResource("TileSetAtlasSource_0vi44")
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kq3j6"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_3a2t3"]
+
 [node name="StoneBossArena" type="Node2D"]
 script = ExtResource("1_kq3j6")
 boss_path = NodePath("StoneBoss")
@@ -212,6 +218,8 @@ position = Vector2(3510, 333)
 
 [node name="MainCharacter" parent="." instance=ExtResource("2_p2xy5")]
 position = Vector2(3151, 370)
+collision_layer = 3
+collision_mask = 3
 enable_combat = true
 
 [node name="BossHealthBar" parent="." instance=ExtResource("4_8wl22")]
@@ -221,3 +229,44 @@ boss_node_path = NodePath("../StoneBoss")
 
 [node name="PlayerHealthBar" parent="." instance=ExtResource("5_kq3j6")]
 player_node_path = NodePath("../MainCharacter")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(2822, 29)
+scale = Vector2(4.5444045, 92.4461)
+shape = SubResource("RectangleShape2D_kq3j6")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
+position = Vector2(13364, -342.99994)
+rotation = 1.5707964
+scale = Vector2(42.443237, 7134.3765)
+shape = SubResource("RectangleShape2D_kq3j6")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="."]
+position = Vector2(15646.31, 2709.9368)
+scale = Vector2(20.651613, 8546.281)
+shape = SubResource("RectangleShape2D_kq3j6")
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="."]
+position = Vector2(3892, 2032)
+scale = Vector2(20.651613, 8546.281)
+shape = SubResource("RectangleShape2D_kq3j6")
+
+[node name="Portal" parent="." instance=ExtResource("7_iwme6")]
+position = Vector2(3245, 493)
+
+[node name="MinigameExitPortal" type="Area2D" parent="Portal"]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("8_2ruig")
+target_scene = "uid://cwgbp7rjvio7u"
+metadata/_custom_type_script = "uid://b5xdc822a35s8"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Portal/MinigameExitPortal"]
+shape = SubResource("CircleShape2D_3a2t3")
+
+[node name="Label" type="Label" parent="."]
+offset_left = 3221.0
+offset_top = 522.0
+offset_right = 3287.0
+offset_bottom = 545.0
+text = "Exit [E]"

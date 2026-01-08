@@ -392,13 +392,17 @@ func _check_map_unlock() -> void:
 #region Map Positions
 var map_positions: Dictionary = {}
 
-func save_map_position(map_name: String, position: Vector2) -> void:
+func save_map_position(map_name: String, position: Vector2, sync_now: bool = false) -> void:
 	map_positions[map_name] = position
 	last_map = map_name  # NEW: Track last map
 	last_position = position  # NEW: Track last position
 	print("[PlayerData] Saved position for %s: %s" % [map_name, position])
 
-
+	if sync_now:
+		var score_manager = get_node_or_null("/root/ScoreManager")
+		if score_manager and score_manager.has_method("sync_progress"):
+			score_manager.sync_progress()		
+			
 func get_map_position(map_name: String) -> Vector2:
 	return map_positions.get(map_name, Vector2.ZERO)
 #endregion
@@ -416,7 +420,11 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	if not get_tree().paused:
 		play_time += delta
-
+		
+		_sync_timer += delta
+		if _sync_timer >= SYNC_INTERVAL:
+			_sync_timer = 0.0
+			_sync_to_server()
 
 func get_formatted_play_time() -> String:
 	var hours = int(play_time / 3600)

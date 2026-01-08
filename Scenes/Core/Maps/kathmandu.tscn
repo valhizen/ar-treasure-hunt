@@ -27436,3 +27436,17 @@ shape = SubResource("RectangleShape2D_7o56r")
 position = Vector2(-66, -218)
 collision_layer = 3
 collision_mask = 3
+
+[node name="Label" type="Label" parent="."]
+offset_left = 111.0
+offset_top = -243.0
+offset_right = 173.0
+offset_bottom = -220.0
+text = "EnterE]"
+
+[node name="Label2" type="Label" parent="."]
+offset_left = -128.0
+offset_top = 178.0
+offset_right = -66.0
+offset_bottom = 201.0
+text = "EnterE]"

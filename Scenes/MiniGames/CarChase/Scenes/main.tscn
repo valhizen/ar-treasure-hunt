@@ -6140,12 +6140,19 @@ process_mode = 2
 script = ExtResource("8_531wn")
 
 [node name="Label" type="Label" parent="."]
-offset_left = 576.0
-offset_top = 448.0
-offset_right = 875.0
-offset_bottom = 512.0
-text = "Use Arrow keys to move Left and Right
-"
+offset_left = 310.0
+offset_top = 309.0
+offset_right = 609.0
+offset_bottom = 373.0
+text = "Use A to move left"
+label_settings = SubResource("LabelSettings_aloq6")
+
+[node name="Label2" type="Label" parent="."]
+offset_left = 877.0
+offset_top = 414.0
+offset_right = 1176.0
+offset_bottom = 478.0
+text = "Use D to move right"
 label_settings = SubResource("LabelSettings_aloq6")
 
 [node name="End" type="Area2D" parent="."]

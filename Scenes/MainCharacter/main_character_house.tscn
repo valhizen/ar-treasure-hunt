@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=4 uid="uid://cf2kldp15hdcy"]
+[gd_scene load_steps=29 format=4 uid="uid://cf2kldp15hdcy"]
 
 [ext_resource type="Texture2D" uid="uid://po26lr0ihrau" path="res://Assets/InsideRoom/Tiled_files/walls_floor.png" id="1_1cnq4"]
 [ext_resource type="PackedScene" uid="uid://ooeetqvu6dme" path="res://Scenes/MainCharacter/main_character.tscn" id="1_k1wyt"]
@@ -9,8 +9,8 @@
 [ext_resource type="Texture2D" uid="uid://cjg50u8pnwhw5" path="res://Assets/Utils/Light/256x256/256x256 textures (113).png" id="7_3m2as"]
 [ext_resource type="Script" uid="uid://b7eep5rqnf4e7" path="res://Scripts/Core/Maps/Prologue/wake_up_sequence.gd" id="7_m018a"]
 [ext_resource type="Shader" uid="uid://bioi72jo2fwrn" path="res://Scripts/Core/Maps/Prologue/blur.gdshader" id="8_63ppn"]
-[ext_resource type="PackedScene" uid="uid://cwo0acqkt41kp" path="res://Scenes/Core/Utils/transpoter.tscn" id="9_r40kl"]
 [ext_resource type="Script" uid="uid://dhxodkqr72fhe" path="res://Scripts/Core/Utils/quest_ui.gd" id="10_hya30"]
+[ext_resource type="Script" uid="uid://b5xdc822a35s8" path="res://Scripts/Core/MIniGame/minigameexitportal.gd" id="11_3m2as"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_wjxhm"]
 texture = ExtResource("1_1cnq4")
@@ -268,6 +268,8 @@ sources/1 = SubResource("TileSetAtlasSource_kdhed")
 shader = ExtResource("8_63ppn")
 shader_parameter/blur_amount = 2.0
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_o2pu4"]
+
 [node name="MainCharacterHouse" type="Node2D"]
 y_sort_enabled = true
 script = ExtResource("1_kdhed")
@@ -339,8 +341,11 @@ tile_set = SubResource("TileSet_m018a")
 [node name="MainCharacter" parent="." instance=ExtResource("1_k1wyt")]
 position = Vector2(-127.99997, -80.999985)
 scale = Vector2(0.7, 0.7)
+collision_layer = 3
+collision_mask = 3
 
 [node name="PointLight2D2" type="PointLight2D" parent="MainCharacter"]
+position = Vector2(-14.285757, -42.857162)
 texture = ExtResource("7_3m2as")
 
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
@@ -364,21 +369,37 @@ root_node = NodePath("../BlurOverlay")
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="WakeUpSequence"]
 
-[node name="Transpoter" parent="." instance=ExtResource("9_r40kl")]
-position = Vector2(156, 159)
-target_scene = "uid://dk5bksb1vmb3t"
-
 [node name="QuestUI" type="CanvasLayer" parent="."]
 script = ExtResource("10_hya30")
 metadata/_custom_type_script = "uid://dhxodkqr72fhe"
 
 [node name="CanvasModulate2" type="CanvasModulate" parent="."]
-color = Color(0.0142752165, 0.014275218, 0.014275218, 1)
+color = Color(0.008201939, 0.0082020685, 0.00820194, 1)
 
 [node name="Label" type="Label" parent="."]
-offset_left = -200.0
-offset_top = -142.0
-offset_right = 85.0
-offset_bottom = -93.0
+offset_left = -201.0
+offset_top = -151.0
+offset_right = 84.0
+offset_bottom = -102.0
 text = "Use WASD to Move 
  E to Interact"
+
+[node name="MinigameExitPortal" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("11_3m2as")
+exit_mode = 1
+target_scene = "uid://dk5bksb1vmb3t"
+metadata/_custom_type_script = "uid://b5xdc822a35s8"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MinigameExitPortal"]
+position = Vector2(152, 151)
+scale = Vector2(4.9510083, 2.8030026)
+shape = SubResource("CircleShape2D_o2pu4")
+
+[node name="Label2" type="Label" parent="."]
+offset_left = 123.0
+offset_top = 124.0
+offset_right = 189.0
+offset_bottom = 147.0
+text = "Exit [E]"

@@ -1,5 +1,5 @@
 extends Node
-## AuthManager - Handles authentication and session management
+## AuthManager - Handles team authentication and session management
 ## AutoLoad Singleton
 
 #region Signals
@@ -8,27 +8,27 @@ signal login_failed(error: String)
 signal logout_completed
 signal session_restored(user_data: Dictionary)
 signal session_invalid
-signal event_verified(event_data: Dictionary)
-signal event_verification_failed(error: String)
-signal progress_loaded_from_server  # NEW: Emitted when server progress is loaded
+signal progress_loaded_from_server
 #endregion
 
 #region State
 var is_logged_in: bool = false
-var current_user: Dictionary = {}
-var current_event: Dictionary = {}
+var current_team: Dictionary = {}
 var auth_token: String = ""
+var team_id: int = 0
+var team_code: String = ""
+var team_name: String = ""
 #endregion
 
 #region Constants
 const TOKEN_STORAGE_KEY: String = "user://auth_token.dat"
-const USER_STORAGE_KEY: String = "user://user_data.dat"
+const TEAM_STORAGE_KEY: String = "user://team_data.dat"
 #endregion
 
 
 func _ready() -> void:
 	_load_stored_session()
-	print("[AuthManager] Initialized")
+	print("[AuthManager] Initialized - Team Login System")
 
 
 #region Session Persistence
@@ -50,14 +50,17 @@ func _load_stored_session() -> void:
 		session_invalid.emit()
 		return
 	
-	# Load stored user data
-	if FileAccess.file_exists(USER_STORAGE_KEY):
-		var user_file = FileAccess.open(USER_STORAGE_KEY, FileAccess.READ)
-		if user_file:
+	# Load stored team data
+	if FileAccess.file_exists(TEAM_STORAGE_KEY):
+		var team_file = FileAccess.open(TEAM_STORAGE_KEY, FileAccess.READ)
+		if team_file:
 			var json = JSON.new()
-			if json.parse(user_file.get_as_text()) == OK:
-				current_user = json.data
-			user_file.close()
+			if json.parse(team_file.get_as_text()) == OK:
+				current_team = json.data
+				team_id = current_team.get("id", 0)
+				team_code = current_team.get("team_code", "")
+				team_name = current_team.get("team_name", "")
+			team_file.close()
 	
 	# Set token in NetworkManager
 	NetworkManager.set_auth_token(auth_token)
@@ -68,16 +71,19 @@ func _load_stored_session() -> void:
 
 func _validate_session() -> void:
 	"""Validate stored session with server"""
-	var response = await NetworkManager.api_get("/auth/me")
+	var response = await NetworkManager.api_get("/auth/team/me")
 	
 	if response.success:
-		current_user = response.data
+		current_team = response.data
+		team_id = current_team.get("id", 0)
+		team_code = current_team.get("team_code", "")
+		team_name = current_team.get("team_name", "")
 		is_logged_in = true
-		_store_user_data(current_user)
-		session_restored.emit(current_user)
-		print("[AuthManager] Session valid for: %s" % current_user.get("display_name", "Unknown"))
+		_store_team_data(current_team)
+		session_restored.emit(current_team)
+		print("[AuthManager] Session valid for team: %s" % team_name)
 		
-		# ========== KEY FIX: Load progress from server after session restore ==========
+		# Load progress from server
 		await _load_progress_from_server()
 	else:
 		_clear_stored_session()
@@ -85,111 +91,96 @@ func _validate_session() -> void:
 		print("[AuthManager] Session invalid, cleared")
 
 
-func _store_session(token: String, user: Dictionary) -> void:
-	"""Store auth token and user data"""
+func _store_session(token: String, team: Dictionary) -> void:
+	"""Store auth token and team data"""
 	auth_token = token
-	current_user = user
+	current_team = team
+	team_id = team.get("id", 0)
+	team_code = team.get("team_code", "")
+	team_name = team.get("team_name", "")
 	
 	var token_file = FileAccess.open(TOKEN_STORAGE_KEY, FileAccess.WRITE)
 	if token_file:
 		token_file.store_string(token)
 		token_file.close()
 	
-	_store_user_data(user)
+	_store_team_data(team)
 	
 	NetworkManager.set_auth_token(token)
 
 
-func _store_user_data(user: Dictionary) -> void:
-	"""Store user data separately"""
-	var user_file = FileAccess.open(USER_STORAGE_KEY, FileAccess.WRITE)
-	if user_file:
-		user_file.store_string(JSON.stringify(user))
-		user_file.close()
+func _store_team_data(team: Dictionary) -> void:
+	"""Store team data separately"""
+	var team_file = FileAccess.open(TEAM_STORAGE_KEY, FileAccess.WRITE)
+	if team_file:
+		team_file.store_string(JSON.stringify(team))
+		team_file.close()
 
 
 func _clear_stored_session() -> void:
 	"""Clear stored session data"""
 	auth_token = ""
-	current_user = {}
+	current_team = {}
+	team_id = 0
+	team_code = ""
+	team_name = ""
 	is_logged_in = false
 	
 	var dir = DirAccess.open("user://")
 	if dir:
 		if dir.file_exists("auth_token.dat"):
 			dir.remove("auth_token.dat")
-		if dir.file_exists("user_data.dat"):
-			dir.remove("user_data.dat")
+		if dir.file_exists("team_data.dat"):
+			dir.remove("team_data.dat")
 	
 	NetworkManager.clear_auth()
 #endregion
 
 
-#region Authentication Methods
-func register(email: String, password: String, display_name: String) -> Dictionary:
-	"""Register new user"""
-	var response = await NetworkManager.api_post("/auth/register", {
-		"email": email,
-		"password": password,
-		"display_name": display_name
+#region Team Authentication
+func login_with_team(input_team_name: String, input_team_code: String) -> Dictionary:
+	"""Login with team name and team code"""
+	var response = await NetworkManager.api_post("/auth/team/login", {
+		"team_name": input_team_name,
+		"team_code": input_team_code
 	})
 	
 	if response.success:
-		_store_session(response.data.get("token", ""), response.data.get("user", {}))
+		_store_session(response.data.get("token", ""), response.data.get("team", {}))
 		is_logged_in = true
-		login_completed.emit(current_user)
-		print("[AuthManager] Registered: %s" % display_name)
-	else:
-		login_failed.emit(response.get("error", "Registration failed"))
-	
-	return response
-
-
-func login(email: String, password: String) -> Dictionary:
-	"""Login with email and password"""
-	var response = await NetworkManager.api_post("/auth/login", {
-		"email": email,
-		"password": password
-	})
-	
-	if response.success:
-		_store_session(response.data.get("token", ""), response.data.get("user", {}))
-		is_logged_in = true
-		login_completed.emit(current_user)
-		print("[AuthManager] Logged in: %s" % current_user.get("display_name", "Unknown"))
+		login_completed.emit(current_team)
+		print("[AuthManager] Team logged in: %s (ID: %d, Code: %s)" % [team_name, team_id, team_code])
 		
-		# ========== KEY FIX: Load progress from server after login ==========
+		# Load progress from server after login
 		await _load_progress_from_server()
 	else:
-		login_failed.emit(response.get("error", "Login failed"))
+		var error_msg = response.get("error", "Invalid team name or code")
+		login_failed.emit(error_msg)
 	
 	return response
 
 
-func login_as_guest() -> Dictionary:
-	"""Login as guest"""
-	var response = await NetworkManager.api_post("/auth/guest", {})
-	
-	if response.success:
-		_store_session(response.data.get("token", ""), response.data.get("user", {}))
-		is_logged_in = true
-		current_user["is_guest"] = true
-		login_completed.emit(current_user)
-		print("[AuthManager] Guest login: %s" % current_user.get("display_name", "Guest"))
-		
-		# Guest users also get progress loaded (if they had any from before)
-		await _load_progress_from_server()
-	else:
-		login_failed.emit(response.get("error", "Guest login failed"))
-	
-	return response
+func set_guest_mode() -> void:
+	"""Set guest mode without backend"""
+	is_logged_in = false
+	team_name = "Guest"
+	team_code = "GUEST"
+	team_id = 0
+	current_team = {
+		"team_name": "Guest",
+		"team_code": "GUEST",
+		"is_guest": true
+	}
+	print("[AuthManager] Guest mode activated")
 
 
 func logout() -> void:
-	"""Logout current user"""
+	"""Logout current team"""
 	# Sync progress before logout
 	if is_logged_in:
-		await ScoreManager.sync_progress()
+		var score_manager = get_node_or_null("/root/ScoreManager")
+		if score_manager and score_manager.has_method("sync_progress"):
+			await score_manager.sync_progress()
 	
 	await NetworkManager.api_post("/auth/logout", {})
 	_clear_stored_session()
@@ -198,48 +189,7 @@ func logout() -> void:
 #endregion
 
 
-#region Event Code
-func verify_event_code(code: String) -> Dictionary:
-	"""Verify an event code"""
-	var response = await NetworkManager.api_post("/event/verify-code", {
-		"code": code
-	})
-	
-	if response.success:
-		current_event = response.data
-		event_verified.emit(current_event)
-		print("[AuthManager] Event code valid: %s - %s" % [
-			current_event.get("code", ""),
-			current_event.get("event_name", "")
-		])
-	else:
-		event_verification_failed.emit(response.get("error", "Invalid code"))
-	
-	return response
-
-
-func is_event_active() -> bool:
-	"""Check if an event is currently active"""
-	if current_event.is_empty():
-		return false
-	
-	var valid_until = current_event.get("valid_until", "")
-	if valid_until.is_empty():
-		return true
-	
-	# Parse ISO date and compare
-	var now = Time.get_unix_time_from_system()
-	var event_time = Time.get_unix_time_from_datetime_string(valid_until)
-	return now < event_time
-
-
-func get_event_code() -> String:
-	"""Get current event code"""
-	return current_event.get("code", "")
-#endregion
-
-
-#region Progress Sync - KEY FIX
+#region Progress Sync
 func _load_progress_from_server() -> void:
 	"""
 	Load progress from server and create local save.
@@ -301,30 +251,39 @@ func _load_progress_from_server() -> void:
 				}
 				
 				# Write to auto-save slot (0)
-				save_manager._write_save_file(0, save_data)
-				print("[AuthManager] Created local save from server data (slot 0)")
-				
-				# Also write to slot 1 for manual continue
-				save_manager._write_save_file(1, save_data)
-				print("[AuthManager] Created local save from server data (slot 1)")
+				if save_manager.has_method("_write_save_file"):
+					save_manager._write_save_file(0, save_data)
+					print("[AuthManager] Created local save from server data (slot 0)")
+					
+					# Also write to slot 1 for manual continue
+					save_manager._write_save_file(1, save_data)
+					print("[AuthManager] Created local save from server data (slot 1)")
 			
 			progress_loaded_from_server.emit()
 		else:
-			print("[AuthManager] Server has no saved progress (new player)")
+			print("[AuthManager] Server has no saved progress (new team)")
 	else:
 		print("[AuthManager] Could not load from server or no data: %s" % response.get("error", ""))
 #endregion
 
 
 #region Utility
-func get_user_id() -> String:
-	return current_user.get("id", "")
+func get_team_id() -> int:
+	return team_id
+
+
+func get_team_name() -> String:
+	return team_name
+
+
+func get_team_code() -> String:
+	return team_code
 
 
 func get_display_name() -> String:
-	return current_user.get("display_name", "Guest")
+	return team_name
 
 
 func is_guest() -> bool:
-	return current_user.get("is_guest", false)
+	return current_team.get("is_guest", false)
 #endregion

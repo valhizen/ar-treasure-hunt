@@ -10,7 +10,7 @@ signal connection_status_changed(is_online: bool)
 
 #region Configuration
 ## Your backend server URL (change this!)
-@export var base_url: String = "https://api.arth.valhizen.dev/api"
+@export var base_url: String = "https://arth.valhizen.dev/api"
 
 ## For local development
 const LOCAL_URL: String = "http://localhost:3000/api"

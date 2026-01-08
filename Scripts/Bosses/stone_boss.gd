@@ -1,5 +1,4 @@
 extends BossBase
-
 ## Stone Boss - A challenging boss with projectile attacks, shield, and devastating shockwaves
 
 # === STONE BOSS SPECIFIC ===
@@ -43,13 +42,13 @@ var original_speed: float
 var original_cooldown: float
 var shield_timer: float = 0.0
 var attacks_since_shield: int = 0
+var active_projectiles: Array = []
 
 signal phase_changed(new_phase: int)
 signal shield_activated
 signal shield_deactivated
 signal shockwave_triggered
 signal projectile_fired
-
 
 func _boss_ready() -> void:
 	boss_name = "STONE TITAN"
@@ -66,7 +65,7 @@ func _boss_ready() -> void:
 		if not player_detector.body_entered.is_connected(_on_player_entered_detection):
 			player_detector.body_entered.connect(_on_player_entered_detection)
 	
-	# Setup hurtbox - make sure it doesn't block movement
+	# Setup hurtbox
 	if hurtbox:
 		hurtbox.monitoring = true
 		hurtbox.monitorable = true
@@ -76,12 +75,10 @@ func _boss_ready() -> void:
 		if not hurtbox.is_in_group("boss_hurtbox"):
 			hurtbox.add_to_group("boss_hurtbox")
 
-
 func _on_player_entered_detection(body: Node2D) -> void:
 	if body.is_in_group("player"):
 		player = body
 		has_seen_player = true
-
 
 func _physics_process(delta: float) -> void:
 	super._physics_process(delta)
@@ -96,13 +93,11 @@ func _physics_process(delta: float) -> void:
 	
 	_check_phase_transition()
 
-
 func _check_phase_transition() -> void:
 	if current_phase == BossPhase.PHASE_1:
 		var hp_percent = current_health / max_health
 		if hp_percent <= phase_2_threshold:
 			_enter_phase_2()
-
 
 func _enter_phase_2() -> void:
 	current_phase = BossPhase.PHASE_2
@@ -117,9 +112,7 @@ func _enter_phase_2() -> void:
 	
 	print("[%s] PHASE 2!" % boss_name)
 
-
 # === STATE OVERRIDES ===
-
 func _state_idle(_delta: float) -> void:
 	velocity = Vector2.ZERO
 	
@@ -147,7 +140,6 @@ func _state_idle(_delta: float) -> void:
 				_activate_shield()
 			_:
 				_change_state(State.CHASE)
-
 
 func _state_chase(_delta: float) -> void:
 	if not player or not is_instance_valid(player):
@@ -190,10 +182,8 @@ func _state_chase(_delta: float) -> void:
 	else:
 		velocity.x = 0
 
-
 func _state_special(_delta: float) -> void:
 	velocity = Vector2.ZERO
-
 
 func _on_state_enter(state: State) -> void:
 	match state:
@@ -210,9 +200,7 @@ func _on_state_enter(state: State) -> void:
 		State.SPECIAL:
 			_do_projectile_attack()
 
-
 # === ACTION SELECTION ===
-
 func _choose_action() -> String:
 	var hp_percent = current_health / max_health
 	var dist = _get_distance_to_player()
@@ -232,11 +220,9 @@ func _choose_action() -> String:
 	
 	return "chase"
 
-
 # === PROJECTILE ATTACK ===
-
 func _do_projectile_attack() -> void:
-	if not can_use_projectile:
+	if not can_use_projectile or is_dead:
 		_change_state(State.CHASE)
 		return
 	
@@ -262,9 +248,8 @@ func _do_projectile_attack() -> void:
 	await get_tree().create_timer(projectile_cooldown).timeout
 	can_use_projectile = true
 
-
 func _fire_projectile_volley() -> void:
-	if not player or not is_instance_valid(player):
+	if not player or not is_instance_valid(player) or is_dead:
 		return
 	
 	var spawn_offset = Vector2(40, -15)
@@ -281,6 +266,9 @@ func _fire_projectile_volley() -> void:
 	var half_spread = spread_rad * (projectiles_per_volley - 1) / 2.0
 	
 	for i in range(projectiles_per_volley):
+		if is_dead:
+			break
+			
 		var angle_offset = 0.0
 		if projectiles_per_volley > 1:
 			angle_offset = -half_spread + (spread_rad * i)
@@ -297,14 +285,17 @@ func _fire_projectile_volley() -> void:
 	if camera:
 		camera.shake(0.15)
 
-
 func _spawn_projectile(pos: Vector2, direction: Vector2) -> void:
+	if is_dead:
+		return
+		
 	var proj = Area2D.new()
 	proj.name = "StoneProjectile"
 	proj.collision_layer = 0
 	proj.collision_mask = 2
 	proj.monitoring = true
 	proj.monitorable = false
+	proj.add_to_group("boss_projectile")
 	
 	var draw_node = Node2D.new()
 	draw_node.name = "Visual"
@@ -323,29 +314,34 @@ func _spawn_projectile(pos: Vector2, direction: Vector2) -> void:
 	get_tree().current_scene.add_child(proj)
 	proj.global_position = pos
 	
+	# Track active projectile
+	active_projectiles.append(proj)
+	
 	var vel = direction * projectile_speed
 	var hit = false
 	
 	proj.area_entered.connect(func(area: Area2D):
-		if hit: return
+		if hit or is_dead: 
+			return
 		if area.is_in_group("player_hurtbox"):
 			hit = true
 			var target = area.get_parent()
 			if target and target.has_method("take_damage"):
 				target.take_damage(projectile_damage, Vector2.ZERO)
-			proj.queue_free()
+			_remove_projectile(proj)
 	)
 	
 	proj.body_entered.connect(func(body: Node2D):
-		if hit: return
+		if hit or is_dead: 
+			return
 		if body.is_in_group("player"):
 			hit = true
 			if body.has_method("take_damage"):
 				body.take_damage(projectile_damage, Vector2.ZERO)
-			proj.queue_free()
+			_remove_projectile(proj)
 		elif not body.is_in_group("boss"):
 			hit = true
-			proj.queue_free()
+			_remove_projectile(proj)
 	)
 	
 	var move_timer = Timer.new()
@@ -355,20 +351,29 @@ func _spawn_projectile(pos: Vector2, direction: Vector2) -> void:
 	
 	var lifetime = 4.0
 	move_timer.timeout.connect(func():
-		if not is_instance_valid(proj) or hit:
+		if not is_instance_valid(proj) or hit or is_dead:
 			return
 		proj.position += vel * 0.016
 		draw_node.rotation += 0.2
 		lifetime -= 0.016
 		if lifetime <= 0:
-			proj.queue_free()
+			_remove_projectile(proj)
 	)
 
+func _remove_projectile(proj: Area2D) -> void:
+	if is_instance_valid(proj):
+		active_projectiles.erase(proj)
+		proj.queue_free()
+
+func _cleanup_all_projectiles() -> void:
+	for proj in active_projectiles:
+		if is_instance_valid(proj):
+			proj.queue_free()
+	active_projectiles.clear()
 
 # === SHIELD ABILITY ===
-
 func _activate_shield() -> void:
-	if not can_use_shield or is_shielded:
+	if not can_use_shield or is_shielded or is_dead:
 		return
 	
 	is_shielded = true
@@ -379,8 +384,10 @@ func _activate_shield() -> void:
 	_play_animation("shield")
 	_apply_shield_shader()
 
-
 func _deactivate_shield() -> void:
+	if is_dead:
+		return
+		
 	is_shielded = false
 	shield_deactivated.emit()
 	_remove_shield_shader()
@@ -391,7 +398,6 @@ func _deactivate_shield() -> void:
 	
 	await get_tree().create_timer(shield_cooldown).timeout
 	can_use_shield = true
-
 
 func _apply_shield_shader() -> void:
 	if not animated_sprite:
@@ -404,17 +410,14 @@ func _apply_shield_shader() -> void:
 	mat.set_shader_parameter("pulse_speed", 3.0)
 	animated_sprite.material = mat
 
-
 func _remove_shield_shader() -> void:
 	if animated_sprite:
 		animated_sprite.material = null
-
 
 const SHIELD_SHADER_CODE = """
 shader_type canvas_item;
 uniform vec4 shield_color : source_color = vec4(0.3, 0.6, 1.0, 0.5);
 uniform float pulse_speed = 3.0;
-
 void fragment() {
 	vec4 tex = texture(TEXTURE, UV);
 	float pulse = sin(TIME * pulse_speed) * 0.3 + 0.7;
@@ -424,10 +427,11 @@ void fragment() {
 }
 """
 
-
 # === SHOCKWAVE ===
-
 func _trigger_shockwave() -> void:
+	if is_dead:
+		return
+		
 	shockwave_triggered.emit()
 	
 	if camera:
@@ -443,7 +447,6 @@ func _trigger_shockwave() -> void:
 					p.take_damage(shockwave_damage, Vector2.ZERO)
 	
 	_spawn_shockwave_visual()
-
 
 func _spawn_shockwave_visual() -> void:
 	var shockwave = Node2D.new()
@@ -475,9 +478,7 @@ func _spawn_shockwave_visual() -> void:
 	await tw.finished
 	shockwave.queue_free()
 
-
 # === DAMAGE ===
-
 func take_damage(amount: float, knockback_dir: Vector2 = Vector2.ZERO) -> void:
 	if is_dead:
 		return
@@ -503,14 +504,12 @@ func take_damage(amount: float, knockback_dir: Vector2 = Vector2.ZERO) -> void:
 		if not is_dead and current_state == State.TAKE_HIT:
 			_change_state(State.CHASE if player else State.IDLE)
 
-
 func _flash_sprite(color: Color) -> void:
 	if animated_sprite:
 		animated_sprite.modulate = color * 2.0
 		var tw = create_tween()
 		var target = Color(1.3, 0.85, 0.85) if current_phase == BossPhase.PHASE_2 else Color.WHITE
 		tw.tween_property(animated_sprite, "modulate", target, 0.15)
-
 
 func _on_animation_finished() -> void:
 	match current_state:
@@ -521,21 +520,35 @@ func _on_animation_finished() -> void:
 		State.DEATH:
 			_on_death_animation_finished()
 
-
 func _die() -> void:
 	is_shielded = false
 	_remove_shield_shader()
+	_cleanup_all_projectiles()
+	
+	# FIX: Immediately disable detection/damage so the dead body doesn't kill player
+	if hurtbox:
+		hurtbox.set_deferred("monitorable", false)
+		hurtbox.set_deferred("monitoring", false)
+	
+	# If there's a specific hitbox separate from hurtbox:
+	var hitbox = get_node_or_null("Hitbox")
+	if hitbox:
+		hitbox.set_deferred("monitorable", false)
+		hitbox.set_deferred("monitoring", false)
+
 	super._die()
 
-
 func _on_attack_hit(area: Area2D) -> void:
+	if is_dead:
+		return
 	if area.is_in_group("player_hurtbox"):
 		var target = area.get_parent()
 		if target.has_method("take_damage"):
 			target.take_damage(attack_damage, Vector2.ZERO)
 
-
 func _on_hurtbox_hit(area: Area2D) -> void:
+	if is_dead:
+		return
 	if area.is_in_group("player_attack") or area.is_in_group("attack") or area.is_in_group("hitbox"):
 		var damage_amt = 10.0
 		var attacker = area.get_parent()

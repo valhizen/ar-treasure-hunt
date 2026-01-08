@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=3 uid="uid://csnb0lphjaltq"]
+[gd_scene load_steps=35 format=3 uid="uid://csnb0lphjaltq"]
 
 [ext_resource type="Script" uid="uid://rxpxqpy8q0hy" path="res://Scenes/MiniGames/Lake/Scripts/bkt_lake_minigame.gd" id="1_flvqo"]
 [ext_resource type="PackedScene" uid="uid://s70v8hbbhqmm" path="res://Scenes/MiniGames/Lake/Scene/main_audio.tscn" id="2_ad0wf"]
@@ -16,6 +16,7 @@
 [ext_resource type="PackedScene" uid="uid://ctltbgr67pa0f" path="res://Scenes/MiniGames/Lake/Scene/spawner.tscn" id="14_ad0wf"]
 [ext_resource type="PackedScene" uid="uid://ec8232jrd7pi" path="res://Scenes/Core/Utils/portal.tscn" id="15_3iwff"]
 [ext_resource type="Script" uid="uid://b5xdc822a35s8" path="res://Scripts/Core/MIniGame/minigameexitportal.gd" id="16_lc2q1"]
+[ext_resource type="Script" uid="uid://cdvt3mxej34c7" path="res://Scenes/MiniGames/Lake/Scripts/portal_block.gd" id="17_qfv6t"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mi4rp"]
 size = Vector2(40, 40)
@@ -126,6 +127,8 @@ animations = [{
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_lc2q1"]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qfv6t"]
+
 [node name="Bkt-lake-minigame" type="Node2D"]
 script = ExtResource("1_flvqo")
 
@@ -152,17 +155,17 @@ position = Vector2(-96, 1232)
 [node name="Corrupters" type="Node2D" parent="."]
 position = Vector2(-1351, 1161)
 
-[node name="Corrupter" parent="Corrupters" instance=ExtResource("4_rv3kn")]
+[node name="Corrupter" parent="Corrupters" groups=["corrupter"] instance=ExtResource("4_rv3kn")]
 position = Vector2(295, -73)
 
-[node name="Corrupter2" parent="Corrupters" instance=ExtResource("4_rv3kn")]
+[node name="Corrupter2" parent="Corrupters" groups=["corrupter"] instance=ExtResource("4_rv3kn")]
 position = Vector2(1415, -1113)
 
-[node name="Corrupter3" parent="Corrupters" instance=ExtResource("4_rv3kn")]
+[node name="Corrupter3" parent="Corrupters" groups=["corrupter"] instance=ExtResource("4_rv3kn")]
 position = Vector2(2551, 55)
 
 [node name="Player" type="CharacterBody2D" parent="." groups=["player"]]
-position = Vector2(1300, 638)
+position = Vector2(1258, 620)
 collision_layer = 3
 collision_mask = 3
 script = ExtResource("6_mi4rp")
@@ -208,7 +211,7 @@ offset_right = -1704.0
 offset_bottom = 1063.0
 text = "Find & Defuse all three Corrupters"
 
-[node name="Portal" parent="." instance=ExtResource("15_3iwff")]
+[node name="Portal" parent="." groups=["portal"] instance=ExtResource("15_3iwff")]
 position = Vector2(1558, 629)
 scale = Vector2(2.229133, 3.716866)
 
@@ -219,3 +222,15 @@ script = ExtResource("16_lc2q1")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Portal/Area2D"]
 shape = SubResource("CircleShape2D_lc2q1")
+
+[node name="Node" type="Node" parent="Portal"]
+script = ExtResource("17_qfv6t")
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 55
+collision_mask = 7
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(1526, 652)
+scale = Vector2(8.222536, 11.990779)
+shape = SubResource("RectangleShape2D_qfv6t")

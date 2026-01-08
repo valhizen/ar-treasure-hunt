@@ -145,7 +145,7 @@ animations = [{
 [node name="BktMazeMinigame" type="Node2D"]
 
 [node name="GameManager" type="Node2D" parent="."]
-position = Vector2(55, 26)
+position = Vector2(513, -91)
 script = ExtResource("1_lc1bb")
 
 [node name="Environment" type="Node2D" parent="."]
@@ -162,7 +162,7 @@ tile_map_data = PackedByteArray("AABh/q//AAAEAAQAAABi/q//AAABAAQAAABj/q//AAACAAQ
 tile_set = SubResource("TileSet_xvtaq")
 
 [node name="CanvasModulate" type="CanvasModulate" parent="Environment"]
-color = Color(0.8732984, 0.8732984, 0.8732984, 1)
+color = Color(0.038396705, 0.038397342, 0.03839719, 1)
 
 [node name="Enemies" type="Node2D" parent="."]
 
@@ -302,14 +302,14 @@ position = Vector2(1091, -722)
 stream = ExtResource("7_2pgr7")
 
 [node name="Player" parent="." instance=ExtResource("7_ejktb")]
-position = Vector2(-1645, 902)
+position = Vector2(-1689, 901)
 collision_layer = 3
 collision_mask = 51
 
 [node name="FinishLine" type="Area2D" parent="."]
 position = Vector2(1004, -397)
 collision_layer = 0
-collision_mask = 2
+collision_mask = 3
 script = ExtResource("15_04hcj")
 prompt_text = "Exit [E]qq"
 
@@ -322,3 +322,10 @@ z_index = 5
 scale = Vector2(0.8953336, 0.98631495)
 sprite_frames = SubResource("SpriteFrames_dpco6")
 autoplay = "default"
+
+[node name="Label" type="Label" parent="."]
+offset_left = 980.0
+offset_top = -432.0
+offset_right = 1033.0
+offset_bottom = -409.0
+text = "Exit [e]"

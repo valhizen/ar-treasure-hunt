@@ -1,6 +1,6 @@
 extends Control
-## LoginScreen - Login, Registration, Event Code Entry, and Guest Mode
-## UPDATED VERSION - Allows guest mode without backend
+## LoginScreen - Team Code and Team Name Login
+## UPDATED VERSION - Team-based authentication
 
 #region Scene References
 @export_file("*.tscn") var main_menu_path: String = "res://Scenes/Core/MainMenu/main_menu.tscn"
@@ -9,28 +9,12 @@ extends Control
 #region Node References
 # Panels
 @onready var login_panel: Control = $LoginPanel
-@onready var register_panel: Control = $RegisterPanel
-@onready var event_code_panel: Control = $EventCodePanel
 
 # Login fields
-@onready var login_email: LineEdit = $LoginPanel/Container/Email
-@onready var login_password: LineEdit = $LoginPanel/Container/Password
+@onready var team_name: LineEdit = $LoginPanel/Container/TeamName
+@onready var team_code: LineEdit = $LoginPanel/Container/TeamCode
 @onready var login_button: Button = $LoginPanel/Container/HBoxContainer/LoginButton
-@onready var register_link: Button = $LoginPanel/Container/HBoxContainer/RegisterLink
 @onready var guest_button: Button = $LoginPanel/Container/HBoxContainer/GuestButton
-
-# Register fields
-@onready var register_email: LineEdit = $RegisterPanel/Container/Email
-@onready var register_password: LineEdit = $RegisterPanel/Container/Password
-@onready var register_confirm: LineEdit = $RegisterPanel/Container/ConfirmPassword
-@onready var register_name: LineEdit = $RegisterPanel/Container/DisplayName
-@onready var register_button: Button = $RegisterPanel/Container/RegisterButton
-@onready var login_link: Button = $RegisterPanel/Container/LoginLink
-
-# Event code fields
-@onready var event_code_input: LineEdit = $EventCodePanel/Container/CodeInput
-@onready var verify_button: Button = $EventCodePanel/Container/VerifyButton
-@onready var skip_button: Button = $EventCodePanel/Container/SkipButton
 
 # Status
 @onready var status_label: Label = $StatusLabel
@@ -38,147 +22,78 @@ extends Control
 #endregion
 
 #region State
-enum Screen { LOGIN, REGISTER, EVENT_CODE }
-var current_screen: Screen = Screen.LOGIN
 var is_loading: bool = false
 var is_guest_mode: bool = false
 #endregion
 
 func _ready() -> void:
 	print("[LoginScreen] ═══════════════════════════════════════")
-	print("[LoginScreen] Initializing...")
-	_debug_mouse_filters()
+	print("[LoginScreen] Initializing Team Login...")
 	_debug_check_nodes()
 	_connect_signals()
-	_show_screen(Screen.LOGIN)
 	_check_existing_session()
 	_fix_mouse_filters()
-	_fix_all_mouse_filters(self)
 	print("[LoginScreen] Ready!")
 	print("[LoginScreen] ═══════════════════════════════════════")
 
 
-func _fix_all_mouse_filters(node: Node) -> void:
-	if node is Control:
-		var ctrl = node as Control
-		if ctrl is Button or ctrl is LineEdit:
-			ctrl.mouse_filter = Control.MOUSE_FILTER_STOP
-		else:
-			ctrl.mouse_filter = Control.MOUSE_FILTER_PASS
-		print("Set %s to %s" % [node.name, ctrl.mouse_filter])
-	
-	for child in node.get_children():
-		_fix_all_mouse_filters(child)
-
-
 func _fix_mouse_filters() -> void:
 	$LoginPanel.mouse_filter = Control.MOUSE_FILTER_PASS
-	$RegisterPanel.mouse_filter = Control.MOUSE_FILTER_PASS
-	$EventCodePanel.mouse_filter = Control.MOUSE_FILTER_PASS
 	$LoginPanel/Container.mouse_filter = Control.MOUSE_FILTER_PASS
 	$LoginPanel/Container/HBoxContainer.mouse_filter = Control.MOUSE_FILTER_PASS
-	$RegisterPanel/Container.mouse_filter = Control.MOUSE_FILTER_PASS
-	$EventCodePanel/Container.mouse_filter = Control.MOUSE_FILTER_PASS
 	$LoadingSpinner.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	$VBoxContainer.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	print("[LoginScreen] Mouse filters fixed!")
-
-
-func _debug_mouse_filters() -> void:
-	print("[LoginScreen] ═══ MOUSE FILTER DEBUG ═══")
-	for child in get_children():
-		if child is Control:
-			var filter_name = ""
-			match child.mouse_filter:
-				Control.MOUSE_FILTER_STOP:
-					filter_name = "STOP ← BLOCKING!"
-				Control.MOUSE_FILTER_PASS:
-					filter_name = "PASS"
-				Control.MOUSE_FILTER_IGNORE:
-					filter_name = "IGNORE ✓"
-			print("  %s: %s (size: %s, pos: %s)" % [child.name, filter_name, child.size, child.position])
-	print("[LoginScreen] ═══════════════════════════")
 
 
 func _debug_check_nodes() -> void:
 	print("[LoginScreen] Checking nodes...")
 	print("  LoginPanel: %s" % ("✓" if login_panel else "✗ MISSING"))
-	print("  RegisterPanel: %s" % ("✓" if register_panel else "✗ MISSING"))
-	print("  EventCodePanel: %s" % ("✓" if event_code_panel else "✗ MISSING"))
-	print("  login_email: %s" % ("✓" if login_email else "✗ MISSING"))
-	print("  login_password: %s" % ("✓" if login_password else "✗ MISSING"))
+	print("  team_name: %s" % ("✓" if team_name else "✗ MISSING"))
+	print("  team_code: %s" % ("✓" if team_code else "✗ MISSING"))
 	print("  login_button: %s" % ("✓" if login_button else "✗ MISSING"))
-	print("  register_link: %s" % ("✓" if register_link else "✗ MISSING"))
 	print("  guest_button: %s" % ("✓" if guest_button else "✗ MISSING"))
-	print("  register_email: %s" % ("✓" if register_email else "✗ MISSING"))
-	print("  register_name: %s" % ("✓" if register_name else "✗ MISSING"))
-	print("  register_button: %s" % ("✓" if register_button else "✗ MISSING"))
-	print("  login_link: %s" % ("✓" if login_link else "✗ MISSING"))
 
 
 func _connect_signals() -> void:
 	print("[LoginScreen] Connecting signals...")
 	
-	# ═══ LOGIN PANEL BUTTONS ═══
+	# Login button
 	if login_button:
 		login_button.pressed.connect(_on_login_pressed)
 		print("  ✓ LoginButton connected")
 	else:
 		print("  ✗ LoginButton not found!")
 	
-	if register_link:
-		register_link.pressed.connect(_on_register_link_pressed)
-		print("  ✓ RegisterLink connected")
-	else:
-		print("  ✗ RegisterLink not found!")
 	
+	# Guest button
 	if guest_button:
 		guest_button.pressed.connect(_on_guest_pressed)
 		print("  ✓ GuestButton connected")
 	else:
 		print("  ✗ GuestButton not found!")
 	
-	# ═══ REGISTER PANEL BUTTONS ═══
-	if register_button:
-		register_button.pressed.connect(_on_register_pressed)
-		print("  ✓ RegisterButton connected")
-	else:
-		print("  ✗ RegisterButton not found!")
-	
-	if login_link:
-		login_link.pressed.connect(_on_login_link_pressed)
-		print("  ✓ LoginLink connected")
-	else:
-		print("  ✗ LoginLink not found!")
-	
-	# ═══ EVENT CODE PANEL BUTTONS ═══
-	if verify_button:
-		verify_button.pressed.connect(_on_verify_code_pressed)
-		print("  ✓ VerifyButton connected")
-	
-	if skip_button:
-		skip_button.pressed.connect(_on_skip_pressed)
-		print("  ✓ SkipButton connected")
-	
-	# ═══ AUTH MANAGER SIGNALS - Only if AuthManager exists ═══
+	# AuthManager signals - Only if AuthManager exists
 	if AuthManager:
-		# Login/Registration responses
 		AuthManager.login_completed.connect(_on_auth_success)
 		AuthManager.login_failed.connect(_on_auth_failed)
-		
-		# Session restoration
 		AuthManager.session_restored.connect(_on_session_restored)
 		AuthManager.session_invalid.connect(_on_session_invalid)
-		
-		# Event code verification
-		AuthManager.event_verified.connect(_on_event_verified)
-		AuthManager.event_verification_failed.connect(_on_event_verification_failed)
-		
 		print("  ✓ AuthManager signals connected")
 	else:
 		print("  ⚠ AuthManager not found - running in offline mode")
 
-
+	print("[LoginScreen] Login button pressed")
+	
+	# DEBUG: Print what we actually have
+	print("DEBUG: login_panel exists? ", login_panel != null)
+	if login_panel:
+		print("DEBUG: login_panel children: ", login_panel.get_children())
+		for child in login_panel.get_children():
+			print("  - ", child.name, " (", child.get_class(), ")")
+			if child.has_node("TeamName"):
+				print("    FOUND TeamName at: $LoginPanel/", child.name, "/TeamName")
+			if child.has_node("TeamCode"):
+				print("    FOUND TeamCode at: $LoginPanel/", child.name, "/TeamCode")
 func _check_existing_session() -> void:
 	"""Check if user has valid saved session"""
 	if not AuthManager:
@@ -189,49 +104,7 @@ func _check_existing_session() -> void:
 	if AuthManager.is_logged_in:
 		_show_status("Welcome back, %s!" % AuthManager.get_display_name())
 		await get_tree().create_timer(1.0).timeout
-		_show_screen(Screen.EVENT_CODE)
-
-
-#region Screen Management
-func _show_screen(screen: Screen) -> void:
-	current_screen = screen
-	print("[LoginScreen] Switching to screen: %s" % Screen.keys()[screen])
-	
-	if login_panel:
-		login_panel.visible = false
-	if register_panel:
-		register_panel.visible = false
-	if event_code_panel:
-		event_code_panel.visible = false
-	
-	match screen:
-		Screen.LOGIN:
-			if login_panel:
-				login_panel.visible = true
-				print("[LoginScreen] LOGIN panel now visible")
-		Screen.REGISTER:
-			if register_panel:
-				register_panel.visible = true
-				print("[LoginScreen] REGISTER panel now visible")
-		Screen.EVENT_CODE:
-			if event_code_panel:
-				event_code_panel.visible = true
-				print("[LoginScreen] EVENT_CODE panel now visible")
-	
-	_clear_status()
-#endregion
-
-
-#region Button Handlers
-func _on_register_link_pressed() -> void:
-	print("[LoginScreen] Register link clicked - switching to REGISTER screen")
-	_show_screen(Screen.REGISTER)
-
-
-func _on_login_link_pressed() -> void:
-	print("[LoginScreen] Login link clicked - switching to LOGIN screen")
-	_show_screen(Screen.LOGIN)
-#endregion
+		_proceed_to_game()
 
 
 #region Login
@@ -242,28 +115,31 @@ func _on_login_pressed() -> void:
 		_show_error("Login requires backend connection. Please use Guest mode.")
 		return
 	
-	if not login_email or not login_password:
+	# Get nodes directly instead of using @onready variables (web build fix)
+	var team_name_field = $LoginPanel/Container/TeamName
+	var team_code_field = $LoginPanel/Container/TeamCode
+	
+	if not team_name_field or not team_code_field:
 		_show_error("UI Error: Fields not found")
+		print("[LoginScreen] ERROR: Could not find input fields!")
 		return
 	
-	var email = login_email.text.strip_edges()
-	var password = login_password.text
+	var input_team_name = team_name_field.text.strip_edges()
+	var input_team_code = team_code_field.text.strip_edges()
 	
-	if email.is_empty() or password.is_empty():
-		_show_error("Please enter email and password")
-		return
+	print("[LoginScreen] Team Name: '%s', Team Code: '%s'" % [input_team_name, input_team_code])
 	
-	if not _is_valid_email(email):
-		_show_error("Please enter a valid email")
+	if input_team_name.is_empty() or input_team_code.is_empty():
+		_show_error("Please enter both team name and team code")
 		return
 	
 	_set_loading(true)
-	_show_status("Logging in...")
+	_show_status("Verifying team credentials...")
 	
-	await AuthManager.login(email, password)
+	# Call new team login method
+	await AuthManager.login_with_team(input_team_name, input_team_code)
 	_set_loading(false)
-
-
+	
 func _on_guest_pressed() -> void:
 	print("[LoginScreen] Guest button pressed - starting offline guest mode")
 	
@@ -282,7 +158,7 @@ func _on_guest_pressed() -> void:
 	_show_success("Playing as Guest")
 	await get_tree().create_timer(1.0).timeout
 	
-	# Skip event code screen for guests and go directly to game
+	# Go directly to game for guests
 	_proceed_to_game()
 
 
@@ -302,55 +178,12 @@ func _setup_guest_session() -> void:
 #endregion
 
 
-#region Registration
-func _on_register_pressed() -> void:
-	print("[LoginScreen] Register button pressed")
-	
-	if not AuthManager:
-		_show_error("Registration requires backend connection. Please use Guest mode.")
-		return
-	
-	if not register_email or not register_password or not register_confirm or not register_name:
-		_show_error("UI Error: Fields not found")
-		return
-	
-	var email = register_email.text.strip_edges()
-	var password = register_password.text
-	var confirm = register_confirm.text
-	var display_name = register_name.text.strip_edges()
-	
-	if email.is_empty() or password.is_empty() or display_name.is_empty():
-		_show_error("Please fill all fields")
-		return
-	
-	if not _is_valid_email(email):
-		_show_error("Please enter a valid email")
-		return
-	
-	if password.length() < 4:
-		_show_error("Password must be at least 4 characters")
-		return
-	
-	if password != confirm:
-		_show_error("Passwords do not match")
-		return
-	
-	if display_name.length() < 2:
-		_show_error("Display name must be at least 2 characters")
-		return
-	
-	_set_loading(true)
-	_show_status("Creating account...")
-	
-	await AuthManager.register(email, password, display_name)
-	_set_loading(false)
-
-
+#region Auth Callbacks
 func _on_auth_success(user_data: Dictionary) -> void:
-	print("[LoginScreen] Auth success! User: %s" % user_data.get("display_name", "Unknown"))
-	_show_status("Success!")
-	await get_tree().create_timer(0.5).timeout
-	_show_screen(Screen.EVENT_CODE)
+	print("[LoginScreen] Auth success! Team: %s" % user_data.get("team_name", "Unknown"))
+	_show_success("Welcome, %s!" % user_data.get("team_name", "Team"))
+	await get_tree().create_timer(1.0).timeout
+	_proceed_to_game()
 
 
 func _on_auth_failed(error: String) -> void:
@@ -359,64 +192,15 @@ func _on_auth_failed(error: String) -> void:
 
 
 func _on_session_restored(user_data: Dictionary) -> void:
-	print("[LoginScreen] Session restored for: %s" % user_data.get("display_name", "Unknown"))
-	_show_status("Welcome back, %s!" % user_data.get("display_name", ""))
+	print("[LoginScreen] Session restored for: %s" % user_data.get("team_name", "Unknown"))
+	_show_status("Welcome back, %s!" % user_data.get("team_name", "Team"))
 	await get_tree().create_timer(1.0).timeout
-	_show_screen(Screen.EVENT_CODE)
+	_proceed_to_game()
 
 
 func _on_session_invalid() -> void:
 	print("[LoginScreen] Session invalid, staying on login screen")
 	_clear_status()
-#endregion
-
-
-#region Event Code
-func _on_verify_code_pressed() -> void:
-	print("[LoginScreen] Verify code pressed")
-	
-	if is_guest_mode:
-		_show_error("Event codes are not available in guest mode")
-		return
-	
-	if not AuthManager:
-		_show_error("Event code verification requires backend connection")
-		return
-	
-	if not event_code_input:
-		_show_error("UI Error: Code input not found")
-		return
-	
-	var code = event_code_input.text.strip_edges().to_upper()
-	
-	if code.is_empty():
-		_show_error("Please enter an event code")
-		return
-	
-	_set_loading(true)
-	_show_status("Verifying code...")
-	
-	await AuthManager.verify_event_code(code)
-	_set_loading(false)
-
-
-func _on_event_verified(event_data: Dictionary) -> void:
-	print("[LoginScreen] Event verified: %s" % event_data.get("event_name", "Unknown"))
-	_show_status("Code verified! Starting game...")
-	await get_tree().create_timer(1.0).timeout
-	_proceed_to_game()
-
-
-func _on_event_verification_failed(error: String) -> void:
-	print("[LoginScreen] Event verification failed: %s" % error)
-	_show_error(error)
-
-
-func _on_skip_pressed() -> void:
-	print("[LoginScreen] Skip pressed - proceeding without event code")
-	_show_status("Starting game...")
-	await get_tree().create_timer(0.5).timeout
-	_proceed_to_game()
 #endregion
 
 
@@ -564,27 +348,13 @@ func _set_loading(loading: bool) -> void:
 	
 	if login_button:
 		login_button.disabled = loading
-	if register_button:
-		register_button.disabled = loading
-	if verify_button:
-		verify_button.disabled = loading
 	if guest_button:
 		guest_button.disabled = loading
-
-
-func _is_valid_email(email: String) -> bool:
-	return email.contains("@") and email.contains(".")
 #endregion
 
 
 #region Input
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_accept"):
-		match current_screen:
-			Screen.LOGIN:
-				_on_login_pressed()
-			Screen.REGISTER:
-				_on_register_pressed()
-			Screen.EVENT_CODE:
-				_on_verify_code_pressed()
+		_on_login_pressed()
 #endregion

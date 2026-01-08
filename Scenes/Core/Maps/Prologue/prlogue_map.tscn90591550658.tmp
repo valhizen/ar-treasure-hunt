@@ -27801,16 +27801,20 @@ size = Vector2(190.13873, 272.21725)
 [node name="PrlogueMap" type="Node2D"]
 position = Vector2(-142, 1376)
 script = ExtResource("1_yqb7y")
+delay_before_start = null
+time_per_line = null
+fade_time = null
 player_path = NodePath("MainCharacter")
 pikpik_path = NodePath("PikPik")
 quest_ui_path = NodePath("QuestUI")
 portal_path = NodePath("Portal")
 sound_volume_db = 2.0
+max_hear_distance = null
+stop_distance = null
 
 [node name="MainCharacter" parent="." instance=ExtResource("3_mm534")]
 position = Vector2(177, 425)
-collision_layer = 39
-collision_mask = 3
+collision_layer = 3
 
 [node name="PikPik" parent="." instance=ExtResource("1_5ukth")]
 position = Vector2(-217, 459)
@@ -28255,8 +28259,8 @@ position = Vector2(-709, -1288)
 
 [node name="MinigameExitPortal" type="Area2D" parent="Portal"]
 scale = Vector2(2.6013117, 14.806483)
-collision_layer = 3
-collision_mask = 3
+collision_layer = 0
+collision_mask = 2
 script = ExtResource("42_o6vkn")
 target_scene = "uid://cfpaxviachffr"
 metadata/_custom_type_script = "uid://b5xdc822a35s8"

@@ -559,8 +559,7 @@ texture_scale = 3.01
 visibility_layer = 3
 position = Vector2(0.5999756, -1.3999634)
 scale = Vector2(0.862299, 0.4670242)
-zoom = Vector2(2.5, 2.5)
-metadata/_edit_group_ = true
+zoom = Vector2(3, 3)
 
 [node name="CoinCollector" type="Area2D" parent="."]
 

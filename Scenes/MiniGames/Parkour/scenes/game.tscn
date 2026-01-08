@@ -1628,7 +1628,7 @@ z_index = -13
 texture = ExtResource("10_a36du")
 
 [node name="MainCharacter" parent="." instance=ExtResource("3_enj1e")]
-position = Vector2(1630, -388)
+position = Vector2(1537, 48)
 collision_mask = 3
 
 [node name="Coins" type="Label" parent="MainCharacter"]
@@ -1706,8 +1706,8 @@ position = Vector2(3213, 250)
 
 [node name="Area2D" type="Area2D" parent="Portal"]
 position = Vector2(2208, 642)
-collision_layer = 3
-collision_mask = 3
+collision_layer = 0
+collision_mask = 2
 script = ExtResource("18_x0jc1")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Portal/Area2D"]
