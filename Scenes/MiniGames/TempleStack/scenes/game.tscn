@@ -276,9 +276,10 @@ text = "Score: "
 
 [node name="Controls" type="Label" parent="."]
 self_modulate = Color(0.012617188, 0.012617188, 0.012617188, 1)
-offset_left = -175.0
-offset_top = -421.0
-offset_right = 91.0
-offset_bottom = -398.0
+offset_left = -68.0
+offset_top = -349.0
+offset_right = 132.0
+offset_bottom = -330.0
 theme_override_fonts/font = ExtResource("19_hrljk")
+theme_override_font_sizes/font_size = 12
 text = "Space: Drop the Block"

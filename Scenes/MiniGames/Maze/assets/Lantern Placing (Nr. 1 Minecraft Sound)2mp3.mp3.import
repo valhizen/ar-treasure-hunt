@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://r05gm656bhe0"
+path="res://.godot/imported/Lantern Placing (Nr. 1 Minecraft Sound)2mp3.mp3-b53e26c0609b2a3577aae9cdbc5703da.mp3str"
+
+[deps]
+
+source_file="res://Scenes/MiniGames/Maze/assets/Lantern Placing (Nr. 1 Minecraft Sound)2mp3.mp3"
+dest_files=["res://.godot/imported/Lantern Placing (Nr. 1 Minecraft Sound)2mp3.mp3-b53e26c0609b2a3577aae9cdbc5703da.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

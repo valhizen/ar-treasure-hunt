@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://43eqqflnevya"
-path="res://.godot/imported/leaf.png-63a8ecedc220ad043a75a44e927bd908.ctex"
+uid="uid://b44c0pb14xj4d"
+path="res://.godot/imported/6.png-5ac3f14184bff0710f7ce29a33669feb.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Scenes/MiniGames/CarvingGame/leaf.png"
-dest_files=["res://.godot/imported/leaf.png-63a8ecedc220ad043a75a44e927bd908.ctex"]
+source_file="res://Scenes/MiniGames/PaperCollector/assets/6.png"
+dest_files=["res://.godot/imported/6.png-5ac3f14184bff0710f7ce29a33669feb.ctex"]
 
 [params]
 

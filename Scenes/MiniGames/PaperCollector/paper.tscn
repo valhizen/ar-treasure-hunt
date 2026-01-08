@@ -1,13 +1,13 @@
 [gd_scene load_steps=10 format=3 uid="uid://blpklwk6xnfxn"]
 
-[ext_resource type="Script" uid="uid://bmngtoeloicqo" path="res://MiniGames/PaperCollector/paper.gd" id="1_pugg3"]
-[ext_resource type="Texture2D" uid="uid://ux84lprcmbgg" path="res://MiniGames/PaperCollector/assets/Untitled78_20260101000743.png" id="2_kn3ba"]
-[ext_resource type="Texture2D" uid="uid://p73m7lm7uydx" path="res://MiniGames/PaperCollector/assets/Untitled78_20260101000802.png" id="3_a1j23"]
-[ext_resource type="Texture2D" uid="uid://24k20xbw0qm6" path="res://MiniGames/PaperCollector/assets/Untitled78_20260101000811.png" id="4_l1fm3"]
-[ext_resource type="Texture2D" uid="uid://x3oe88l446et" path="res://MiniGames/PaperCollector/assets/Untitled78_20260101000820.png" id="5_j3yih"]
-[ext_resource type="Texture2D" uid="uid://bqyl5myltnijn" path="res://MiniGames/PaperCollector/assets/Untitled78_20260101000841.png" id="6_6o485"]
-[ext_resource type="Texture2D" uid="uid://b44c0pb14xj4d" path="res://MiniGames/PaperCollector/assets/Untitled78_20260101000847.png" id="7_c4wmi"]
-[ext_resource type="Texture2D" uid="uid://boyt3qgun45tw" path="res://MiniGames/PaperCollector/assets/Untitled78_20260101000901.png" id="8_x8wae"]
+[ext_resource type="Script" uid="uid://bmngtoeloicqo" path="res://Scenes/MiniGames/PaperCollector/paper.gd" id="1_pugg3"]
+[ext_resource type="Texture2D" uid="uid://ux84lprcmbgg" path="res://Scenes/MiniGames/PaperCollector/assets/1.png" id="2_kn3ba"]
+[ext_resource type="Texture2D" uid="uid://p73m7lm7uydx" path="res://Scenes/MiniGames/PaperCollector/assets/2.png" id="3_a1j23"]
+[ext_resource type="Texture2D" uid="uid://24k20xbw0qm6" path="res://Scenes/MiniGames/PaperCollector/assets/3.png" id="4_l1fm3"]
+[ext_resource type="Texture2D" uid="uid://x3oe88l446et" path="res://Scenes/MiniGames/PaperCollector/assets/4.png" id="5_j3yih"]
+[ext_resource type="Texture2D" uid="uid://bqyl5myltnijn" path="res://Scenes/MiniGames/PaperCollector/assets/5.png" id="6_6o485"]
+[ext_resource type="Texture2D" uid="uid://b44c0pb14xj4d" path="res://Scenes/MiniGames/PaperCollector/assets/6.png" id="7_c4wmi"]
+[ext_resource type="Texture2D" uid="uid://boyt3qgun45tw" path="res://Scenes/MiniGames/PaperCollector/assets/7.png" id="8_x8wae"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dpwhn"]
 size = Vector2(40, 60)
