@@ -1628,7 +1628,7 @@ z_index = -13
 texture = ExtResource("10_a36du")
 
 [node name="MainCharacter" parent="." instance=ExtResource("3_enj1e")]
-position = Vector2(1537, 48)
+position = Vector2(97, -54)
 collision_mask = 3
 
 [node name="Coins" type="Label" parent="MainCharacter"]
