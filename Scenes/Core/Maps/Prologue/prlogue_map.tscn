@@ -43,6 +43,8 @@
 [ext_resource type="PackedScene" uid="uid://ec8232jrd7pi" path="res://Scenes/Core/Utils/portal.tscn" id="41_yxspu"]
 [ext_resource type="Script" uid="uid://b5xdc822a35s8" path="res://Scripts/Core/MIniGame/minigameexitportal.gd" id="42_o6vkn"]
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_o6vkn"]
+
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_mm534"]
 texture = ExtResource("2_tkdhj")
 0:0/0 = 0
@@ -27796,16 +27798,26 @@ metadata/_custom_type_script = "uid://c6wqitf6dar4i"
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_v5q3b"]
 size = Vector2(190.13873, 272.21725)
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_utx8r"]
-
 [node name="PrlogueMap" type="Node2D"]
 position = Vector2(-142, 1376)
 script = ExtResource("1_yqb7y")
 player_path = NodePath("MainCharacter")
 pikpik_path = NodePath("PikPik")
 quest_ui_path = NodePath("QuestUI")
-portal_path = NodePath("Portal")
 sound_volume_db = 2.0
+
+[node name="Portal2" parent="." instance=ExtResource("41_yxspu")]
+position = Vector2(-753, -1287)
+
+[node name="MinigameExitPortal" type="Area2D" parent="Portal2"]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("42_o6vkn")
+target_scene = "uid://cfpaxviachffr"
+metadata/_custom_type_script = "uid://b5xdc822a35s8"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Portal2/MinigameExitPortal"]
+shape = SubResource("CircleShape2D_o6vkn")
 
 [node name="MainCharacter" parent="." instance=ExtResource("3_mm534")]
 position = Vector2(177, 425)
@@ -28249,21 +28261,6 @@ scale = Vector2(0.31657034, 0.28312638)
 [node name="NPCBhaktapur2" parent="." instance=ExtResource("21_i75r3")]
 position = Vector2(-1188, -1091)
 scale = Vector2(0.29605296, 0.2981257)
-
-[node name="Portal" parent="." instance=ExtResource("41_yxspu")]
-position = Vector2(-709, -1288)
-
-[node name="MinigameExitPortal" type="Area2D" parent="Portal"]
-scale = Vector2(2.6013117, 14.806483)
-collision_layer = 3
-collision_mask = 3
-script = ExtResource("42_o6vkn")
-target_scene = "uid://cfpaxviachffr"
-metadata/_custom_type_script = "uid://b5xdc822a35s8"
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Portal/MinigameExitPortal"]
-scale = Vector2(1, 0.2314459)
-shape = SubResource("CircleShape2D_utx8r")
 
 [node name="Label" type="Label" parent="."]
 offset_left = -883.0
