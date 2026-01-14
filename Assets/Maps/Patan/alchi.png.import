@@ -15,7 +15,7 @@ dest_files=["res://.godot/imported/alchi.png-1516334c89eac1b66bc7e040f7c85c9c.ct
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

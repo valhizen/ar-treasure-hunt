@@ -15,7 +15,7 @@ dest_files=["res://.godot/imported/LoginMenuBackground.jpg-89a61a9cede05888d3896
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

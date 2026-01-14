@@ -15,7 +15,7 @@ dest_files=["res://.godot/imported/Godot_Autotiles_16x16.png-7485fe99a42e5dfa6ab
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

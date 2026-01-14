@@ -1,12 +1,10 @@
-[gd_scene load_steps=29 format=4 uid="uid://cf2kldp15hdcy"]
+[gd_scene load_steps=28 format=4 uid="uid://cf2kldp15hdcy"]
 
 [ext_resource type="Texture2D" uid="uid://po26lr0ihrau" path="res://Assets/InsideRoom/Tiled_files/walls_floor.png" id="1_1cnq4"]
 [ext_resource type="PackedScene" uid="uid://ooeetqvu6dme" path="res://Scenes/MainCharacter/main_character.tscn" id="1_k1wyt"]
 [ext_resource type="Script" uid="uid://lgu8hbb2hsgx" path="res://Scripts/Core/Maps/Prologue/main_character_house.gd" id="1_kdhed"]
 [ext_resource type="Texture2D" uid="uid://dga0u45sso4as" path="res://Assets/InsideRoom/Tiled_files/Interior.png" id="2_8bpp1"]
 [ext_resource type="Texture2D" uid="uid://nowc1a4yhvv7" path="res://Assets/InsideRoom/Tiled_files/wall_side.png" id="3_8bpp1"]
-[ext_resource type="Texture2D" uid="uid://ck7oe1iqoucew" path="res://Assets/InsideRoom/Tiled_files/Broken-Furniture-Bonus-Assets-Preview.png" id="4_g646q"]
-[ext_resource type="Texture2D" uid="uid://cjg50u8pnwhw5" path="res://Assets/Utils/Light/256x256/256x256 textures (113).png" id="7_3m2as"]
 [ext_resource type="Script" uid="uid://b7eep5rqnf4e7" path="res://Scripts/Core/Maps/Prologue/wake_up_sequence.gd" id="7_m018a"]
 [ext_resource type="Shader" uid="uid://bioi72jo2fwrn" path="res://Scripts/Core/Maps/Prologue/blur.gdshader" id="8_63ppn"]
 [ext_resource type="Script" uid="uid://dhxodkqr72fhe" path="res://Scripts/Core/Utils/quest_ui.gd" id="10_hya30"]
@@ -255,14 +253,14 @@ texture = ExtResource("1_1cnq4")
 sources/0 = SubResource("TileSetAtlasSource_lbe44")
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_kdhed"]
-texture = ExtResource("4_g646q")
-18:42/size_in_atlas = Vector2i(4, 4)
 18:42/0 = 0
-36:42/size_in_atlas = Vector2i(4, 4)
 36:42/0 = 0
 
 [sub_resource type="TileSet" id="TileSet_m018a"]
 sources/1 = SubResource("TileSetAtlasSource_kdhed")
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_r40kl"]
+load_path = "res://.godot/imported/256x256 textures (113).png-561746b20279bb3599d2f91f7ef00274.ctex"
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_r40kl"]
 shader = ExtResource("8_63ppn")
@@ -346,7 +344,7 @@ collision_mask = 3
 
 [node name="PointLight2D2" type="PointLight2D" parent="MainCharacter"]
 position = Vector2(-14.285757, -42.857162)
-texture = ExtResource("7_3m2as")
+texture = SubResource("CompressedTexture2D_r40kl")
 
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
 visible = false

@@ -15,7 +15,7 @@ dest_files=["res://.godot/imported/A2_Floors_MV_TILESET.png-3adf5569633b0577e861
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

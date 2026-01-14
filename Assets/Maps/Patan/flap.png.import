@@ -15,7 +15,7 @@ dest_files=["res://.godot/imported/flap.png-a06318e3a8e4cf0dee792104e51c448b.cte
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

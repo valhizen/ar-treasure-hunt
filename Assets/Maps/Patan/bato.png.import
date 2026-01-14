@@ -15,7 +15,7 @@ dest_files=["res://.godot/imported/bato.png-d847dd208bbc51992c3cd2e39cd30320.cte
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

@@ -15,7 +15,7 @@ dest_files=["res://.godot/imported/Tileset_59_MV.png-62b1d9885d0c48e0e957d8bb20e
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

@@ -15,7 +15,7 @@ dest_files=["res://.godot/imported/3_City_Props_16x16.png-566735aa7196c4a638a348
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

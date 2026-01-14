@@ -15,7 +15,7 @@ dest_files=["res://.godot/imported/11_Camping_16x16.png-93d500a719ac949a5cc3d78f
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

@@ -15,7 +15,7 @@ dest_files=["res://.godot/imported/pikpiksmile.png-53728a5f998fd0bc289f8e2b61586
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

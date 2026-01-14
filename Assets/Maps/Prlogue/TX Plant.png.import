@@ -15,7 +15,7 @@ dest_files=["res://.godot/imported/TX Plant.png-1b4a1969aafd01dc93b4d77cfc73d0e6
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

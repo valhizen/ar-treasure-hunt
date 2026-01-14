@@ -15,7 +15,7 @@ dest_files=["res://.godot/imported/normal-background.png-9f00f0c969d3c8d17686c38
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
