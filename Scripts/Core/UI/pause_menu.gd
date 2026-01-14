@@ -157,17 +157,6 @@ func _connect_signals() -> void:
 	quit_button.pressed.connect(_on_quit_pressed)
 
 
-func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("ui_cancel") or event.is_action_pressed("pause"):
-		if is_open:
-			hide_menu()
-		else:
-			# Only pause if playing (check GameManager if available)
-			if GameManager:
-				if GameManager.is_playing():
-					show_menu()
-			else:
-				show_menu()
 
 
 func show_menu() -> void:

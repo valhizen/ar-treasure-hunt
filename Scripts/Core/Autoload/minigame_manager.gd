@@ -429,13 +429,13 @@ func _input(event: InputEvent) -> void:
 	if not is_in_minigame:
 		return
 	
-	if event.is_action_pressed("ui_cancel") or event.is_action_pressed("pause"):
-		if current_pause_menu:
-			if current_pause_menu.visible:
-				hide_pause_menu()
-			else:
-				show_pause_menu()
-			get_viewport().set_input_as_handled()
+	#if event.is_action_pressed("ui_cancel") or event.is_action_pressed("pause"):
+		#if current_pause_menu:
+			#if current_pause_menu.visible:
+				#hide_pause_menu()
+			#else:
+				#show_pause_menu()
+			#get_viewport().set_input_as_handled()
 #endregion
 
 #region Exit Minigame - FIXED save

@@ -388,7 +388,7 @@ text = "Use WASD to Move
 collision_layer = 0
 collision_mask = 2
 script = ExtResource("11_3m2as")
-exit_mode = 1
+exit_mode = 0
 target_scene = "uid://dk5bksb1vmb3t"
 metadata/_custom_type_script = "uid://b5xdc822a35s8"
 
