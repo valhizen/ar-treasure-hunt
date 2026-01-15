@@ -165,7 +165,7 @@ position = Vector2(1415, -1113)
 position = Vector2(2551, 55)
 
 [node name="Player" type="CharacterBody2D" parent="." groups=["player"]]
-position = Vector2(1258, 620)
+position = Vector2(-2273, 995)
 collision_layer = 3
 collision_mask = 3
 script = ExtResource("6_mi4rp")

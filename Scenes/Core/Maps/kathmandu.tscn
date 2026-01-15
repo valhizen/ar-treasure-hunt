@@ -1,4 +1,4 @@
-[gd_scene load_steps=54 format=4 uid="uid://cfpaxviachffr"]
+[gd_scene load_steps=57 format=4 uid="uid://cfpaxviachffr"]
 
 [ext_resource type="Texture2D" uid="uid://drw1gcgdshxbx" path="res://Assets/Maps/Kathmandu/3_City_Props_16x16.png" id="1_7wnaw"]
 [ext_resource type="Texture2D" uid="uid://dcdb38jsaliqt" path="res://Assets/Maps/Kathmandu/9_Shopping_Center_and_Markets_16x16.png" id="2_ky7nj"]
@@ -16,6 +16,8 @@
 [ext_resource type="Texture2D" uid="uid://58qb8qmy8tvr" path="res://Assets/Maps/Kathmandu/dharahara.png" id="9_miast"]
 [ext_resource type="Texture2D" uid="uid://dyktfv3bp4u6j" path="res://Assets/Maps/Kathmandu/singhadurbar.png" id="11_ldj7i"]
 [ext_resource type="Texture2D" uid="uid://bnvdbp80ufc04" path="res://Assets/Maps/Kathmandu/dhaarahara.png" id="12_a3hfu"]
+[ext_resource type="PackedScene" uid="uid://ec8232jrd7pi" path="res://Scenes/Core/Utils/portal.tscn" id="17_7f8il"]
+[ext_resource type="Script" uid="uid://b5xdc822a35s8" path="res://Scripts/Core/MIniGame/minigameexitportal.gd" id="18_g6ck3"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ky7nj"]
 texture = ExtResource("1_7wnaw")
@@ -27317,6 +27319,8 @@ size = Vector2(73, 30)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7o56r"]
 size = Vector2(112.99997, 299)
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_pduxe"]
+
 [node name="Kathmandu" type="Node2D"]
 
 [node name="YSortedNode" type="Node2D" parent="."]
@@ -27450,3 +27454,16 @@ offset_top = 178.0
 offset_right = -66.0
 offset_bottom = 201.0
 text = "EnterE]"
+
+[node name="w" parent="." instance=ExtResource("17_7f8il")]
+position = Vector2(933, 223)
+
+[node name="MinigameExitPortal" type="Area2D" parent="w"]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("18_g6ck3")
+target_scene = "uid://cwgbp7rjvio7u"
+metadata/_custom_type_script = "uid://b5xdc822a35s8"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="w/MinigameExitPortal"]
+shape = SubResource("CircleShape2D_pduxe")
