@@ -660,6 +660,7 @@ func _show_completion_screen(final_score: int):
 	score_text += "Hints Used: %d\n" % hints_used
 	score_text += "Auto-Solve: %s" % ("Yes" if auto_solve_used else "No")
 	
+	
 	score_label.text = score_text
 	
 	# Disable tile interactions when showing completion screen

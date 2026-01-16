@@ -1,6 +1,6 @@
 extends Control
-## LoginScreen - Team Code and Team Name Login
-## UPDATED VERSION - Team-based authentication
+## LoginScreen - Team Code, Team Name, and Player Name Login
+## UPDATED VERSION - Team-based authentication with player names (max 3 per team)
 
 #region Scene References
 @export_file("*.tscn") var main_menu_path: String = "res://Scenes/Core/MainMenu/main_menu.tscn"
@@ -10,7 +10,8 @@ extends Control
 # Panels
 @onready var login_panel: Control = $LoginPanel
 
-# Login fields
+# Login fields - Note: PlayerName (LineEdit) is outside Container
+@onready var player_name: LineEdit = $LoginPanel/Container/LineEdit
 @onready var team_name: LineEdit = $LoginPanel/Container/TeamName
 @onready var team_code: LineEdit = $LoginPanel/Container/TeamCode
 @onready var login_button: Button = $LoginPanel/Container/HBoxContainer/LoginButton
@@ -48,6 +49,7 @@ func _fix_mouse_filters() -> void:
 func _debug_check_nodes() -> void:
 	print("[LoginScreen] Checking nodes...")
 	print("  LoginPanel: %s" % ("✓" if login_panel else "✗ MISSING"))
+	print("  player_name: %s" % ("✓" if player_name else "✗ MISSING"))
 	print("  team_name: %s" % ("✓" if team_name else "✗ MISSING"))
 	print("  team_code: %s" % ("✓" if team_code else "✗ MISSING"))
 	print("  login_button: %s" % ("✓" if login_button else "✗ MISSING"))
@@ -63,7 +65,6 @@ func _connect_signals() -> void:
 		print("  ✓ LoginButton connected")
 	else:
 		print("  ✗ LoginButton not found!")
-	
 	
 	# Guest button
 	if guest_button:
@@ -82,18 +83,7 @@ func _connect_signals() -> void:
 	else:
 		print("  ⚠ AuthManager not found - running in offline mode")
 
-	print("[LoginScreen] Login button pressed")
-	
-	# DEBUG: Print what we actually have
-	print("DEBUG: login_panel exists? ", login_panel != null)
-	if login_panel:
-		print("DEBUG: login_panel children: ", login_panel.get_children())
-		for child in login_panel.get_children():
-			print("  - ", child.name, " (", child.get_class(), ")")
-			if child.has_node("TeamName"):
-				print("    FOUND TeamName at: $LoginPanel/", child.name, "/TeamName")
-			if child.has_node("TeamCode"):
-				print("    FOUND TeamCode at: $LoginPanel/", child.name, "/TeamCode")
+
 func _check_existing_session() -> void:
 	"""Check if user has valid saved session"""
 	if not AuthManager:
@@ -115,19 +105,37 @@ func _on_login_pressed() -> void:
 		_show_error("Login requires backend connection. Please use Guest mode.")
 		return
 	
-	# Get nodes directly instead of using @onready variables (web build fix)
+	# Get nodes directly (web build fix)
+	var player_name_field = $LoginPanel/Container/LineEdit
 	var team_name_field = $LoginPanel/Container/TeamName
 	var team_code_field = $LoginPanel/Container/TeamCode
 	
-	if not team_name_field or not team_code_field:
+	if not player_name_field or not team_name_field or not team_code_field:
 		_show_error("UI Error: Fields not found")
 		print("[LoginScreen] ERROR: Could not find input fields!")
+		print("  player_name_field: %s" % ("✓" if player_name_field else "✗"))
+		print("  team_name_field: %s" % ("✓" if team_name_field else "✗"))
+		print("  team_code_field: %s" % ("✓" if team_code_field else "✗"))
 		return
 	
+	var input_player_name = player_name_field.text.strip_edges()
 	var input_team_name = team_name_field.text.strip_edges()
 	var input_team_code = team_code_field.text.strip_edges()
 	
-	print("[LoginScreen] Team Name: '%s', Team Code: '%s'" % [input_team_name, input_team_code])
+	print("[LoginScreen] Player: '%s', Team: '%s', Code: '%s'" % [input_player_name, input_team_name, input_team_code])
+	
+	# Validate all fields
+	if input_player_name.is_empty():
+		_show_error("Please enter your name")
+		return
+	
+	if input_player_name.length() < 2:
+		_show_error("Name must be at least 2 characters")
+		return
+	
+	if input_player_name.length() > 30:
+		_show_error("Name must be 30 characters or less")
+		return
 	
 	if input_team_name.is_empty() or input_team_code.is_empty():
 		_show_error("Please enter both team name and team code")
@@ -136,10 +144,11 @@ func _on_login_pressed() -> void:
 	_set_loading(true)
 	_show_status("Verifying team credentials...")
 	
-	# Call new team login method
-	await AuthManager.login_with_team(input_team_name, input_team_code)
+	# Call updated team login method with player name
+	await AuthManager.login_with_team(input_team_name, input_team_code, input_player_name)
 	_set_loading(false)
-	
+
+
 func _on_guest_pressed() -> void:
 	print("[LoginScreen] Guest button pressed - starting offline guest mode")
 	
@@ -180,8 +189,9 @@ func _setup_guest_session() -> void:
 
 #region Auth Callbacks
 func _on_auth_success(user_data: Dictionary) -> void:
-	print("[LoginScreen] Auth success! Team: %s" % user_data.get("team_name", "Unknown"))
-	_show_success("Welcome, %s!" % user_data.get("team_name", "Team"))
+	var display = user_data.get("player_name", user_data.get("team_name", "Unknown"))
+	print("[LoginScreen] Auth success! Player: %s, Team: %s" % [display, user_data.get("team_name", "Unknown")])
+	_show_success("Welcome, %s!" % display)
 	await get_tree().create_timer(1.0).timeout
 	_proceed_to_game()
 
@@ -192,8 +202,9 @@ func _on_auth_failed(error: String) -> void:
 
 
 func _on_session_restored(user_data: Dictionary) -> void:
-	print("[LoginScreen] Session restored for: %s" % user_data.get("team_name", "Unknown"))
-	_show_status("Welcome back, %s!" % user_data.get("team_name", "Team"))
+	var display = user_data.get("player_name", user_data.get("team_name", "Unknown"))
+	print("[LoginScreen] Session restored for: %s" % display)
+	_show_status("Welcome back, %s!" % display)
 	await get_tree().create_timer(1.0).timeout
 	_proceed_to_game()
 

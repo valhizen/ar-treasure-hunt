@@ -162,7 +162,6 @@ tile_map_data = PackedByteArray("AABh/q//AAAEAAQAAABi/q//AAABAAQAAABj/q//AAACAAQ
 tile_set = SubResource("TileSet_xvtaq")
 
 [node name="CanvasModulate" type="CanvasModulate" parent="Environment"]
-color = Color(0.038396705, 0.038397342, 0.03839719, 1)
 
 [node name="Enemies" type="Node2D" parent="."]
 
@@ -302,14 +301,15 @@ position = Vector2(1091, -722)
 stream = ExtResource("7_2pgr7")
 
 [node name="Player" parent="." instance=ExtResource("7_ejktb")]
-position = Vector2(-1689, 901)
+z_index = 1
+position = Vector2(-1685, 892)
 collision_layer = 3
 collision_mask = 51
 
 [node name="FinishLine" type="Area2D" parent="."]
 position = Vector2(1004, -397)
 collision_layer = 0
-collision_mask = 3
+collision_mask = 2
 script = ExtResource("15_04hcj")
 prompt_text = "Exit [E]qq"
 

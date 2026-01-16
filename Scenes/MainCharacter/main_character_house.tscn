@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://dga0u45sso4as" path="res://Assets/InsideRoom/Tiled_files/Interior.png" id="2_8bpp1"]
 [ext_resource type="Texture2D" uid="uid://nowc1a4yhvv7" path="res://Assets/InsideRoom/Tiled_files/wall_side.png" id="3_8bpp1"]
 [ext_resource type="Texture2D" uid="uid://ck7oe1iqoucew" path="res://Assets/InsideRoom/Tiled_files/Broken-Furniture-Bonus-Assets-Preview.png" id="4_g646q"]
-[ext_resource type="Texture2D" uid="uid://cjg50u8pnwhw5" path="res://Assets/Utils/Light/256x256/256x256 textures (113).png" id="7_3m2as"]
+[ext_resource type="Texture2D" uid="uid://cfwmqnuqubk12" path="res://Assets/Utils/Light/2d_lights_and_shadows_neutral_point_light.webp" id="7_3m2as"]
 [ext_resource type="Script" uid="uid://b7eep5rqnf4e7" path="res://Scripts/Core/Maps/Prologue/wake_up_sequence.gd" id="7_m018a"]
 [ext_resource type="Shader" uid="uid://bioi72jo2fwrn" path="res://Scripts/Core/Maps/Prologue/blur.gdshader" id="8_63ppn"]
 [ext_resource type="Script" uid="uid://dhxodkqr72fhe" path="res://Scripts/Core/Utils/quest_ui.gd" id="10_hya30"]

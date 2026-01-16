@@ -46,6 +46,9 @@ var anim_time: float = 0.0
 
 
 func _ready() -> void:
+	# Add to group so player can find us
+	add_to_group("exit_portal")
+	
 	collision_layer = 0
 	collision_mask = 2  # Player layer
 	
@@ -239,6 +242,11 @@ func _do_exit() -> void:
 	"""Actually exit the minigame"""
 	print("[MinigameExitPortal] Exiting minigame...")
 	
+	# ═══════════════════════════════════════════════════════════════
+	# SCORE SUBMISSION - Call player's submit method if available
+	# ═══════════════════════════════════════════════════════════════
+	_submit_player_score()
+	
 	# If a target scene is specified, go directly there
 	if not target_scene.is_empty():
 		# Use call_deferred to avoid issues during physics callbacks
@@ -262,6 +270,29 @@ func _do_exit() -> void:
 		call_deferred("_exit_via_manager")
 
 
+func _submit_player_score() -> void:
+	"""Submit score from player if they have a submit method"""
+	# Method 1: Check current_player (the body that entered)
+	if current_player and current_player.has_method("_submit_score"):
+		print("[MinigameExitPortal] ✓ Calling player._submit_score()")
+		current_player._submit_score()
+		return
+	
+	# Method 2: Find player in group
+	var players = get_tree().get_nodes_in_group("player")
+	for player in players:
+		if player.has_method("_submit_score"):
+			print("[MinigameExitPortal] ✓ Found player in group, calling _submit_score()")
+			player._submit_score()
+			return
+	
+	# Method 3: Check if minigame base handles it (MinigameBase has its own score submission)
+	var minigame = _find_minigame_base()
+	if minigame:
+		print("[MinigameExitPortal] MinigameBase found - it will handle score submission")
+		return
+	
+	print("[MinigameExitPortal] ⚠ No score submission method found")
 
 
 func _find_minigame_base() -> Node:
@@ -281,7 +312,6 @@ func _find_minigame_base() -> Node:
 		return root
 	
 	return null
-
 
 
 func _exit_via_manager() -> void:
@@ -305,6 +335,8 @@ func _exit_via_manager() -> void:
 		tree.change_scene_to_file("res://Scenes/Core/MainMenu/main_menu.tscn")
 	else:
 		push_error("[MinigameExitPortal] Cannot exit - no tree or manager available")
+
+
 func _exit_to_scene(scene_path: String) -> void:
 	"""Transition directly to a specific scene"""
 	print("[MinigameExitPortal] Transitioning to: ", scene_path)
@@ -338,6 +370,7 @@ func _exit_to_scene(scene_path: String) -> void:
 	var error = tree.change_scene_to_file(scene_path)
 	if error != OK:
 		push_error("[MinigameExitPortal] Failed to change scene: ", error)
+
 
 #region Editor Helpers
 func _get_configuration_warnings() -> PackedStringArray:

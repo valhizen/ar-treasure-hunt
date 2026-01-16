@@ -1,6 +1,7 @@
 extends Node
 ## AuthManager - Handles team authentication and session management
 ## AutoLoad Singleton
+## UPDATED: Now supports player names (max 3 players per team)
 
 #region Signals
 signal login_completed(user_data: Dictionary)
@@ -14,21 +15,25 @@ signal progress_loaded_from_server
 #region State
 var is_logged_in: bool = false
 var current_team: Dictionary = {}
+var current_player: Dictionary = {}
 var auth_token: String = ""
 var team_id: int = 0
 var team_code: String = ""
 var team_name: String = ""
+var player_id: String = ""
+var player_name: String = ""
 #endregion
 
 #region Constants
 const TOKEN_STORAGE_KEY: String = "user://auth_token.dat"
 const TEAM_STORAGE_KEY: String = "user://team_data.dat"
+const PLAYER_STORAGE_KEY: String = "user://player_data.dat"
 #endregion
 
 
 func _ready() -> void:
 	_load_stored_session()
-	print("[AuthManager] Initialized - Team Login System")
+	print("[AuthManager] Initialized - Team Login System with Player Names")
 
 
 #region Session Persistence
@@ -62,6 +67,17 @@ func _load_stored_session() -> void:
 				team_name = current_team.get("team_name", "")
 			team_file.close()
 	
+	# Load stored player data
+	if FileAccess.file_exists(PLAYER_STORAGE_KEY):
+		var player_file = FileAccess.open(PLAYER_STORAGE_KEY, FileAccess.READ)
+		if player_file:
+			var json = JSON.new()
+			if json.parse(player_file.get_as_text()) == OK:
+				current_player = json.data
+				player_id = current_player.get("id", "")
+				player_name = current_player.get("player_name", "")
+			player_file.close()
+	
 	# Set token in NetworkManager
 	NetworkManager.set_auth_token(auth_token)
 	
@@ -74,14 +90,33 @@ func _validate_session() -> void:
 	var response = await NetworkManager.api_get("/auth/team/me")
 	
 	if response.success:
-		current_team = response.data
-		team_id = current_team.get("id", 0)
-		team_code = current_team.get("team_code", "")
-		team_name = current_team.get("team_name", "")
+		# Handle new format with player and team
+		if response.data.has("player"):
+			current_player = response.data.player
+			player_id = current_player.get("id", "")
+			player_name = current_player.get("player_name", "")
+			_store_player_data(current_player)
+		
+		if response.data.has("team"):
+			current_team = response.data.team
+			team_id = current_team.get("id", 0)
+			team_code = current_team.get("team_code", "")
+			team_name = current_team.get("team_name", "")
+			_store_team_data(current_team)
+		else:
+			# Legacy format (backwards compatibility)
+			current_team = response.data
+			team_id = current_team.get("id", 0)
+			team_code = current_team.get("team_code", "")
+			team_name = current_team.get("team_name", "")
+			_store_team_data(current_team)
+		
 		is_logged_in = true
-		_store_team_data(current_team)
-		session_restored.emit(current_team)
-		print("[AuthManager] Session valid for team: %s" % team_name)
+		
+		# Build combined user data for signal
+		var user_data = _build_user_data()
+		session_restored.emit(user_data)
+		print("[AuthManager] Session valid for player: %s (Team: %s)" % [get_player_name(), team_name])
 		
 		# Load progress from server
 		await _load_progress_from_server()
@@ -91,13 +126,18 @@ func _validate_session() -> void:
 		print("[AuthManager] Session invalid, cleared")
 
 
-func _store_session(token: String, team: Dictionary) -> void:
-	"""Store auth token and team data"""
+func _store_session(token: String, team: Dictionary, player: Dictionary = {}) -> void:
+	"""Store auth token, team data, and player data"""
 	auth_token = token
 	current_team = team
 	team_id = team.get("id", 0)
 	team_code = team.get("team_code", "")
 	team_name = team.get("team_name", "")
+	
+	if not player.is_empty():
+		current_player = player
+		player_id = player.get("id", "")
+		player_name = player.get("player_name", "")
 	
 	var token_file = FileAccess.open(TOKEN_STORAGE_KEY, FileAccess.WRITE)
 	if token_file:
@@ -105,6 +145,9 @@ func _store_session(token: String, team: Dictionary) -> void:
 		token_file.close()
 	
 	_store_team_data(team)
+	
+	if not player.is_empty():
+		_store_player_data(player)
 	
 	NetworkManager.set_auth_token(token)
 
@@ -117,13 +160,24 @@ func _store_team_data(team: Dictionary) -> void:
 		team_file.close()
 
 
+func _store_player_data(player: Dictionary) -> void:
+	"""Store player data separately"""
+	var player_file = FileAccess.open(PLAYER_STORAGE_KEY, FileAccess.WRITE)
+	if player_file:
+		player_file.store_string(JSON.stringify(player))
+		player_file.close()
+
+
 func _clear_stored_session() -> void:
 	"""Clear stored session data"""
 	auth_token = ""
 	current_team = {}
+	current_player = {}
 	team_id = 0
 	team_code = ""
 	team_name = ""
+	player_id = ""
+	player_name = ""
 	is_logged_in = false
 	
 	var dir = DirAccess.open("user://")
@@ -132,29 +186,67 @@ func _clear_stored_session() -> void:
 			dir.remove("auth_token.dat")
 		if dir.file_exists("team_data.dat"):
 			dir.remove("team_data.dat")
+		if dir.file_exists("player_data.dat"):
+			dir.remove("player_data.dat")
 	
 	NetworkManager.clear_auth()
+
+
+func _build_user_data() -> Dictionary:
+	"""Build combined user data dictionary for signals"""
+	return {
+		"player_id": player_id,
+		"player_name": player_name,
+		"team_id": team_id,
+		"team_name": team_name,
+		"team_code": team_code,
+		"player_count": current_team.get("player_count", 0),
+		"max_players": current_team.get("max_players", 3),
+		"type": "team_player"
+	}
 #endregion
 
 
 #region Team Authentication
-func login_with_team(input_team_name: String, input_team_code: String) -> Dictionary:
-	"""Login with team name and team code"""
-	var response = await NetworkManager.api_post("/auth/team/login", {
+func login_with_team(input_team_name: String, input_team_code: String, input_player_name: String = "") -> Dictionary:
+	"""Login with team name, team code, and player name"""
+	
+	# Build request data
+	var request_data = {
 		"team_name": input_team_name,
 		"team_code": input_team_code
-	})
+	}
+	
+	# Add player name if provided
+	if not input_player_name.is_empty():
+		request_data["player_name"] = input_player_name
+	
+	var response = await NetworkManager.api_post("/auth/team/login", request_data)
 	
 	if response.success:
-		_store_session(response.data.get("token", ""), response.data.get("team", {}))
+		var token = response.data.get("token", "")
+		var team_data = response.data.get("team", {})
+		var player_data = response.data.get("player", {})
+		
+		_store_session(token, team_data, player_data)
 		is_logged_in = true
-		login_completed.emit(current_team)
-		print("[AuthManager] Team logged in: %s (ID: %d, Code: %s)" % [team_name, team_id, team_code])
+		
+		var user_data = _build_user_data()
+		login_completed.emit(user_data)
+		
+		print("[AuthManager] ✓ Login successful!")
+		print("  Player: %s (ID: %s)" % [player_name, player_id])
+		print("  Team: %s (ID: %d, Code: %s)" % [team_name, team_id, team_code])
+		print("  Players in team: %d/%d" % [team_data.get("player_count", 0), team_data.get("max_players", 3)])
 		
 		# Load progress from server after login
 		await _load_progress_from_server()
 	else:
 		var error_msg = response.get("error", "Invalid team name or code")
+		
+		# Check for team full error code
+		
+		
 		login_failed.emit(error_msg)
 	
 	return response
@@ -166,16 +258,23 @@ func set_guest_mode() -> void:
 	team_name = "Guest"
 	team_code = "GUEST"
 	team_id = 0
+	player_name = "Guest"
+	player_id = "guest_local"
 	current_team = {
 		"team_name": "Guest",
 		"team_code": "GUEST",
+		"is_guest": true
+	}
+	current_player = {
+		"id": "guest_local",
+		"player_name": "Guest",
 		"is_guest": true
 	}
 	print("[AuthManager] Guest mode activated")
 
 
 func logout() -> void:
-	"""Logout current team"""
+	"""Logout current player"""
 	# Sync progress before logout
 	if is_logged_in:
 		var score_manager = get_node_or_null("/root/ScoreManager")
@@ -209,9 +308,9 @@ func _load_progress_from_server() -> void:
 			print("[AuthManager] Server has saved progress, restoring...")
 			
 			# 1. Load into PlayerData singleton
-			var player_data = get_node_or_null("/root/PlayerData")
-			if player_data and player_data.has_method("load_from_dictionary"):
-				player_data.load_from_dictionary(server_player_data)
+			var player_data_node = get_node_or_null("/root/PlayerData")
+			if player_data_node and player_data_node.has_method("load_from_dictionary"):
+				player_data_node.load_from_dictionary(server_player_data)
 				print("[AuthManager] PlayerData restored from server")
 			
 			# 2. Create local save file so Continue button works
@@ -236,7 +335,7 @@ func _load_progress_from_server() -> void:
 				
 				# Create save data
 				var save_data = {
-					"save_name": "Cloud Save",
+					"save_name": "Cloud Save - %s" % player_name,
 					"timestamp": Time.get_unix_time_from_system(),
 					"datetime": Time.get_datetime_string_from_system(),
 					"current_map": current_map,
@@ -247,7 +346,9 @@ func _load_progress_from_server() -> void:
 					"player_data": server_player_data,
 					"game_version": ProjectSettings.get_setting("application/config/version", "1.0.0"),
 					"is_auto_save": true,
-					"is_cloud_save": true
+					"is_cloud_save": true,
+					"player_name": player_name,
+					"team_name": team_name
 				}
 				
 				# Write to auto-save slot (0)
@@ -261,7 +362,7 @@ func _load_progress_from_server() -> void:
 			
 			progress_loaded_from_server.emit()
 		else:
-			print("[AuthManager] Server has no saved progress (new team)")
+			print("[AuthManager] Server has no saved progress (new player)")
 	else:
 		print("[AuthManager] Could not load from server or no data: %s" % response.get("error", ""))
 #endregion
@@ -280,10 +381,42 @@ func get_team_code() -> String:
 	return team_code
 
 
-func get_display_name() -> String:
+func get_player_id() -> String:
+	return player_id
+
+
+func get_player_name() -> String:
+	"""Get the current player's name"""
+	if not player_name.is_empty():
+		return player_name
+	# Fallback to team name for legacy sessions
 	return team_name
 
 
+func get_display_name() -> String:
+	"""Get display name - player name if available, otherwise team name"""
+	if not player_name.is_empty():
+		return player_name
+	return team_name
+
+
+func get_full_display_name() -> String:
+	"""Get full display name with team: 'PlayerName (TeamName)'"""
+	if not player_name.is_empty() and not team_name.is_empty():
+		return "%s (%s)" % [player_name, team_name]
+	return get_display_name()
+
+
 func is_guest() -> bool:
-	return current_team.get("is_guest", false)
+	return current_team.get("is_guest", false) or current_player.get("is_guest", false)
+
+
+func get_player_count() -> int:
+	"""Get current number of players in team"""
+	return current_team.get("player_count", 0)
+
+
+func get_max_players() -> int:
+	"""Get maximum players allowed per team"""
+	return current_team.get("max_players", 3)
 #endregion
