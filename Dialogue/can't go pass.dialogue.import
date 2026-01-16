@@ -1,0 +1,16 @@
+[remap]
+
+importer="dialogue_manager"
+importer_version=15
+type="Resource"
+uid="uid://byn8wsgfrcqh7"
+path="res://.godot/imported/can't go pass.dialogue-dc0301c90e0380d428184da255007abe.tres"
+
+[deps]
+
+source_file="res://Dialogue/can't go pass.dialogue"
+dest_files=["res://.godot/imported/can't go pass.dialogue-dc0301c90e0380d428184da255007abe.tres"]
+
+[params]
+
+defaults=true

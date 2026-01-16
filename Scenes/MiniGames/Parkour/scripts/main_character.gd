@@ -319,7 +319,7 @@ func _submit_score() -> void:
 		print("[Platformer] ✓ Score submitted successfully!")
 	else:
 		print("[Platformer] ✗ Score submission failed: %s" % result.get("error", "Unknown"))
-
+	ProgressTracker.complete_minigame("parkour", "patan")
 
 func _calculate_score() -> int:
 	# Coin points

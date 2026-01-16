@@ -1,4 +1,4 @@
-[gd_scene load_steps=83 format=3 uid="uid://blaqetpf61p1u"]
+[gd_scene load_steps=84 format=3 uid="uid://blaqetpf61p1u"]
 
 [ext_resource type="Script" uid="uid://dlqmugujex5on" path="res://Scenes/MiniGames/Maze/scripts/player.gd" id="1_gcw4v"]
 [ext_resource type="Texture2D" uid="uid://ctfxq5acwk61y" path="res://Assets/MainCharacter/IDLE/idle_down.png" id="2_1p16e"]
@@ -513,8 +513,12 @@ height = 14.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_25bkj"]
 
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_x2if4"]
+radius = 7.0
+
 [node name="Player" type="CharacterBody2D" groups=["player"]]
-collision_mask = 48
+collision_layer = 524289
+collision_mask = 524336
 script = ExtResource("1_gcw4v")
 player_speed = 250.0
 lantern_count = 15
@@ -581,3 +585,15 @@ stream = ExtResource("14_tfcyg")
 
 [node name="VictorySFX" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("15_1sq2j")
+
+[node name="Direction" type="Marker2D" parent="."]
+position = Vector2(-2, 0)
+
+[node name="ActionableFinder" type="Area2D" parent="Direction" groups=["player"]]
+light_mask = 0
+visibility_layer = 524288
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Direction/ActionableFinder"]
+position = Vector2(0, 13)
+rotation = -0.06283186
+shape = SubResource("CapsuleShape2D_x2if4")

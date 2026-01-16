@@ -1,0 +1,39 @@
+[gd_scene load_steps=7 format=3 uid="uid://em80ghubcqc0"]
+
+[ext_resource type="Script" uid="uid://dmqmmbvdkca34" path="res://Scripts/Core/PlayerInteraction/actionable.gd" id="1_f6lsf"]
+[ext_resource type="Resource" uid="uid://cxncigpwqcgkt" path="res://Dialogue/insidemaze.dialogue" id="2_f6lsf"]
+[ext_resource type="Texture2D" uid="uid://c4ajwuwbgrdg4" path="res://Assets/NPCS/Generic Male NPCs.png" id="3_ju2vm"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_0h6gw"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f6lsf"]
+atlas = ExtResource("3_ju2vm")
+region = Rect2(800, 240, 80, 120)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_kh3lv"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f6lsf")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="InsideMaze" type="Node2D"]
+
+[node name="Actionable" type="Area2D" parent="."]
+light_mask = 524288
+scale = Vector2(0.08077552, 0.110148706)
+script = ExtResource("1_f6lsf")
+dialogue_resource = ExtResource("2_f6lsf")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Actionable"]
+scale = Vector2(-49.589153, -36.579617)
+shape = SubResource("CircleShape2D_0h6gw")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -49)
+sprite_frames = SubResource("SpriteFrames_kh3lv")
+frame_progress = 0.44453236

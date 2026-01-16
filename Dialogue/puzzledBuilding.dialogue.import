@@ -1,0 +1,16 @@
+[remap]
+
+importer="dialogue_manager"
+importer_version=15
+type="Resource"
+uid="uid://cl3dj5jioblk0"
+path="res://.godot/imported/puzzledBuilding.dialogue-78d381fa7b27d94a0a47123d9bcde5f3.tres"
+
+[deps]
+
+source_file="res://Dialogue/puzzledBuilding.dialogue"
+dest_files=["res://.godot/imported/puzzledBuilding.dialogue-78d381fa7b27d94a0a47123d9bcde5f3.tres"]
+
+[params]
+
+defaults=true

@@ -1,4 +1,4 @@
-[gd_scene load_steps=57 format=4 uid="uid://cfpaxviachffr"]
+[gd_scene load_steps=61 format=4 uid="uid://cfpaxviachffr"]
 
 [ext_resource type="Texture2D" uid="uid://drw1gcgdshxbx" path="res://Assets/Maps/Kathmandu/3_City_Props_16x16.png" id="1_7wnaw"]
 [ext_resource type="Texture2D" uid="uid://dcdb38jsaliqt" path="res://Assets/Maps/Kathmandu/9_Shopping_Center_and_Markets_16x16.png" id="2_ky7nj"]
@@ -18,6 +18,8 @@
 [ext_resource type="Texture2D" uid="uid://bnvdbp80ufc04" path="res://Assets/Maps/Kathmandu/dhaarahara.png" id="12_a3hfu"]
 [ext_resource type="PackedScene" uid="uid://ec8232jrd7pi" path="res://Scenes/Core/Utils/portal.tscn" id="17_7f8il"]
 [ext_resource type="Script" uid="uid://b5xdc822a35s8" path="res://Scripts/Core/MIniGame/minigameexitportal.gd" id="18_g6ck3"]
+[ext_resource type="PackedScene" uid="uid://bye2c6fg7j7pf" path="res://Scenes/NPCS/guield.tscn" id="19_g6ck3"]
+[ext_resource type="PackedScene" uid="uid://cou6si01kj3d2" path="res://Scenes/NPCS/papaermoney.tscn" id="20_pduxe"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ky7nj"]
 texture = ExtResource("1_7wnaw")
@@ -27321,6 +27323,10 @@ size = Vector2(112.99997, 299)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_pduxe"]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_g6ck3"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_3m0sx"]
+
 [node name="Kathmandu" type="Node2D"]
 
 [node name="YSortedNode" type="Node2D" parent="."]
@@ -27467,3 +27473,23 @@ metadata/_custom_type_script = "uid://b5xdc822a35s8"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="w/MinigameExitPortal"]
 shape = SubResource("CircleShape2D_pduxe")
+
+[node name="guield" parent="." instance=ExtResource("19_g6ck3")]
+position = Vector2(872, 210)
+scale = Vector2(0.4, 0.4)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="guield"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="guield/StaticBody2D"]
+scale = Vector2(1.5338727, 5.4954166)
+shape = SubResource("RectangleShape2D_g6ck3")
+
+[node name="guield2" parent="." instance=ExtResource("20_pduxe")]
+position = Vector2(60, -223)
+scale = Vector2(0.4, 0.36)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="guield2"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="guield2/StaticBody2D"]
+scale = Vector2(2.1759024, 5.2339997)
+shape = SubResource("CircleShape2D_3m0sx")

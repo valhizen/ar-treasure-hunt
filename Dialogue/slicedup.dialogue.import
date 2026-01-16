@@ -1,0 +1,16 @@
+[remap]
+
+importer="dialogue_manager"
+importer_version=15
+type="Resource"
+uid="uid://deda4seslo3qa"
+path="res://.godot/imported/slicedup.dialogue-e30adfd1ceb86cdc99a1a4c71de23582.tres"
+
+[deps]
+
+source_file="res://Dialogue/slicedup.dialogue"
+dest_files=["res://.godot/imported/slicedup.dialogue-e30adfd1ceb86cdc99a1a4c71de23582.tres"]
+
+[params]
+
+defaults=true

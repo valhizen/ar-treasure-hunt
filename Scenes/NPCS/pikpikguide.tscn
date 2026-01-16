@@ -1,0 +1,53 @@
+[gd_scene load_steps=9 format=3 uid="uid://bnxsr2ni3tunn"]
+
+[ext_resource type="Script" uid="uid://dmqmmbvdkca34" path="res://Scripts/Core/PlayerInteraction/actionable.gd" id="1_dgf8t"]
+[ext_resource type="Resource" uid="uid://bmdk2ob8wl02o" path="res://Dialogue/prologue_dialogue.dialogue" id="2_fwmcg"]
+[ext_resource type="Texture2D" uid="uid://c4ajwuwbgrdg4" path="res://Assets/NPCS/Generic Male NPCs.png" id="3_sr1pw"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_8jxct"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_v3p58"]
+atlas = ExtResource("3_sr1pw")
+region = Rect2(240, 480, 80, 120)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1swic"]
+atlas = ExtResource("3_sr1pw")
+region = Rect2(320, 480, 80, 120)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_66a63"]
+atlas = ExtResource("3_sr1pw")
+region = Rect2(400, 480, 80, 120)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_kh3lv"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_v3p58")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1swic")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_66a63")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="PikPikguide1" type="Node2D"]
+
+[node name="Actionable" type="Area2D" parent="."]
+light_mask = 524288
+scale = Vector2(0.08077552, 0.110148706)
+script = ExtResource("1_dgf8t")
+dialogue_resource = ExtResource("2_fwmcg")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Actionable"]
+scale = Vector2(-49.589153, -36.579617)
+shape = SubResource("CircleShape2D_8jxct")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_kh3lv")
+frame = 1
+frame_progress = 0.44453236

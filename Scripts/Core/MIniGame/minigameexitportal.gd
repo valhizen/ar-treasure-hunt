@@ -271,7 +271,7 @@ func _do_exit() -> void:
 
 
 func _submit_player_score() -> void:
-	"""Submit score from player if they have a submit method"""
+	"""Submit score from  if they have a submit method"""
 	# Method 1: Check current_player (the body that entered)
 	if current_player and current_player.has_method("_submit_score"):
 		print("[MinigameExitPortal] ✓ Calling player._submit_score()")
@@ -291,7 +291,13 @@ func _submit_player_score() -> void:
 	if minigame:
 		print("[MinigameExitPortal] MinigameBase found - it will handle score submission")
 		return
-	
+		# Method 4: Check for GameManager with score submission
+	var game_manager = get_node_or_null("../GameManager")
+	if game_manager and game_manager.has_method("calculate_score"):
+		var score_data = game_manager.calculate_score()
+		game_manager._submit_score(score_data)
+		print("[MinigameExitPortal] ✓ Submitted score via GameManager")
+		return	
 	print("[MinigameExitPortal] ⚠ No score submission method found")
 
 

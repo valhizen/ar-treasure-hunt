@@ -1,0 +1,16 @@
+[remap]
+
+importer="dialogue_manager"
+importer_version=15
+type="Resource"
+uid="uid://cgchd7pjlo04c"
+path="res://.godot/imported/TheyHave.dialogue-7272a69c753782b03f2c2ce27ac81778.tres"
+
+[deps]
+
+source_file="res://Dialogue/TheyHave.dialogue"
+dest_files=["res://.godot/imported/TheyHave.dialogue-7272a69c753782b03f2c2ce27ac81778.tres"]
+
+[params]
+
+defaults=true

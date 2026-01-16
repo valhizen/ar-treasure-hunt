@@ -28,6 +28,7 @@ AuthManager="*res://Scripts/Core/Autoload/auth_manager.gd"
 AudioManager="*res://Scripts/Core/Autoload/audio_manager.gd"
 SettingsManager="*res://Scripts/Core/Autoload/setting_manager.gd"
 GlobalData="*res://Scripts/Core/Autoload/GlobalData.gd"
+ProgressTracker="*res://Scripts/Core/Utils/progress_tracker.gd"
 
 [display]
 
@@ -97,7 +98,7 @@ sprint={
 
 [internationalization]
 
-locale/translations_pot_files=PackedStringArray("res://Dialogue/prologue_dialogue.dialogue")
+locale/translations_pot_files=PackedStringArray("res://Dialogue/prologue_dialogue.dialogue", "res://Dialogue/slicedup.dialogue", "res://Dialogue/pikpiknpcguide.dialogue", "res://Dialogue/puzzledBuilding.dialogue", "res://Dialogue/insidemaze.dialogue", "res://Dialogue/guild.dialogue", "res://Dialogue/paper.dialogue", "res://Dialogue/TheyHave.dialogue", "res://Dialogue/can\'t go pass.dialogue")
 
 [rendering]
 

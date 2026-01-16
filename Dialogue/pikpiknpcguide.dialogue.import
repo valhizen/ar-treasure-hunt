@@ -1,0 +1,16 @@
+[remap]
+
+importer="dialogue_manager"
+importer_version=15
+type="Resource"
+uid="uid://01gu44btcs1o"
+path="res://.godot/imported/pikpiknpcguide.dialogue-bc06fc84542b94a4729a042ebc768653.tres"
+
+[deps]
+
+source_file="res://Dialogue/pikpiknpcguide.dialogue"
+dest_files=["res://.godot/imported/pikpiknpcguide.dialogue-bc06fc84542b94a4729a042ebc768653.tres"]
+
+[params]
+
+defaults=true

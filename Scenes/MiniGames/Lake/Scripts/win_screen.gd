@@ -37,13 +37,15 @@ func show_win_screen() -> void:
 	
 	# Submit score first (no pause, so it works)
 	var final_score = _calculate_score(game_manager.game_duration, game_manager.fish_killed)
-	ScoreManager.submit_score("bkt_lake", final_score, {
+	ScoreManager.submit_score(String(game_manager.name), final_score, {
 		"time_taken": game_manager.game_duration,
 		"fish_killed": game_manager.fish_killed,
 		"corrupters_defused": 3,
 		"success": true
 	})
 	print("[WinScreen] Score submitted: %d" % final_score)
+	
+	ProgressTracker.complete_minigame("pimbhalllake", "patan")
 	
 	# Show message with fade out
 	message_label.modulate.a = 1.0

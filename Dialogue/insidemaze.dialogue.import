@@ -1,0 +1,16 @@
+[remap]
+
+importer="dialogue_manager"
+importer_version=15
+type="Resource"
+uid="uid://cxncigpwqcgkt"
+path="res://.godot/imported/insidemaze.dialogue-1d0238b44d3c23089f101c40768c9db7.tres"
+
+[deps]
+
+source_file="res://Dialogue/insidemaze.dialogue"
+dest_files=["res://.godot/imported/insidemaze.dialogue-1d0238b44d3c23089f101c40768c9db7.tres"]
+
+[params]
+
+defaults=true

@@ -1,0 +1,45 @@
+[gd_scene load_steps=8 format=3 uid="uid://dgg4b7sb3wfrc"]
+
+[ext_resource type="Script" uid="uid://dmqmmbvdkca34" path="res://Scripts/Core/PlayerInteraction/actionable.gd" id="1_wofs3"]
+[ext_resource type="Resource" uid="uid://cl3dj5jioblk0" path="res://Dialogue/puzzledBuilding.dialogue" id="2_wofs3"]
+[ext_resource type="Texture2D" uid="uid://c4ajwuwbgrdg4" path="res://Assets/NPCS/Generic Male NPCs.png" id="3_d4xau"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_2lddi"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w7r6v"]
+atlas = ExtResource("3_d4xau")
+region = Rect2(480, 360, 80, 120)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o8u58"]
+atlas = ExtResource("3_d4xau")
+region = Rect2(880, 360, 80, 120)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_2dlg5"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w7r6v")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_o8u58")
+}],
+"loop": true,
+"name": &"default",
+"speed": 1.0
+}]
+
+[node name="PuzzleTemple" type="Node2D"]
+
+[node name="Area2D" type="Area2D" parent="."]
+script = ExtResource("1_wofs3")
+dialogue_resource = ExtResource("2_wofs3")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(1, 22)
+scale = Vector2(5.954547, 7.6478243)
+shape = SubResource("CircleShape2D_2lddi")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -44)
+sprite_frames = SubResource("SpriteFrames_2dlg5")
+frame_progress = 0.90912765

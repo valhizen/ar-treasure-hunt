@@ -56,6 +56,7 @@ var circle_pattern := []
 
 #region MinigameBase Overrides
 func _setup_game() -> void:
+	
 	"""Called by MinigameBase after initialization"""
 	print("[CarvingGame] Setting up...")
 	
@@ -472,4 +473,5 @@ Returning to map...
 func _on_done_button_pressed() -> void:
 	if is_playing():
 		complete_game()  # Use MinigameBase's complete_game
+	ProgressTracker.complete_minigame("carving", "patan")	
 #endregion

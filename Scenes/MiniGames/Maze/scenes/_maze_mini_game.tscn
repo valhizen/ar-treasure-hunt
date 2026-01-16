@@ -1,10 +1,11 @@
-[gd_scene load_steps=21 format=4 uid="uid://bmlvdb0ojft42"]
+[gd_scene load_steps=22 format=4 uid="uid://bmlvdb0ojft42"]
 
 [ext_resource type="Script" uid="uid://1b7v01v0yksc" path="res://Scenes/MiniGames/Maze/scripts/game_manager.gd" id="1_lc1bb"]
 [ext_resource type="Texture2D" uid="uid://slmp0k8f7hmb" path="res://Scenes/MiniGames/Maze/assets/Dungeon_Tileset.png" id="2_j32kb"]
 [ext_resource type="Texture2D" uid="uid://cr6ntiuvllp08" path="res://Scenes/MiniGames/Parkour/assets/PixelFantasy_Caves_1.0/flag animation.png" id="4_2ig8x"]
 [ext_resource type="AudioStream" uid="uid://dp6r54iijdpqg" path="res://Scenes/MiniGames/Maze/assets/Aetheric - Wandering Away (freetouse.com).mp3" id="7_2pgr7"]
 [ext_resource type="PackedScene" uid="uid://blaqetpf61p1u" path="res://Scenes/MiniGames/Maze/scenes/maze_player.tscn" id="7_ejktb"]
+[ext_resource type="PackedScene" uid="uid://em80ghubcqc0" path="res://Scenes/NPCS/inside_maze.tscn" id="9_5uyrw"]
 [ext_resource type="PackedScene" uid="uid://ck0uea45uedwh" path="res://Scenes/MiniGames/Maze/scenes/enemy.tscn" id="13_ol6hd"]
 [ext_resource type="PackedScene" uid="uid://dfskvp4iwnlc2" path="res://Scenes/MiniGames/Maze/scenes/coin.tscn" id="14_mb6qx"]
 [ext_resource type="Script" uid="uid://b5xdc822a35s8" path="res://Scripts/Core/MIniGame/minigameexitportal.gd" id="15_04hcj"]
@@ -329,3 +330,7 @@ offset_top = -432.0
 offset_right = 1033.0
 offset_bottom = -409.0
 text = "Exit [e]"
+
+[node name="InsideMaze" parent="." instance=ExtResource("9_5uyrw")]
+position = Vector2(-1232, 916)
+scale = Vector2(0.4, 0.4)
