@@ -55,14 +55,14 @@ var circle_pattern = []
 @onready var ghost_overlay: Sprite2D = $GhostOverlay
 @onready var tool_circle: Sprite2D = $CarvingTool/ToolCircle
 
-@onready var game_panel: Panel = $UI/GamePanel
+@onready var game_panel: CanvasLayer = $UI/GamePanel
 @onready var tool_size_label: Label = $UI/GamePanel/ToolControls/SizeLabel
 @onready var decrease_tool_button: Button = $UI/GamePanel/ToolControls/DecreaseButton
 @onready var increase_tool_button: Button = $UI/GamePanel/ToolControls/IncreaseButton
 @onready var reset_button: Button = $UI/GamePanel/ButtonsHBox/ResetButton
 @onready var done_button: Button = $UI/GamePanel/ButtonsHBox/DoneButton
 
-@onready var completed_panel: Panel = $UI/CompletedPanel
+@onready var completed_panel: CanvasLayer = $UI/CompletedPanel
 @onready var completed_stats: Label = $UI/CompletedPanel/StatsLabel
 
 @onready var carve_sfx: AudioStreamPlayer2D = $CarveSFXPlayer
@@ -550,6 +550,7 @@ func _on_done_pressed():
 	"""Handle done button press"""
 	if is_playing():
 		complete_carving()
+	ProgressTracker.complete_minigame("carving","patan")
 #endregion
 
 #region Utility Functions

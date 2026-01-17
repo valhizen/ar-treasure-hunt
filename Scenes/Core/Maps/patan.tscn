@@ -1,4 +1,4 @@
-[gd_scene load_steps=43 format=4 uid="uid://cwgbp7rjvio7u"]
+[gd_scene load_steps=44 format=4 uid="uid://cwgbp7rjvio7u"]
 
 [ext_resource type="Texture2D" uid="uid://bqexm2jxg0h6" path="res://Assets/Maps/Patan/Godot_Autotiles_16x16.png" id="1_lfq3t"]
 [ext_resource type="Script" uid="uid://bws7u8brp5tq3" path="res://Scripts/Core/MIniGame/MinigameTrigger.gd" id="2_dyv0e"]
@@ -18,7 +18,8 @@
 [ext_resource type="Texture2D" uid="uid://djyed05niu254" path="res://Assets/Maps/Patan/carving.png" id="13_ggoc3"]
 [ext_resource type="Texture2D" uid="uid://bacts65ln8cag" path="res://Assets/Maps/Patan/patan_dhoka(1).png" id="14_r4u4j"]
 [ext_resource type="PackedScene" uid="uid://ec8232jrd7pi" path="res://Scenes/Core/Utils/portal.tscn" id="18_toi4k"]
-[ext_resource type="Script" path="res://Scripts/Core/UI/porta_blockeingl.gd" id="19_dvao6"]
+[ext_resource type="Script" uid="uid://cmenhhhbkpmet" path="res://Scripts/Core/UI/porta_blockeingl.gd" id="19_dvao6"]
+[ext_resource type="Script" uid="uid://b5xdc822a35s8" path="res://Scripts/Core/MIniGame/minigameexitportal.gd" id="20_oobun"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ul4lb"]
 texture = ExtResource("3_1vh5g")
@@ -5831,6 +5832,10 @@ scale = Vector2(2.6287954, 4.763477)
 shape = SubResource("RectangleShape2D_dvao6")
 
 [node name="Area2D" type="Area2D" parent="Portal"]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("20_oobun")
+target_scene = "uid://d3xf6gyb16br"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Portal/Area2D"]
 scale = Vector2(0.8246749, 2.846362)

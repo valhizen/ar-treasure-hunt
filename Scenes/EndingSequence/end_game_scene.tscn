@@ -1,0 +1,162 @@
+[gd_scene load_steps=2 format=3 uid="uid://d3xf6gyb16br"]
+
+[ext_resource type="Script" uid="uid://xhjo23srfnxt" path="res://Scenes/EndingSequence/end_game_scene.gd" id="1_v2e6o"]
+
+[node name="EndGameScene" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_v2e6o")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.101961, 0.101961, 0.180392, 1)
+
+[node name="Page1" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -400.0
+offset_top = -300.0
+offset_right = 400.0
+offset_bottom = 300.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 40
+
+[node name="VictoryMessage" type="RichTextLabel" parent="Page1"]
+layout_mode = 2
+bbcode_enabled = true
+text = "[center][font_size=28]It was a good run. The city has been restored.[/font_size]
+
+[font_size=24]This portal leads to the Engineer's Bunker.[/font_size]
+
+[font_size=24][color=gold]Enter the second round and uncover who was behind the city's destruction.[/color][/font_size][/center]"
+fit_content = true
+scroll_active = false
+
+[node name="ContinueButton1" type="Button" parent="Page1"]
+custom_minimum_size = Vector2(300, 50)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+text = "Continue"
+
+[node name="Page2" type="VBoxContainer" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -400.0
+offset_top = -300.0
+offset_right = 400.0
+offset_bottom = 300.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 30
+
+[node name="StatsTitle" type="Label" parent="Page2"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+text = "MINIGAME SCORES"
+horizontal_alignment = 1
+
+[node name="StatsLabel" type="Label" parent="Page2"]
+custom_minimum_size = Vector2(200, 100)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 18
+text = "Puzzle Challenge: 1250
+Speed Run: 890
+Boss Battle: 2100
+Memory Match: 1680
+Platformer Rush: 1420
+Tower Defense: 1890
+Quiz Master: 2340
+Rhythm Game: 1560
+Stealth Mission: 1770
+Racing Circuit: 2010
+Survival Mode: 1950
+Final Challenge: 2800"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="ContinueButton2" type="Button" parent="Page2"]
+custom_minimum_size = Vector2(300, 50)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Continue"
+
+[node name="Page3" type="VBoxContainer" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -400.0
+offset_top = -350.0
+offset_right = 400.0
+offset_bottom = 350.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 25
+
+[node name="CreditsTitle" type="Label" parent="Page3"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "CREDITS"
+horizontal_alignment = 1
+
+[node name="CreditsLabel" type="Label" parent="Page3"]
+custom_minimum_size = Vector2(200, 100)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 16
+text = "Game Director: [Name]
+Lead Programmer: [Name]
+Programmers: [Name], [Name], [Name]
+
+Art Director: [Name]
+Artists: [Name], [Name], [Name]
+
+Sound Director: [Name]
+Sound Designers: [Name], [Name]
+
+Level Design: [Name], [Name], [Name]
+
+Quality Assurance: [Name], [Name]
+
+Special Thanks: [Name], [Name], [Name]
+
+Thanks for playing!"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="ContinueButton3" type="Button" parent="Page3"]
+visible = false
+custom_minimum_size = Vector2(300, 50)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Exit to Main Menu"
+
+[connection signal="pressed" from="Page1/ContinueButton1" to="." method="_on_continue_button_1_pressed"]
+[connection signal="pressed" from="Page2/ContinueButton2" to="." method="_on_continue_button_2_pressed"]
+[connection signal="pressed" from="Page3/ContinueButton3" to="." method="_on_continue_button_3_pressed"]
