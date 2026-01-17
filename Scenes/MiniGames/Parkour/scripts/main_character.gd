@@ -53,6 +53,9 @@ var level_completed: bool = false
 
 
 func _ready() -> void:
+	print("called")
+	ProgressTracker.complete_minigame("parkour", "patan")
+
 	add_to_group("player")
 	
 	animated_sprite.play("idle_down")
