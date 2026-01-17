@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c288qa7dptepd"
-path="res://.godot/imported/cat.png-73b076a88f60a026a165178d911ad103.ctex"
+uid="uid://djt5glkda4mvy"
+path="res://.godot/imported/door.png-d94b471385a5d9baa8c907ebf589946a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Scenes/MiniGames/CarvingGame/cat.png"
-dest_files=["res://.godot/imported/cat.png-73b076a88f60a026a165178d911ad103.ctex"]
+source_file="res://CarvingGame/Assets/door.png"
+dest_files=["res://.godot/imported/door.png-d94b471385a5d9baa8c907ebf589946a.ctex"]
 
 [params]
 
