@@ -18,7 +18,7 @@
 [ext_resource type="Texture2D" uid="uid://djyed05niu254" path="res://Assets/Maps/Patan/carving.png" id="13_ggoc3"]
 [ext_resource type="Texture2D" uid="uid://bacts65ln8cag" path="res://Assets/Maps/Patan/patan_dhoka(1).png" id="14_r4u4j"]
 [ext_resource type="PackedScene" uid="uid://ec8232jrd7pi" path="res://Scenes/Core/Utils/portal.tscn" id="18_toi4k"]
-[ext_resource type="Script" uid="uid://cmenhhhbkpmet" path="res://Scripts/Core/UI/porta_blockeingl.gd" id="19_dvao6"]
+[ext_resource type="Script" path="res://Scripts/Core/UI/porta_blockeingl.gd" id="19_dvao6"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ul4lb"]
 texture = ExtResource("3_1vh5g")
@@ -5513,11 +5513,11 @@ size = Vector2(166.7673, 29.502945)
 [sub_resource type="Resource" id="Resource_toi4k"]
 script = ExtResource("3_7jnqk")
 minigame_id = "carving"
-scene_path = "uid://co6canol5bjrl"
+scene_path = "uid://cqemn4hll1f6i"
 metadata/_custom_type_script = "uid://c6wqitf6dar4i"
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_toi4k"]
-radius = 587.7137
+radius = 1646.7303
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_yy26k"]
 size = Vector2(150, 76)
@@ -5739,7 +5739,7 @@ minigame_data = SubResource("Resource_toi4k")
 metadata/_custom_type_script = "uid://bws7u8brp5tq3"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="YSortedMap/carving/Carving/MinigameTrigger"]
-position = Vector2(0, 1149.8969)
+position = Vector2(0, 197.12476)
 shape = SubResource("CircleShape2D_toi4k")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="YSortedMap/carving"]
@@ -5807,10 +5807,10 @@ offset_bottom = -152.0
 text = "Enter[E]"
 
 [node name="Label3" type="Label" parent="."]
-offset_left = -64.0
-offset_top = 301.0
-offset_right = 11.0
-offset_bottom = 324.0
+offset_left = -143.0
+offset_top = 275.0
+offset_right = -68.0
+offset_bottom = 298.0
 text = "Enter[E]"
 
 [node name="Label2" type="Label" parent="."]

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b4i5l3w4qcygv"
-path="res://.godot/imported/woodWorkBG.webp-c52f795a314c9f8a61f59bd78af6edf5.ctex"
+uid="uid://c3ioauk8bp1xy"
+path="res://.godot/imported/elephant.png-7f392d5e0e402258867ce395ff57384b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://CarvingGame/Assets/woodWorkBG.webp"
-dest_files=["res://.godot/imported/woodWorkBG.webp-c52f795a314c9f8a61f59bd78af6edf5.ctex"]
+source_file="res://Scenes/MiniGames/CarvingGame/Assets/elephant.png"
+dest_files=["res://.godot/imported/elephant.png-7f392d5e0e402258867ce395ff57384b.ctex"]
 
 [params]
 

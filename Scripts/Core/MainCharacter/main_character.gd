@@ -4,7 +4,7 @@ class_name MainCharacter
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 @onready var actionable_finder: Area2D = $Direction/ActionableFinder
 
-
+@export var debug := true
 # === MODE ===
 @export_category("Mode")
 @export_enum("TopDown", "Platformer") var character_mode: int = 0
@@ -90,6 +90,13 @@ var is_platformer: bool:
 
 
 func _ready() -> void:
+	if debug && GlobalData.DEBUG:
+		player_speed = 500
+		
+		var cam := $Camera2D
+		if cam:
+			cam.zoom /= 3
+
 	add_to_group("player")
 	current_health = max_health
 	current_stamina = max_stamina

@@ -1,13 +1,13 @@
 [gd_scene load_steps=10 format=3 uid="uid://cqemn4hll1f6i"]
 
-[ext_resource type="Texture2D" uid="uid://bxfd2nknmb6rh" path="res://CarvingGame/Assets/decor.png" id="3_1s58h"]
-[ext_resource type="Texture2D" uid="uid://b5y4cjxdwsht1" path="res://CarvingGame/Assets/wood_texture.jpeg" id="3_hwasj"]
-[ext_resource type="Texture2D" uid="uid://b4i5l3w4qcygv" path="res://CarvingGame/Assets/woodWorkBG.webp" id="4_1qig1"]
-[ext_resource type="Texture2D" uid="uid://djt5glkda4mvy" path="res://CarvingGame/Assets/door.png" id="4_4j8mp"]
-[ext_resource type="Texture2D" uid="uid://c3ioauk8bp1xy" path="res://CarvingGame/Assets/elephant.png" id="5_ks8ac"]
-[ext_resource type="Texture2D" uid="uid://dn24i1n2xnef0" path="res://CarvingGame/Assets/stoic.png" id="6_3bcv5"]
-[ext_resource type="AudioStream" uid="uid://dx1dee0dl18he" path="res://CarvingGame/Assets/carve bg music.mp3" id="9_4j8mp"]
-[ext_resource type="AudioStream" uid="uid://ryro351yxlt2" path="res://CarvingGame/Assets/carve.mp3" id="10_ks8ac"]
+[ext_resource type="Texture2D" uid="uid://bxfd2nknmb6rh" path="res://Scenes/MiniGames/CarvingGame/Assets/decor.png" id="3_1s58h"]
+[ext_resource type="Texture2D" uid="uid://b5y4cjxdwsht1" path="res://Scenes/MiniGames/CarvingGame/Assets/wood_texture.jpeg" id="3_hwasj"]
+[ext_resource type="Texture2D" uid="uid://b4i5l3w4qcygv" path="res://Scenes/MiniGames/CarvingGame/Assets/woodWorkBG.webp" id="4_1qig1"]
+[ext_resource type="Texture2D" uid="uid://djt5glkda4mvy" path="res://Scenes/MiniGames/CarvingGame/Assets/door.png" id="4_4j8mp"]
+[ext_resource type="Texture2D" uid="uid://c3ioauk8bp1xy" path="res://Scenes/MiniGames/CarvingGame/Assets/elephant.png" id="5_ks8ac"]
+[ext_resource type="Texture2D" uid="uid://dn24i1n2xnef0" path="res://Scenes/MiniGames/CarvingGame/Assets/stoic.png" id="6_3bcv5"]
+[ext_resource type="AudioStream" uid="uid://dx1dee0dl18he" path="res://Scenes/MiniGames/CarvingGame/Assets/carve bg music.mp3" id="9_4j8mp"]
+[ext_resource type="AudioStream" uid="uid://ryro351yxlt2" path="res://Scenes/MiniGames/CarvingGame/Assets/carve.mp3" id="10_ks8ac"]
 
 [sub_resource type="GDScript" id="GDScript_aj4a3"]
 script/source = "extends MinigameBase
@@ -74,8 +74,9 @@ var circle_pattern = []
 @onready var reset_button: Button = $UI/GamePanel/ButtonsHBox/ResetButton
 @onready var done_button: Button = $UI/GamePanel/ButtonsHBox/DoneButton
 
-@onready var completed_panel: Panel = $UI/CompletedPanel
-@onready var completed_stats: Label = $UI/CompletedPanel/StatsLabel
+@onready var completed_panel: CanvasLayer = $UI/CompletedPanel
+@onready var completed_stats: Label = $UI/CompletedPanel/CompletedStats
+
 
 @onready var carve_sfx: AudioStreamPlayer2D = $CarveSFXPlayer
 @onready var bgm_player: AudioStreamPlayer2D = $BGMPlayer
@@ -103,9 +104,6 @@ func _setup_game() -> void:
 	\"\"\"Called by MinigameBase after initialization\"\"\"
 	print(\"[CarvingGame] Setting up...\")
 	
-	# Wait for nodes to be ready
-	await get_tree().process_frame
-	
 	setup_scene()
 	setup_shader()
 	setup_ui_connections()
@@ -115,10 +113,7 @@ func _setup_game() -> void:
 	load_target_silhouette()
 	reset_carving_state()
 	
-	# Hide gameplay elements until start
-	carving_tool.visible = false
-	if game_panel: game_panel.visible = false
-	if completed_panel: completed_panel.visible = false
+
 
 
 func _start_game() -> void:
@@ -226,6 +221,7 @@ func setup_scene():
 	wood_sprite.position = viewport_size / 2
 	target_sprite.position = wood_sprite.position
 	ghost_overlay.position = wood_sprite.position
+	if completed_panel: completed_panel.visible = false
 
 
 func setup_ui_connections():
@@ -373,14 +369,8 @@ func update_target_sprite():
 func _input(event):
 	# Let parent handle ESC
 	if event.is_action_pressed(\"ui_cancel\"):
-		if is_playing():
-			request_exit()
+		if is_playing(): request_exit()
 		return
-	
-	# Space to restart when not playing
-	if event is InputEventKey and event.pressed and event.keycode == KEY_SPACE:
-		if not is_playing():
-			reset_and_restart()
 	
 	# Mouse wheel for tool size
 	if event is InputEventMouseButton:
@@ -557,7 +547,8 @@ Score Breakdown:
 DETAILED STATS:
 Accuracy:            %.1f%%
 Carving Precision:   %.1f%% 
-Tool Size Multiplier: %.1fx\"\"\" % [
+Tool Size Multiplier: %.1fx
+Returning to map ...\"\"\" % [
 			stats.score,
 			stats.accuracy_score, stats.accuracy,
 			stats.precision_score, stats.precision,
@@ -573,8 +564,7 @@ Tool Size Multiplier: %.1fx\"\"\" % [
 
 func _on_done_pressed():
 	\"\"\"Handle done button press\"\"\"
-	if is_playing():
-		complete_carving()
+	if is_playing(): complete_carving()
 #endregion
 
 #region Utility Functions
@@ -684,30 +674,6 @@ z_index = 10
 
 [node name="UI" type="CanvasLayer" parent="."]
 
-[node name="CompletedStatsLabel" type="Label" parent="UI"]
-visible = false
-offset_left = 827.0
-offset_top = 360.0
-offset_right = 1087.0
-offset_bottom = 695.0
-size_flags_vertical = 3
-theme_override_font_sizes/font_size = 16
-text = "\"\"\"CARVING COMPLETED!
-
-FINAL SCORE: %d / 100
-
-Score Breakdown:
-  Accuracy:          %.1f pts (%.1f%%)
-  Precision:         %.1f pts (%.1f%%)
-  Tool Size Bonus:   %.1f pts
-
-DETAILED STATS:
-Accuracy			: %.1f%%
-Carving Precision:   %.1f%% 
-Tool Size Multiplier: %.1fx\"\"\" "
-horizontal_alignment = 1
-vertical_alignment = 1
-
 [node name="GamePanel" type="CanvasLayer" parent="UI"]
 
 [node name="Use Scroll" type="Label" parent="UI/GamePanel"]
@@ -780,6 +746,32 @@ custom_minimum_size = Vector2(120, 50)
 layout_mode = 2
 theme_override_font_sizes/font_size = 18
 text = "DONE"
+
+[node name="CompletedPanel" type="CanvasLayer" parent="UI"]
+
+[node name="CompletedStats" type="Label" parent="UI/CompletedPanel"]
+offset_left = 827.0
+offset_top = 360.0
+offset_right = 1087.0
+offset_bottom = 695.0
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 16
+text = "\"\"\"CARVING COMPLETED!
+
+FINAL SCORE: %d / 100
+
+Score Breakdown:
+  Accuracy:          %.1f pts (%.1f%%)
+  Precision:         %.1f pts (%.1f%%)
+  Tool Size Bonus:   %.1f pts
+
+DETAILED STATS:
+Accuracy			: %.1f%%
+Carving Precision:   %.1f%% 
+Tool Size Multiplier: %.1fx\"\"\" "
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
 
 [node name="BGMPlayer" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("9_4j8mp")

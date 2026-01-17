@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c3ioauk8bp1xy"
-path="res://.godot/imported/elephant.png-a3b588d048fd05ad7ff31396fa6278e4.ctex"
+uid="uid://dn24i1n2xnef0"
+path="res://.godot/imported/stoic.png-60fbebb8baef561d82f6bca085f72892.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://CarvingGame/Assets/elephant.png"
-dest_files=["res://.godot/imported/elephant.png-a3b588d048fd05ad7ff31396fa6278e4.ctex"]
+source_file="res://Scenes/MiniGames/CarvingGame/Assets/stoic.png"
+dest_files=["res://.godot/imported/stoic.png-60fbebb8baef561d82f6bca085f72892.ctex"]
 
 [params]
 

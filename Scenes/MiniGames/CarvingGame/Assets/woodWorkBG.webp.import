@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dn24i1n2xnef0"
-path="res://.godot/imported/stoic.png-a916d4def5c80bf59217c9721dc4a0d7.ctex"
+uid="uid://b4i5l3w4qcygv"
+path="res://.godot/imported/woodWorkBG.webp-7e356ce5e9d960abe225c23e84f2b6b5.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://CarvingGame/Assets/stoic.png"
-dest_files=["res://.godot/imported/stoic.png-a916d4def5c80bf59217c9721dc4a0d7.ctex"]
+source_file="res://Scenes/MiniGames/CarvingGame/Assets/woodWorkBG.webp"
+dest_files=["res://.godot/imported/woodWorkBG.webp-7e356ce5e9d960abe225c23e84f2b6b5.ctex"]
 
 [params]
 
