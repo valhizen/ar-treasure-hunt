@@ -1,7 +1,8 @@
-[gd_scene load_steps=26 format=3 uid="uid://ck0uea45uedwh"]
+[gd_scene load_steps=27 format=3 uid="uid://ck0uea45uedwh"]
 
-[ext_resource type="Script" uid="uid://dxbdf8an082mj" path="res://MiniGames/Maze/scripts/enemy.gd" id="1_w3hih"]
-[ext_resource type="Texture2D" uid="uid://d0v4ylhos0cu0" path="res://MiniGames/Maze/assets/enemy.png" id="2_67yts"]
+[ext_resource type="Script" uid="uid://dxbdf8an082mj" path="res://Scenes/MiniGames/Maze/scripts/enemy.gd" id="1_w3hih"]
+[ext_resource type="Texture2D" uid="uid://d0v4ylhos0cu0" path="res://Scenes/MiniGames/Maze/assets/enemy.png" id="2_67yts"]
+[ext_resource type="AudioStream" uid="uid://maifmsydeigg" path="res://Scenes/MiniGames/Maze/assets/slime die.mp3" id="3_s4n4j"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_0v4go"]
 atlas = ExtResource("2_67yts")
@@ -176,7 +177,7 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_gpjyd"]
 radius = 5.0
 
-[node name="Enemy" type="CharacterBody2D"]
+[node name="Enemy" type="CharacterBody2D" groups=["enemy"]]
 collision_mask = 17
 script = ExtResource("1_w3hih")
 speed = 90.0
@@ -190,3 +191,6 @@ frame_progress = 0.645707
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 8)
 shape = SubResource("CircleShape2D_gpjyd")
+
+[node name="DeathSFX" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_s4n4j")

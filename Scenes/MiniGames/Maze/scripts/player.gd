@@ -4,6 +4,8 @@ extends CharacterBody2D
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 @onready var camera: Camera2D = $Camera2D
 
+
+@export var debug:= true
 @export var player_speed   := 180.0
 @export var max_health     := 100
 @export var flash_duration := 0.1
@@ -13,11 +15,16 @@ extends CharacterBody2D
 @export var shake_duration := 0.15
 @export var respawn_delay := 1.2
 
+# Attack properties
+@export var attack_range := 50.0
+@export var attack_cooldown := 0.5
+
 @onready var death_sfx: AudioStreamPlayer   = $DeathSFX
 @onready var damage_sfx: AudioStreamPlayer = $DamageSFX
 @onready var lantern_sfx: AudioStreamPlayer = $LanternSFX
 @onready var coin_sfx: AudioStreamPlayer  = $CoinSFX
 @onready var victory_sfx: AudioStreamPlayer = $VictorySFX
+@onready var attack_sfx: AudioStreamPlayer = $AttackSFX
 
 
 const LANTERN = preload("res://Scenes/MiniGames/Maze/scenes/lantern.tscn")
@@ -30,22 +37,52 @@ var spawn_pos       : Vector2
 var is_dead         := false
 var has_finished    := false
 
+# Attack variables
+var is_attacking := false
+var can_attack := true
+var attack_timer := 0.0
+var last_direction := Vector2.DOWN
+var attack_number := 1  # Alternates between 1 and 2 for attack animations
+
 func _ready() -> void:
+	if debug && GlobalData.DEBUG:
+		player_speed = 500
+		
+		var cam := $Camera2D
+		if cam:	cam.zoom /= 3
 	spawn_pos = position
 	game_manager.set_lanterns(lantern_count)
 	game_manager.set_health(current_health)
 	animated_sprite_2d.play("idle_down")
+	add_to_group("player")
 	
 func _input(event):
 	if event.is_action_pressed("place_lantern"): 
-		if placed_lantern < lantern_count:
+		if placed_lantern < lantern_count and not is_attacking:
 			place_lantern()
 	
-func _physics_process(_delta: float) -> void:
-	if is_dead:
+	if event.is_action_pressed("attack"):
+		if can_attack and not is_dead and not is_attacking:
+			perform_attack()
+	
+func _physics_process(delta: float) -> void:
+	# Update attack cooldown
+	if not can_attack:
+		attack_timer += delta
+		if attack_timer >= attack_cooldown:
+			can_attack = true
+			attack_timer = 0.0
+	
+	if is_dead or is_attacking:
 		return
+		
 	var input_direction = Input.get_vector("Left", "Right", "Up", "Down")
 	velocity = input_direction * player_speed
+	
+	# Store last direction for attack
+	if input_direction.length() > 0:
+		last_direction = input_direction
+	
 	update_animation(input_direction)
 	move_and_slide()
 	
@@ -69,9 +106,65 @@ func update_animation(direction : Vector2):
 		elif not "idle" in current_animation:
 			animated_sprite_2d.play("idle_down")
 
+func perform_attack():
+	is_attacking = true
+	can_attack = false
+	attack_timer = 0.0
+	velocity = Vector2.ZERO
+	
+	# Play attack sound
+	play_sfx(attack_sfx)
+	
+	# Determine attack animation based on direction
+	var attack_anim := ""
+	if abs(last_direction.x) > abs(last_direction.y):
+		if last_direction.x > 0:
+			attack_anim = "attack_" + str(attack_number) + "_right"
+		else:
+			attack_anim = "attack_" + str(attack_number) + "_left"
+	else:
+		# Default to right if moving vertically
+		attack_anim = "attack_" + str(attack_number) + "_right"
+	
+	# Alternate attack number for next attack
+	attack_number = 2 if attack_number == 1 else 1
+	
+	# Play attack animation
+	animated_sprite_2d.play(attack_anim)
+	
+	# Wait a bit before checking for hit (mid-swing)
+	await get_tree().create_timer(0.15).timeout
+	
+	# Check for enemies in attack range
+	check_attack_hit()
+	
+	# Wait for animation to finish
+	await animated_sprite_2d.animation_finished
+	
+	is_attacking = false
+
+func check_attack_hit():
+	var enemies = get_tree().get_nodes_in_group("enemy")
+	
+	for enemy in enemies:
+		if enemy and is_instance_valid(enemy):
+			var distance = global_position.distance_to(enemy.global_position)
+			
+			# Check if enemy is in range
+			if distance <= attack_range:
+				# Check if enemy is in front of player based on direction
+				var to_enemy = (enemy.global_position - global_position).normalized()
+				var dot = last_direction.dot(to_enemy)
+				
+				# If enemy is roughly in the direction we're facing
+				if dot > 0.5:
+					if enemy.has_method("take_damage"):
+						enemy.take_damage()
+
 func take_damage(amount: int):
 	if is_flashing:
-		return  # invincibility frames // no one hearsa word  they say
+		return  # invincibility frames
+	
 	camera_shake()
 	play_sfx(damage_sfx)
 	
@@ -113,13 +206,12 @@ func camera_shake():
 
 	camera.offset = original_offset
 
-
 func die():
 	if is_dead:
 		return
 
 	is_dead = true
-	play_sfx(damage_sfx)
+	play_sfx(death_sfx)
 	velocity = Vector2.ZERO
 	set_physics_process(false)
 	
@@ -139,16 +231,14 @@ func respawn():
 	game_manager.set_lanterns(lantern_count)
 	position = spawn_pos
 	
-	
-
 	animated_sprite_2d.modulate = Color(1, 1, 1)
 	animated_sprite_2d.play("idle_down")
 
 	is_dead = false
 	is_flashing = false
+	is_attacking = false
+	can_attack = true
 	set_physics_process(true)
-
-	
 
 func collect_coin():
 	play_sfx(coin_sfx)

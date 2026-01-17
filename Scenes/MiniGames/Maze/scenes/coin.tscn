@@ -1,7 +1,7 @@
 [gd_scene load_steps=20 format=3 uid="uid://dfskvp4iwnlc2"]
 
-[ext_resource type="Script" uid="uid://dfc08iuhw3ooo" path="res://MiniGames/Maze/scripts/coin.gd" id="1_4k76p"]
-[ext_resource type="Texture2D" uid="uid://xt6ipi04vu25" path="res://MiniGames/Maze/assets/coin.png" id="1_ft0v0"]
+[ext_resource type="Script" uid="uid://dfc08iuhw3ooo" path="res://Scenes/MiniGames/Maze/scripts/coin.gd" id="1_4k76p"]
+[ext_resource type="Texture2D" uid="uid://xt6ipi04vu25" path="res://Scenes/MiniGames/Maze/assets/coin.png" id="1_ft0v0"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ft0v0"]
 
