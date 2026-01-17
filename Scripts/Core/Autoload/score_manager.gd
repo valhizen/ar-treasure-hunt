@@ -49,7 +49,7 @@ func submit_score(minigame_id: String, score: int, extra_data: Dictionary = {}) 
 	var data = {
 		"minigame_id": minigame_id,
 		"score": score,
-		"event_code": AuthManager.current_event.get("code", ""),
+		"event_code": AuthManager.team_code,  # FIXED: Use team_code instead of current_event
 		"timestamp": Time.get_unix_time_from_system(),
 		"extra_data": extra_data
 	}
@@ -129,10 +129,10 @@ func get_global_leaderboard(limit: int = 50) -> Dictionary:
 
 func get_event_leaderboard(limit: int = 50) -> Dictionary:
 	"""Get leaderboard for current event"""
-	if not AuthManager.is_event_active():
-		return {"success": false, "error": "No active event"}
+	if not AuthManager.is_logged_in:  # FIXED: Use is_logged_in instead of is_event_active()
+		return {"success": false, "error": "Not logged in"}
 	
-	var event_code = AuthManager.current_event.get("code", "")
+	var event_code = AuthManager.team_code  # FIXED: Use team_code instead of current_event
 	var endpoint = "/scores/leaderboard/event/%s?limit=%d" % [event_code, limit]
 	
 	var response = await NetworkManager.api_get(endpoint)
