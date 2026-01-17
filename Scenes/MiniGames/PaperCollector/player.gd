@@ -14,7 +14,7 @@ func _physics_process(_delta):
 	velocity.y = 0
 	update_animation(Vector2(input_x, 0))
 	move_and_slide()
-	position.x = clamp(position.x, 0, _screen_width)
+	position.x = clamp(position.x , 0, _screen_width)
 
 
 
