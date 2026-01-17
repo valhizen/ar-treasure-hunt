@@ -129,21 +129,27 @@ custom_minimum_size = Vector2(200, 100)
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_font_sizes/font_size = 16
-text = "Game Director: [Name]
-Lead Programmer: [Name]
-Programmers: [Name], [Name], [Name]
+text = "Event Lead
+Himesh Dulal
 
-Art Director: [Name]
-Artists: [Name], [Name], [Name]
+Game Lead
+Sarbesh Kc
 
-Sound Director: [Name]
-Sound Designers: [Name], [Name]
+Programmers
+Bhabishwor Gurung, Bijan Thapa, Sadit Rasaili
+Slok Pradhan, Sameep Shrestha
 
-Level Design: [Name], [Name], [Name]
+Artists
+Sandesh Basnet , Prabin Thapa
+Shubham Dhungel
 
-Quality Assurance: [Name], [Name]
+Level Design
+Manish Bhattarai
 
-Special Thanks: [Name], [Name], [Name]
+Special Thanks
+Shreyan Wasti , Avipsa Parajuli 
+
+
 
 Thanks for playing!"
 horizontal_alignment = 1
